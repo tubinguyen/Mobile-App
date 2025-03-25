@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'widgets/largebutton.dart';
 import 'core/app_colors.dart';
+// import 'views/test.dart';
+// import 'widgets/large_button.dart';
+// import 'widgets/large_button_secondary.dart';
+// import 'widgets/small_button.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,11 +22,20 @@ class MyApp extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              LargeButton(
-                text: "Large button",
-                backgroundColor: AppColors.highlightDarkest,
-                textColor: AppColors.text,
-              ),
+              // LargeButton(
+              //   text: "Go to Page",
+              //   destination: TestPage(),
+              // ),
+
+              // LargeButtonSecondary(
+              //   text: "Xem chi tiết",
+              //   destination: TestPage(),
+              // ),
+
+              // SmallButton(
+              //   text: "Xem thêm",
+              //   destination: TestPage(),
+              // ),  
             ],
           ),
         ),
