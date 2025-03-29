@@ -3,12 +3,12 @@ import '../core/app_colors.dart';
 
 class SmallButton extends StatelessWidget {
   final String text;
-  final Widget destination;
+  final VoidCallback onTap;
 
   const SmallButton({
     super.key,
     required this.text,
-    required this.destination,
+    required this.onTap,
   });
 
   @override
@@ -23,12 +23,7 @@ class SmallButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
         ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => destination),
-          );
-        },
+        onPressed:onTap,
         child: Text(
           text,
           style: TextStyle(
