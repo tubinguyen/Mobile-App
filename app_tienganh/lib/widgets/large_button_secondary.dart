@@ -3,12 +3,12 @@ import '../core/app_colors.dart';
 
 class LargeButtonSecondary extends StatelessWidget {
   final String text;
-  final Widget destination; 
+  final VoidCallback onTap;
 
   const LargeButtonSecondary({
     super.key,
     required this.text,
-    required this.destination,
+    required this.onTap,
   });
 
   @override
@@ -23,12 +23,7 @@ class LargeButtonSecondary extends StatelessWidget {
             borderRadius: BorderRadius.circular(15), 
           ),
         ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => destination),
-          );
-        },
+        onPressed: onTap,
         child: Text(
           text,
           style: TextStyle(
