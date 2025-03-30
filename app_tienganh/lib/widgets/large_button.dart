@@ -3,12 +3,12 @@ import '../core/app_colors.dart';
 
 class LargeButton extends StatelessWidget {
   final String text;
-  final Widget destination; 
+  final VoidCallback onTap;
 
   const LargeButton({
     super.key,
     required this.text,
-    required this.destination,
+    required this.onTap,
   });
 
   @override
@@ -23,12 +23,7 @@ class LargeButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
             ),
           ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => destination),
-            );
-          },
+          onPressed: onTap,
           child: Text(
             text,
             style: TextStyle(
@@ -44,3 +39,11 @@ class LargeButton extends StatelessWidget {
     );
   }
 }
+
+//Cach su dung
+//LargeButton(
+  // text: 'On tập',
+  // onTap: () {
+  //   onNavigate(1); // Gọi hàm từ NavigationPage để đổi trang
+  // },
+// ),

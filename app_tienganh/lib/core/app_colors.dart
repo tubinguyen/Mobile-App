@@ -7,6 +7,7 @@ class AppColors {
   static const Color textPrimary = Color(0xFF000000);
   static const Color textSecondary = Color(0xFFC5C6CC);
   static const Color highlightDarkest = Color(0xFF0779E4);
+  static const Color highlightDarkest50 = Color(0x800779E4);
   static const Color hoverHighlightDarkest = Color(0x990779E4);
   static const Color highlightLight = Color(0xFFEAF2FF);
   static const Color border = Color(0xFFD9D9D9);

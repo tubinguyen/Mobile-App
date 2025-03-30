@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 // import 'views/test.dart';
 
 class ContentSwitcher extends StatefulWidget {
-  final Widget? lessonPage;
-  final Widget? testPage;
+  // final Widget? lessonPage;
+  // final Widget? testPage;
+  final Function(int) onNavigate;
 
   const ContentSwitcher({
     super.key,
-    this.lessonPage, // Trang đích khi nhấn "Học phần"
-    this.testPage, // Trang đích khi nhấn "Bài kiểm tra"
+    // this.lessonPage, // Trang đích khi nhấn "Học phần"
+    // this.testPage, // Trang đích khi nhấn "Bài kiểm tra"
+    required this.onNavigate, // Hàm callback khi nhấn vào các mục
   });
 
   @override
@@ -38,7 +40,8 @@ class _ContentSwitcherState extends State<ContentSwitcher> {
               setState(() {
                 isLessonSelected = true;
               });
-              // _navigateTo(widget.lessonPage ?? TestPage());
+              widget.onNavigate(1);
+             
             },
           ),
           _divider(),
@@ -49,7 +52,7 @@ class _ContentSwitcherState extends State<ContentSwitcher> {
               setState(() {
                 isLessonSelected = false;
               });
-              // _navigateTo(widget.testPage ?? TestPage());
+              widget.onNavigate(3);
             },
           ),
         ],
@@ -85,19 +88,6 @@ class _ContentSwitcherState extends State<ContentSwitcher> {
   Widget _divider() {
     return Container(width: 1, height: 10, color: AppColors.textSecondary);
   }
-
-//   void _navigateTo(Widget page) {
-//     Navigator.push(
-//       context,
-//       MaterialPageRoute(builder: (context) => page),
-//     );
-//   }
-// }
-
-
 }
 // Cách gọi
-//   ContentSwitcher(
-//     lessonPage: TestPage(), // Trang "Học phần" của bạn
-//     testPage: TestPage(), // Trang "Bài kiểm tra" của bạn
-//   ),
+//   ContentSwitcher(onNavigate: onNavigate,),

@@ -4,13 +4,13 @@ import 'package:app_tienganh/core/app_colors.dart';
 class FunctionCard extends StatelessWidget {
   final IconData icon;
   final String text;
-  final VoidCallback? onTap;
+  final VoidCallback onTap;
 
   const FunctionCard({
     super.key,
     required this.icon,
     required this.text,
-    this.onTap,
+    required this.onTap,
   });
 
   @override
@@ -49,3 +49,11 @@ class FunctionCard extends StatelessWidget {
     );
   }
 }
+
+//Cách gọi
+// FunctionCard(
+//   icon: Icons.book,
+//   text: "Học phần",
+//   onTap: () => onNavigate(1), // Gọi hàm từ NavigationPage để đổi trang 
+// ),
+//nhớ khai báo biến onNavigate trong class 

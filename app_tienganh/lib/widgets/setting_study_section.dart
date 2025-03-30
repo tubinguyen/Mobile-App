@@ -1,86 +1,65 @@
 import 'package:flutter/material.dart';
+import '../core/app_colors.dart';
 
-class SettingStudySection extends StatefulWidget {
-  @override
-  _SettingStudySectionState createState() => _SettingStudySectionState();
-}
+class SettingStudySection extends StatelessWidget {
+  final Function(String) onSelected;
 
-class _SettingStudySectionState extends State<SettingStudySection> {
-  void _handleMenuSelection(String value) {
-    switch (value) {
-      case 'edit':
-        print("Sửa học phần"); // Edit study section
-        break;
-      case 'duplicate':
-        print("Tạo bản sao"); // Duplicate study section
-        break;
-      case 'delete':
-        print("Xóa học phần"); // Delete study section
-        break;
-    }
-  }
+  const SettingStudySection({Key? key, required this.onSelected}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Popup Menu Example"),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: PopupMenuButton<String>(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12), // Rounded corners
+    return Container(
+      width: 271,
+      decoration: BoxDecoration(
+        color: AppColors.background,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.highlightLight,
+            blurRadius: 12,
+            offset: const Offset(0, 2),
           ),
-          onSelected: _handleMenuSelection,
-          itemBuilder: (BuildContext context) => [
-            _buildMenuItem('edit', Icons.edit, 'Sửa học phần'),
-            _buildMenuItem('duplicate', Icons.copy, 'Tạo bản sao'),
-            _buildMenuItem('delete', Icons.delete, 'Xóa học phần'),
-          ],
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 5,
-                  offset: Offset(0, 3),
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: const [
-                Icon(Icons.more_vert, color: Colors.blue),
-                SizedBox(width: 8),
-                Text(
-                  "Tùy chọn",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                ),
-              ],
-            ),
-          ),
-        ),
+        ],
       ),
-    );
-  }
-
-  PopupMenuItem<String> _buildMenuItem(String value, IconData icon, String text) {
-    return PopupMenuItem<String>(
-      value: value,
-      child: Row(
+      padding: const EdgeInsets.all(10),
+      child: Column(
         children: [
-          Icon(icon, color: Colors.blue),
-          const SizedBox(width: 10),
-          Text(
-            text,
-            style: const TextStyle(fontSize: 14),
-          ),
+          _buildMenuItem(Icons.edit, "Sửa học phần"),
+          _buildMenuItem(Icons.copy, "Tạo bản sao"),
+          _buildMenuItem(Icons.delete, "Xóa học phần"),
         ],
       ),
     );
   }
+
+  Widget _buildMenuItem(IconData icon, String title) {
+    return InkWell(
+      onTap: () => onSelected(title),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Row(
+          children: [
+            const SizedBox(width: 30, height: 30),
+            Icon(icon, color: AppColors.highlightDarkest, size: 30),
+            const SizedBox(height: 20, width: 40),
+            Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Montserrat', color: AppColors.textPrimary)),
+          ],
+        ),
+      ),
+    );
+  }
 }
+
+
+//Cach su dung
+// SettingStudySection(
+  //   onSelected: (title) {
+  //     if (title == "Sửa học phần") {
+  //       // Xử lý sửa học phần
+  //     } else if (title == "Tạo bản sao") {
+  //       // Xử lý tạo bản sao
+  //     } else if (title == "Xóa học phần") {
+  //       // Xử lý xóa học phần
+  //     }
+  //   },
+  // ),

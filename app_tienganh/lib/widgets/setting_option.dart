@@ -3,14 +3,14 @@ import 'package:app_tienganh/core/app_colors.dart';
 
 class SettingOption extends StatefulWidget {
   final List<String> options; // Danh sách option truyền vào
-  final List<Widget> pages; // Danh sách trang tương ứng
-  final Function(String) onTap; // Callback khi chọn option
+  final List<int> pagesIndex; // Danh sách các trang tương ứng
+  final Function(int) onNavigate;
 
   const SettingOption({
     super.key,
     required this.options,
-    required this.pages,
-    required this.onTap,
+    required this.pagesIndex, // Danh sách các trang tương ứng
+    required this.onNavigate,
   });
 
   @override
@@ -51,18 +51,10 @@ class _SettingOptionState extends State<SettingOption> {
                 ),
               ),
               onTap: () {
-                // Chuyển đến trang tương ứng với option
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => widget.pages[index]),
-                );
-
                 setState(() {
-                  settingOption = option; // Cập nhật option được chọn
+                  settingOption = option;
                 });
-
-                print("Option setting: $settingOption"); // In ra console
-                widget.onTap(option); // Gọi hàm callback khi chọn
+                widget.onNavigate(widget.pagesIndex[index]); // Gọi hàm onNavigate với index tương ứng
               },
             ),
             if (isLast) _divider(), // Thêm _divider() phía dưới option cuối cùng
@@ -79,10 +71,4 @@ class _SettingOptionState extends State<SettingOption> {
 
 
 // Cách gọi
-// SettingOption(
-//   options: ["Trang A", "Trang B"],
-//   pages: [TestPage(), TestPage(), TestPage()], // Danh sách các trang tương ứng
-//   onTap: (option) {
-//     print("Bạn đã chọn: $option");
-//   },
-// ),
+// SettingOption(options: ["Từ vựng","Giải nghĩa"], pagesIndex: [1,3], onNavigate: onNavigate,),

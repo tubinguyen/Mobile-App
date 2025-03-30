@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import '../core/app_colors.dart';
 import 'package:app_tienganh/widgets/large_button.dart';
 
+
 class RecentActivity extends StatelessWidget {
   final String status;
   final String title;
   final String advice;
   final int percentage;
-  final Widget destination; // Thêm biến để truyền page
+  final Function(int) onNavigate;
 
   const RecentActivity({
     super.key,
@@ -16,7 +17,7 @@ class RecentActivity extends StatelessWidget {
     required this.title,
     required this.advice,
     required this.percentage,
-    required this.destination, // Biến truyền vào để điều hướng
+    required this.onNavigate, // Biến truyền vào để điều hướng
   });
 
   @override
@@ -52,7 +53,7 @@ class RecentActivity extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   CircularProgressIndicatorCustom(
                     progress: percentage / 100,
@@ -106,7 +107,9 @@ class RecentActivity extends StatelessWidget {
               const SizedBox(height: 16),
               LargeButton(
                 text: "Đi đến học phần của bạn",
-                destination: destination, // Sử dụng biến truyền vào
+                onTap: () {
+                  onNavigate(1); // Gọi hàm từ NavigationPage để đổi trang
+                }, // Sử dụng biến truyền vào
               ),
             ],
           ),
