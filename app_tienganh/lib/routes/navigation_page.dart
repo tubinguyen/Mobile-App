@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../views/home_screen.dart';
-import '../views/review_screen.dart';
-import '../views/login_screen.dart';
-import '../views/course_creation_screen.dart';
-import '../views/store_screen.dart';
-import '../views/profile_screen.dart';
-import '../views/notification_screen.dart';
+import '../views/cus/home_screen.dart';
+import '../views/cus/review_screen.dart';
+import '../views/cus/login_screen.dart';
+import '../views/cus/course_creation_screen.dart';
+import '../views/cus/store_screen.dart';
+import '../views/cus/profile_screen.dart';
+import '../views/cus/notification_screen.dart';
 import '../widgets/bottom_navigation_bar.dart';
 import '../widgets/header.dart';
 
