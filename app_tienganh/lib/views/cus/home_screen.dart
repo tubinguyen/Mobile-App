@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/google_button.dart';
+import '../../widgets/google_button.dart';
 class HomeScreen extends StatelessWidget {
   final Function(int) onNavigate;
 

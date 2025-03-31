@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/large_button.dart';
+import '../../widgets/large_button.dart';
 class NotificationScreen extends StatelessWidget {
   final Function(int) onNavigate;
 
