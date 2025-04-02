@@ -62,7 +62,8 @@ class _NavigationPageState extends State<NavigationPage> {
               onAuthTap: () => _onItemTapped(6),
             )
           : null,
-      body: IndexedStack(
+      body:  
+      IndexedStack(
         index: _selectedIndex,
         children: _pages,
       ),

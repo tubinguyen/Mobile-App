@@ -3,8 +3,8 @@ import '../core/app_colors.dart';
 
 class SettingStudySection extends StatelessWidget {
   final Function(String) onSelected;
+  const SettingStudySection({super.key, required this.onSelected});
 
-const SettingStudySection({super.key, required this.onSelected});
   @override
   Widget build(BuildContext context) {
     return Container(
