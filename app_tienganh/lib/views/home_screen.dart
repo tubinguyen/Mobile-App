@@ -1,6 +1,6 @@
 import 'package:app_tienganh/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
-// import '../widgets/google_button.dart';
+
 import '../widgets/book_list.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -22,6 +22,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 20),
             CustomSearchBar(), // Nếu cần thanh tìm kiếm thì bỏ comment dòng này
             BookListPage(), // Không cần truyền `books` nữa
+
           ],
         ),
       ),
