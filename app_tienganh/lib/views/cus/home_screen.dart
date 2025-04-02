@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../widgets/google_button.dart';
+// import '../../widgets/book_list.dart';
+
 class HomeScreen extends StatelessWidget {
   final Function(int) onNavigate;
 
@@ -16,12 +17,7 @@ class HomeScreen extends StatelessWidget {
               'Nội dung Trang chủ',
               style: TextStyle(fontSize: 24),
             ),
-            const SizedBox(height: 20), 
-            GoogleSignInButton(
-              onTap: () {
-                onNavigate(4); 
-              },
-            )
+            const SizedBox(height: 20),
           ],
         ),
       ),
