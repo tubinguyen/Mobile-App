@@ -32,7 +32,7 @@ class OrderDetail extends StatelessWidget {
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
-          side: BorderSide(color: AppColors.BlueLightest, width: 2),
+          side: BorderSide(color: AppColors.blueLightest, width: 2),
         ),
         elevation: 4,
         margin: EdgeInsets.all(16),
@@ -73,7 +73,7 @@ class OrderDetail extends StatelessWidget {
                 quantity: quantity,
               ),
 
-              Divider(height: 24, thickness: 1, color: AppColors.BlueLightest), // Đường kẻ phân cách
+              Divider(height: 24, thickness: 1, color: AppColors.blueLightest), // Đường kẻ phân cách
 
               // Tổng tiền (sửa lỗi price)
               Text(

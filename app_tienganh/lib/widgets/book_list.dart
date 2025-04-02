@@ -63,7 +63,6 @@ class BookListPage extends StatelessWidget {
             Spacer(), // Đẩy "Xem thêm" về góc phải
             GestureDetector(
               onTap: () {
-                // TODO: Xử lý khi bấm vào "Xem thêm"
               },
               child: Text(
                 'Xem thêm',
