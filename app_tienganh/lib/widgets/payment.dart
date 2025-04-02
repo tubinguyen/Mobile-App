@@ -16,10 +16,10 @@ class Payment extends StatefulWidget {
   });
 
   @override
-  _PaymentState createState() => _PaymentState();
+  PaymentState createState() => PaymentState();
 }
 
-class _PaymentState extends State<Payment> {
+class PaymentState extends State<Payment> {
   String? _selectedOption;
   final LayerLink _layerLink = LayerLink();
   OverlayEntry? _overlayEntry;

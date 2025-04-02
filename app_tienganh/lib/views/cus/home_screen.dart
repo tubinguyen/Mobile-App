@@ -1,11 +1,7 @@
-import 'package:app_tienganh/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
-
-import '../widgets/book_list.dart';
 
 class HomeScreen extends StatelessWidget {
   final Function(int) onNavigate;
-
   const HomeScreen({super.key, required this.onNavigate});
 
   @override
@@ -20,9 +16,6 @@ class HomeScreen extends StatelessWidget {
               style: TextStyle(fontSize: 24),
             ),
             const SizedBox(height: 20),
-            CustomSearchBar(), // Nếu cần thanh tìm kiếm thì bỏ comment dòng này
-            BookListPage(), // Không cần truyền `books` nữa
-
           ],
         ),
       ),

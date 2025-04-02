@@ -57,3 +57,13 @@ class LoginAndRegisterButton extends StatelessWidget {
     );
   }
 }
+
+//Cach su dung
+// LoginAndRegisterButton(
+//               text: 'Dang nhap', 
+//                onTap: () {
+//                 onNavigate(1); 
+//               },
+//               stateLoginOrRegister: AuthButtonState.login, 
+//               textColor: AppColors.text,
+//             )
