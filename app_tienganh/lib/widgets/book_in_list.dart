@@ -46,40 +46,40 @@ class BookInList extends StatelessWidget {
               child: Image.asset(
                 imageUrl,
                 width: 200,
-                height: 120, // Tăng chiều cao lên để hình ảnh rõ hơn
+                height: 120, 
                 fit: BoxFit.fill, // Hoặc thử BoxFit.contain nếu ảnh bị méo
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
                     width: 200,
                     height: 120,
-                    color: AppColors.BlueLight, // Hiển thị màu xám nếu không load được ảnh
+                    color: AppColors.BlueLight, // Hiển thị màu xanh nếu không load được ảnh
                     child: Icon(Icons.broken_image, color: AppColors.BlueLightest),
                   );
                 },
               ),
             ),
 
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 16.0),
             // Tiêu đề sách
             Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 0, 8.0, 0),
+              padding:  EdgeInsets.zero,
               child: Text(
                 title,
                 style: const TextStyle(
                   color: AppColors.textPrimary,
                   fontFamily: 'Montserrat',
-                  fontSize: 16),
+                  fontSize: 12),
               ),
             ),
-      
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 4.0),
+            
             // Giá sách
             Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 0, 8.0, 0),
+              padding: EdgeInsets.zero,
               child: Text(
                 price,
                 style: const TextStyle(
-                  fontSize: 16, 
+                  fontSize: 12, 
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Montserrat',
                   color: AppColors.textPrimary,),

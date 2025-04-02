@@ -14,7 +14,7 @@ class ShoppingCartItem extends StatelessWidget {
     return Container(
       width: 335, // Độ rộng tổng thể
       height: 100, // Độ cao tổng thể
-      padding: EdgeInsets.symmetric(horizontal: 10), // Cách lề trái/phải
+      // padding: EdgeInsets.symmetric(horizontal: 10), // Cách lề trái/phải
       child: Row(
         children: [
           // Hình ảnh sản phẩm
@@ -23,7 +23,7 @@ class ShoppingCartItem extends StatelessWidget {
             width: 90,
             height: 100,
           ),
-          SizedBox(width: 10), // **Cách ảnh với phần text**
+          SizedBox(width: 12), // **Cách ảnh với phần text**
 
           // Phần thông tin sản phẩm
           Expanded(
@@ -40,7 +40,7 @@ class ShoppingCartItem extends StatelessWidget {
                     fontSize: 12,
                   ),
                 ),
-                SizedBox(height: 8), // **Tạo khoảng cách giữa tiêu đề và số lượng**
+                SizedBox(height: 9), // **Tạo khoảng cách giữa tiêu đề và số lượng**
 
                 // **Padding chỉ bọc Row để canh chỉnh lề**
                 Row(
@@ -53,6 +53,9 @@ class ShoppingCartItem extends StatelessWidget {
                         max: 50,
                       ),
                     ),
+                    SizedBox(width: 49), // **Cách giữa số lượng và giá**
+
+                    // Giá sản phẩm
                     Padding(
                       padding: const EdgeInsets.only(right: 16), // **Cách phải 16px**
                       child: Text(

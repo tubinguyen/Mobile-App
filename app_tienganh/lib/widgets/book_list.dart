@@ -2,48 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:app_tienganh/widgets/book_in_list.dart'; // Import widget BookInList bạn đã có
 import '../core/app_colors.dart';
 
-class BookListPage extends StatelessWidget {
+class BookList extends StatelessWidget {
   final List<BookInList> books;
 
-  BookListPage({super.key}) 
-      : books = [
-          BookInList(
-            id: "1",
-            title: "Lập trình Flutter từ A-Z",
-            price: '199000', // Chỉnh thành số thay vì chuỗi
-            imageUrl: "assets/images/flutter_book.png",
-          ),
-          BookInList(
-            id: "2",
-            title: "Học Python dễ dàng",
-            price: '149000',
-            imageUrl: "assets/images/python_book.png",
-          ),
-          BookInList(
-            id: "3",
-            title: "JavaScript nâng cao",
-            price: "179000",
-            imageUrl: "assets/images/javascript_book.png",
-          ),
-          BookInList(
-            id: "4",
-            title: "Phát triển Android với Kotlin",
-            price: '189000',
-            imageUrl: "assets/images/kotlin_book.png",
-          ),
-          BookInList(
-            id: "5",
-            title: "Data Science cho người mới",
-            price: '159000',
-            imageUrl: "assets/images/datascience_book.png",
-          ),
-          BookInList(
-            id: "6",
-            title: "Nhập môn AI và Machine Learning",
-            price: '209000',
-            imageUrl: "assets/images/ai_book.png",
-          ),
-        ];
+  // Nhận danh sách books từ bên ngoài
+  const BookList({super.key, required this.books});
 
   @override
   Widget build(BuildContext context) {
@@ -78,26 +41,27 @@ class BookListPage extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          itemCount: books.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            childAspectRatio: 0.65,
+          padding: const EdgeInsets.all(16.0),
+          child: SizedBox(
+            height: 245, // Đặt chiều cao đủ để hiển thị sách
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal, // Cuộn ngang
+              itemCount: books.length,
+              itemBuilder: (context, index) {
+                final book = books[index];
+                return Padding(
+                  padding: const EdgeInsets.only(right: 16.0), // Khoảng cách giữa các sách
+                  child: BookInList(
+                    id: book.id,
+                    title: book.title,
+                    price: book.price,
+                    imageUrl: book.imageUrl,
+                  ),
+                );
+              },
+            ),
           ),
-          itemBuilder: (context, index) {
-            final book = books[index];
-            return BookInList(
-              id: book.id,
-              title: book.title,
-              price: book.price,
-              imageUrl: book.imageUrl,
-            );
-          },
         ),
-      ),
     );
   }
 }
