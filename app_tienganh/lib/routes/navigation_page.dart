@@ -3,6 +3,10 @@ import '../views/cus/home_screen.dart';
 import '../views/cus/review_screen.dart';
 import '../views/cus/login_screen.dart';
 import '../views/cus/course_creation_screen.dart';
+import '../views/admin/user_management.dart';
+import '../views/admin/product_management.dart';
+import '../views/admin/order_management.dart';
+import '../views/admin/account_management.dart';
 import '../views/cus/store_screen.dart';
 import '../views/cus/profile_screen.dart';
 import '../views/cus/notification_screen.dart';
@@ -32,6 +36,10 @@ class _NavigationPageState extends State<NavigationPage> {
       NotificationScreen(onNavigate:_onItemTapped),
       ProfileScreen(onNavigate:_onItemTapped),
       LoginScreen(onNavigate:_onItemTapped),
+      UserManagement(onNavigate:_onItemTapped),
+      ProductManagement(onNavigate:_onItemTapped),
+      OrderManagement(onNavigate:_onItemTapped),
+      AccountManagement(onNavigate:_onItemTapped),
     ]);
   }
 

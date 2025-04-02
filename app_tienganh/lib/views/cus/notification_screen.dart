@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../widgets/large_button.dart';
+
 class NotificationScreen extends StatelessWidget {
   final Function(int) onNavigate;
 
@@ -17,12 +17,6 @@ class NotificationScreen extends StatelessWidget {
               style: TextStyle(fontSize: 24),
             ),
             const SizedBox(height: 20), 
-            LargeButton(
-              text: 'On tập',
-              onTap: () {
-                onNavigate(1); 
-              },
-            ),
           ],
         ),
       ),

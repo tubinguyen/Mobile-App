@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
+import '../../widgets/top_app_bar.dart';
+import '../../widgets/plus_button.dart';
 
 class CourseCreationScreen extends StatelessWidget {
-  final Function(int) onNavigate;
+final Function(int) onNavigate;
   const CourseCreationScreen({super.key, required this.onNavigate});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const Center(
-        child: Text('Trang tạo mới 1 học phần', style: TextStyle(fontSize: 24)),
+      appBar: CustomAppBar(
+        title: "Tạo Học Phần",
+        onItemTapped: (value) {
+          onNavigate(value);
+        },
+      ),
+      body: Stack(
+        children: [
+          PlusButton(
+            onPressed: () {
+            },
+          ),
+        ],
       ),
     );
   }
