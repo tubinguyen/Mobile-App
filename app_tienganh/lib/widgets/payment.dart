@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart'; // Thêm import này
 import '../core/app_colors.dart';
 
 class Payment extends StatefulWidget {
   final String label;
   final List<String>? options;
   final String? subtitle;
-  final String dropdownIconPath;
+  final String dropdownIconPath; // Giữ nguyên tên nhưng sẽ dùng cho SVG
 
   const Payment({
     super.key,
     required this.label,
     this.options,
     this.subtitle,
-    this.dropdownIconPath = 'assets/images/ArrowDown.png',
+    this.dropdownIconPath = 'assets/img/ArrowDown.svg', // Đổi đuôi thành .svg
   });
 
   @override
@@ -129,7 +130,12 @@ class PaymentState extends State<Payment> {
                       fontSize: 16,
                     ),
                   ),
-                  Image.asset(widget.dropdownIconPath, width: 24, height: 24),
+                  // Thay thế Image.asset bằng SvgPicture.asset
+                  SvgPicture.asset(
+                    widget.dropdownIconPath,
+                    width: 24,
+                    height: 24,
+                  ),
                 ],
               ),
             ),
