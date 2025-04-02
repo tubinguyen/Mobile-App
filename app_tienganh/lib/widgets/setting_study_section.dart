@@ -4,7 +4,7 @@ import '../core/app_colors.dart';
 class SettingStudySection extends StatelessWidget {
   final Function(String) onSelected;
 
-  const SettingStudySection({Key? key, required this.onSelected}) : super(key: key);
+  const SettingStudySection({super.key, required this.onSelected});
 
   @override
   Widget build(BuildContext context) {

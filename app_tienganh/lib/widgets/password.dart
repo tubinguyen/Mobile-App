@@ -281,8 +281,7 @@ class _TextInputState extends State<TextInput> {
 class PasswordInputScreen extends StatefulWidget {
   final List<Map<String, dynamic>> passwordFields;
 
-  const PasswordInputScreen({Key? key, required this.passwordFields})
-    : super(key: key);
+  const PasswordInputScreen({super.key, required this.passwordFields});
 
   @override
   _PasswordInputScreenState createState() => _PasswordInputScreenState();
