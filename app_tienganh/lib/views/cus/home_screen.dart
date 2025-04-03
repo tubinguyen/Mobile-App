@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../widgets/shopping_cart_item_final.dart';
 
 class HomeScreen extends StatelessWidget {
   final Function(int) onNavigate;
@@ -17,16 +16,9 @@ class HomeScreen extends StatelessWidget {
               style: TextStyle(fontSize: 24),
             ),
             const SizedBox(height: 20),
-             ShoppingCartItemFinal(
-              imageName: 'assets/img/user.jpg',
-              price: 23000,
-              title: 'Sach Toeic',
-              quantity: 4,
-
-             )
           ],
         ),
-      ),
+      )
     );
   }
 }

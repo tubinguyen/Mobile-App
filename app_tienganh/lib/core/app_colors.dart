@@ -17,4 +17,5 @@ class AppColors {
   static const Color red = Color(0xFFFF4444);
   static const Color blueLight = Color.fromRGBO(223, 241, 249, 1);
   static const Color blueLightest = Color.fromRGBO(179, 218, 255, 1);
+  static const Color lightblue = Color.fromRGBO(223, 241, 249, 0.5);
 }

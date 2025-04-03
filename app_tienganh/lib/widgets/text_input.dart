@@ -10,8 +10,8 @@ class TextInput extends StatefulWidget {
 
   const TextInput({
     super.key,
-    required this.label,
-    required this.hint,
+    this.label = 'Email',
+    this.hint = 'example@gmail.com',
     this.enabled = true,
     this.isError = false,
     this.controller,
@@ -119,15 +119,11 @@ class TextInputState extends State<TextInput> {
 //             mainAxisSize: MainAxisSize.min,
 //             children: [
 //               TextInput(
-//                 label: "Email",
-//                 hint: "example@gmail.com",
 //                 enabled: true,
 
 //           const SizedBox(height: 16),
 //               // 🔴 Ô nhập có lỗi:
 //               TextInput(
-//                 label: "Email",
-//                 hint: "example@gmail.com",
 //                 enabled: true,
 //                 isError: true, // ⚠️ Kích hoạt lỗi
 //               ),
