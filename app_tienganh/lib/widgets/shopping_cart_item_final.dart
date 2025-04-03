@@ -38,8 +38,10 @@ class ShoppingCartItemFinal extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
+              children: [ 
+                Padding (
+                  padding: const EdgeInsets.only(left: 4.0),
+                  child: Text(
                   title,
                   style: TextStyle(
                     fontFamily: 'Montserrat',
@@ -48,20 +50,22 @@ class ShoppingCartItemFinal extends StatelessWidget {
                     fontSize: 12,
                   ),
                 ),
-                const SizedBox(height: 8),
+                ),
+
+                const SizedBox(height: 15.0),
 
                 // Quantity and Price Section
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 16), // Cách ảnh 16px
+                      padding: const EdgeInsets.only(left: 4.0, right: 17.0), // Cách ảnh 16px
                       child: Text(
                         'Số lượng: $quantity',
                         style: TextStyle(
                           fontFamily: 'Montserrat',
                           color: AppColors.textSecondary,
-                          fontSize: 12,
+                          fontSize: 14,
                         ),
                       ),
                     ),
@@ -73,7 +77,7 @@ class ShoppingCartItemFinal extends StatelessWidget {
                           fontFamily: 'Montserrat',
                           color: AppColors.textPrimary,
                           fontWeight: FontWeight.bold,
-                          fontSize: 12,
+                          fontSize: 14,
                         ),
                       ),
                     ),
