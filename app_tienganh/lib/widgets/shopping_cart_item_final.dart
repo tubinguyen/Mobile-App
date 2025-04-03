@@ -47,7 +47,7 @@ class ShoppingCartItemFinal extends StatelessWidget {
                     fontFamily: 'Montserrat',
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.bold,
-                    fontSize: 12,
+                    fontSize: 14,
                   ),
                 ),
                 ),
