@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app_tienganh/widgets/book_in_list.dart'; // Import widget BookInList bạn đã có
+import 'package:app_tienganh/widgets/book_in_list.dart'; 
 import '../core/app_colors.dart';
 
 class BookListPage extends StatelessWidget {
@@ -10,7 +10,7 @@ class BookListPage extends StatelessWidget {
           BookInList(
             id: "1",
             title: "Lập trình Flutter từ A-Z",
-            price: '199000', // Chỉnh thành số thay vì chuỗi
+            price: '199000',
             imageUrl: "assets/images/flutter_book.png",
           ),
           BookInList(
@@ -60,7 +60,7 @@ class BookListPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Spacer(), // Đẩy "Xem thêm" về góc phải
+            Spacer(), 
             GestureDetector(
               onTap: () {
               },

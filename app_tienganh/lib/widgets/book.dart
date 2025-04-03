@@ -19,8 +19,7 @@ class BookSmall extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 200,
-      height: 245,
+      width: 165,
       margin: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         boxShadow: [
