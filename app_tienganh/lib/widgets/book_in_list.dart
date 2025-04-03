@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import '../core/app_colors.dart';
-import 'package:app_tienganh/widgets/large_button.dart';  // Đảm bảo rằng bạn đã import SmallButton widget
+import 'package:app_tienganh/widgets/large_button.dart';
+
 
 class BookInList extends StatelessWidget {
-  final String id; // Thêm biến id để truyền vào hàm navigate
+  final String id;
   final String title;
   final double price;
   final String imageUrl;
 
   const BookInList({
     super.key,
-    required this.id, // Thêm biến id vào constructor
+    required this.id,
     required this.title,
     required this.price,
     required this.imageUrl,
@@ -47,14 +48,14 @@ class BookInList extends StatelessWidget {
               child: Image.asset(
                 imageUrl,
                 width: 200,
-                height: 120, // Tăng chiều cao lên để hình ảnh rõ hơn
+                height: 120, 
                 fit: BoxFit.fill, // Hoặc thử BoxFit.contain nếu ảnh bị méo
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
                     width: 165,
                     height: 94.67,
-                    color: AppColors.BlueLight, // Hiển thị màu xám nếu không load được ảnh
-                    child: Icon(Icons.broken_image, color: AppColors.BlueLightest),
+                    color: AppColors.highlightLight, // Hiển thị màu xám nếu không load được ảnh
+                    child: Icon(Icons.broken_image, color: AppColors.hoverHighlightDarkest),
                   );
                 },
               ),

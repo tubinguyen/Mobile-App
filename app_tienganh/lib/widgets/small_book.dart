@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import '../core/app_colors.dart';
-import 'package:app_tienganh/widgets/small_button.dart';  // Đảm bảo rằng bạn đã import SmallButton widget
+import '../../widgets/small_button.dart';  
 
-class Book_small extends StatelessWidget {
-  final String id; // Thêm biến id để truyền vào hàm navigate
+class BookSmall extends StatelessWidget {
+  final String id; 
   final String title;
   final double price;
   final String imageUrl;
 
-  const Book_small({
+  const BookSmall({
     super.key,
-    required this.id, // Thêm biến id vào constructor
+    required this.id,
     required this.title,
     required this.price,
     required this.imageUrl,
@@ -41,7 +41,6 @@ class Book_small extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Hình ảnh bìa sách
             ClipRRect(
               borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
               child: Image.asset(
@@ -53,15 +52,15 @@ class Book_small extends StatelessWidget {
                   return Container(
                     width: 165,
                     height: 94.67,
-                    color: AppColors.BlueLight, // Hiển thị màu xám nếu không load được ảnh
-                    child: Icon(Icons.broken_image, color: AppColors.BlueLightest),
+                    color: AppColors.highlightLight, // Hiển thị màu xám nếu không load được ảnh
+                    child: Icon(Icons.broken_image, color: AppColors.highlightDarkest50),
                   );
                 },
               ),
             ),
-
             const SizedBox(height: 2.0),
             // Tiêu đề sách
+
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 0, 5.0, 0),
               child: Text(
@@ -88,7 +87,6 @@ class Book_small extends StatelessWidget {
             ),
             const SizedBox(height: 7.2),
             // Nút "Xem thêm"
-          
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
               child: Align (
@@ -96,8 +94,6 @@ class Book_small extends StatelessWidget {
                   child: SmallButton(
                   text: 'Xem thêm',
                   onTap: () {
-                    // Xử lý khi nhấn nút
-                  //navigate phải truyền biến id sách 
                   },
                 ),
               )

@@ -91,5 +91,4 @@ class _CircularProgressPainter extends CustomPainter {
     // size: 84.0,
     //progressColor: AppColors.blue,
     //backgroundColor: AppColors.white,
-    //textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.blue),
     //),

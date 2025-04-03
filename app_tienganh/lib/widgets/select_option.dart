@@ -12,10 +12,10 @@ class SelectOption extends StatefulWidget {
   });
 
   @override
-  _SelectOptionState createState() => _SelectOptionState();
+  SelectOptionState createState() => SelectOptionState();
 }
 
-class _SelectOptionState extends State<SelectOption> {
+class SelectOptionState extends State<SelectOption> {
   String? selectedOption; // Biến lưu option được chọn
 
   @override
@@ -45,7 +45,7 @@ class _SelectOptionState extends State<SelectOption> {
               onTap: () {
                 setState(() {
                   selectedOption = option;
-                  print("Option selected: $selectedOption"); // In ra console
+                  // print("Option selected: $selectedOption"); // In ra console
                 });
                 widget.onSelect(option); // Gọi hàm callback khi chọn
               },

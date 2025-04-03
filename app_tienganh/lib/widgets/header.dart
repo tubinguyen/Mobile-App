@@ -19,7 +19,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: AppColors.background,
       title: GestureDetector(
-        onTap: onHomeTap, // Chuyển về Home khi bấm logo
+        onTap: onHomeTap, 
         child: Row(
           children: [
             Image.asset(
@@ -40,7 +40,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
                   width: 20,
                   height: 23,
                 ),
-                onPressed: onNotificationTap, // Chuyển đến trang Notification
+                onPressed: onNotificationTap, 
               ),
               PopupMenuButton<String>(
                 icon: SvgPicture.asset(
@@ -52,7 +52,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
                 position: PopupMenuPosition.under,
                 onSelected: (value) {
                   if (value == 'login' || value == 'logout') {
-                    onAuthTap(); // Chuyển đến trang đăng nhập/đăng xuất
+                    onAuthTap(); 
                   }
                 },
                 itemBuilder: (context) => [

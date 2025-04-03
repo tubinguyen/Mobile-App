@@ -26,10 +26,10 @@ class ShoppingCartItem extends StatelessWidget {
               return Container(
                 width: 90,
                 height: 100,
-                color: AppColors.BlueLight,
+                color: AppColors.highlightLight,
                 child: Icon(
                   Icons.broken_image,
-                  color: AppColors.BlueLightest,
+                  color: AppColors.highlightDarkest50,
                 ),//icon
               );
             },

@@ -33,7 +33,7 @@ class OrderDetail extends StatelessWidget {
         color: AppColors.highlightLight,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
-          side: BorderSide(color: AppColors.BlueLightest, width: 1),
+          side: BorderSide(color: AppColors.blueLightest, width: 1),
         ),
         elevation: 4,
         margin: EdgeInsets.all(10.0),
@@ -75,7 +75,7 @@ class OrderDetail extends StatelessWidget {
                 quantity: quantity,
               ),
 
-              Divider(height: 24, thickness: 1, color: AppColors.BlueLightest), // Đường kẻ phân cách
+              Divider(height: 24, thickness: 1, color: AppColors.blueLightest), // Đường kẻ phân cách
 
               // Tổng tiền 
               Padding(

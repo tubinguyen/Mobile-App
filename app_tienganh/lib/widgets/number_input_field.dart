@@ -8,10 +8,10 @@ class NumberInputField extends StatefulWidget {
   const NumberInputField({super.key, this.min = 0, this.max = 100});
 
   @override
-  _NumberInputFieldState createState() => _NumberInputFieldState();
+  NumberInputFieldState createState() => NumberInputFieldState();
 }
 
-class _NumberInputFieldState extends State<NumberInputField> {
+class NumberInputFieldState extends State<NumberInputField> {
   int _value = 1;
   late TextEditingController _controller;
 
