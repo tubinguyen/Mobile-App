@@ -5,7 +5,7 @@ import 'package:app_tienganh/widgets/small_button.dart';  // Đảm bảo rằng
 class Book_small extends StatelessWidget {
   final String id; // Thêm biến id để truyền vào hàm navigate
   final String title;
-  final String price;
+  final double price;
   final String imageUrl;
 
   const Book_small({
@@ -19,13 +19,14 @@ class Book_small extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 200,
-      height: 245,
+      width: 165,
+      height: 200,
       margin: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
+        color: AppColors.highlightLight,
         boxShadow: [
           BoxShadow(
-            color: AppColors.BlueLightest,
+            color: AppColors.highlightLight,
             blurRadius: 6,
             spreadRadius: 2,
           ),
@@ -45,13 +46,13 @@ class Book_small extends StatelessWidget {
               borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
               child: Image.asset(
                 imageUrl,
-                width: 200,
-                height: 120, // Tăng chiều cao lên để hình ảnh rõ hơn
+                width: 165,
+                height: 94.67, // Tăng chiều cao lên để hình ảnh rõ hơn
                 fit: BoxFit.fill, // Hoặc thử BoxFit.contain nếu ảnh bị méo
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
-                    width: 200,
-                    height: 120,
+                    width: 165,
+                    height: 94.67,
                     color: AppColors.BlueLight, // Hiển thị màu xám nếu không load được ảnh
                     child: Icon(Icons.broken_image, color: AppColors.BlueLightest),
                   );
@@ -59,37 +60,37 @@ class Book_small extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 2.0),
             // Tiêu đề sách
             Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 0, 8.0, 0),
+              padding: const EdgeInsets.fromLTRB(16.0, 0, 5.0, 0),
               child: Text(
                 title,
                 style: const TextStyle(
                   color: AppColors.highlightDarkest,
+                  fontWeight: FontWeight.bold,
                   fontFamily: 'Montserrat',
-                  fontSize: 16),
+                  fontSize: 15),
               ),
             ),
       
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 1.0),
             // Giá sách
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 0, 8.0, 0),
               child: Text(
-                price,
+                '${price.toStringAsFixed(0)} đ',
                 style: const TextStyle(
                   fontSize: 14, 
-                  fontWeight: FontWeight.bold,
                   fontFamily: 'Montserrat',
                   color: AppColors.textPrimary,),
               ),
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 7.2),
             // Nút "Xem thêm"
           
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
               child: Align (
                 alignment: Alignment.center,
                   child: SmallButton(

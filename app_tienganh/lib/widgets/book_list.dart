@@ -3,10 +3,31 @@ import 'package:app_tienganh/widgets/book_in_list.dart'; // Import widget BookIn
 import '../core/app_colors.dart';
 
 class BookList extends StatelessWidget {
-  final List<BookInList> books;
+  final List<BookInList> books = [
+    BookInList(
+      id: '1',
+      title: 'Lập trình Flutter',
+      price: 150000,
+      imageUrl: 'assets/images/booktest.jpg',
+    ),
+    BookInList(
+      id: '2',
+      title: 'Học Python cơ bản',
+      price: 120000,
+      imageUrl: 'assets/images/booktest.jpg',
+    ),
+    BookInList(
+      id: '3',
+      title: 'Data Science với Python',
+      price: 180000,
+      imageUrl: 'assets/images/booktest.jpg',
+    ),
+  ];
 
-  // Nhận danh sách books từ bên ngoài
-  const BookList({super.key, required this.books});
+  BookList({super.key});
+
+  // // Nhận danh sách books từ bên ngoài
+  // const BookList({super.key, required this.books});
 
   @override
   Widget build(BuildContext context) {
@@ -41,27 +62,29 @@ class BookList extends StatelessWidget {
         ),
       ),
       body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SizedBox(
-            height: 245, // Đặt chiều cao đủ để hiển thị sách
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal, // Cuộn ngang
-              itemCount: books.length,
-              itemBuilder: (context, index) {
-                final book = books[index];
-                return Padding(
-                  padding: const EdgeInsets.only(right: 16.0), // Khoảng cách giữa các sách
-                  child: BookInList(
-                    id: book.id,
-                    title: book.title,
-                    price: book.price,
-                    imageUrl: book.imageUrl,
+              padding: const EdgeInsets.all(16.0),
+              child: SizedBox(
+                width: 250,
+                child: Expanded(  // Cho phép nội dung mở rộng tự nhiên mà không gây lỗi
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: books.length,
+                    itemBuilder: (context, index) {
+                      final book = books[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 16.0),
+                        child: BookInList(
+                          id: book.id,
+                          title: book.title,
+                          price: book.price,
+                          imageUrl: book.imageUrl,
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+              ),
             ),
-          ),
-        ),
     );
   }
 }
