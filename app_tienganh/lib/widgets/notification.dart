@@ -24,30 +24,12 @@ class NotificationCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.background,
         borderRadius: BorderRadius.circular(10),
-        // boxShadow: [
-        //   BoxShadow(
-        //     color: Colors.grey.withOpacity(0.1),
-        //     spreadRadius: 1,
-        //     blurRadius: 3,
-        //     offset: Offset(0, 1),
-        //   ),
-        // ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // SVG Image
-          Container(
-            // padding: EdgeInsets.all(0),
-            // decoration: BoxDecoration(
-            //   color: Colors.blue.withOpacity(0.2),
-            //   shape: BoxShape.circle,
-            // ),
-            child: SvgPicture.asset(svgPath, width: 40, height: 40),
-          ),
+          SvgPicture.asset(svgPath, width: 40, height: 40),
           SizedBox(width: 12),
-
-          // Text Content
           Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +46,7 @@ class NotificationCard extends StatelessWidget {
             ],
           ),
 
-          SizedBox(width: 40), // Added spacing between column and timeAgo
+          SizedBox(width: 40), 
           // Time
           Text(
             timeAgo,

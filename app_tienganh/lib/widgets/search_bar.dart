@@ -5,10 +5,10 @@ class CustomSearchBar extends StatefulWidget {
   const CustomSearchBar({super.key});
 
   @override
-  _CustomSearchBarState createState() => _CustomSearchBarState();
+  CustomSearchBarState createState() => CustomSearchBarState();
 }
 
-class _CustomSearchBarState extends State<CustomSearchBar> {
+class CustomSearchBarState extends State<CustomSearchBar> {
   bool _isFocused = false;
 
   @override
@@ -23,7 +23,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
         width: 371, // Chiều rộng cố định
         height: 44, // Chiều cao cố định
         margin: const EdgeInsets.only(top: 20, left: 20), // Khoảng cách từ trên và trái
-        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 11), // Padding bên trong
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 6), // Padding bên trong
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12), // Bán kính góc
           border: Border.all(color: AppColors.highlightDarkest, width: 1), // Viền 1px màu xanh

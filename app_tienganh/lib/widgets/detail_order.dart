@@ -28,16 +28,17 @@ class OrderDetail extends StatelessWidget {
 
     return SizedBox(
       width: 369,
-      height: 320, // Tăng chiều cao để vừa với nút bấm
+      height: 283, 
       child: Card(
+        color: AppColors.highlightLight,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
-          side: BorderSide(color: AppColors.blueLightest, width: 2),
+          side: BorderSide(color: AppColors.blueLightest, width: 1),
         ),
         elevation: 4,
-        margin: EdgeInsets.all(16),
+        margin: EdgeInsets.all(10.0),
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: EdgeInsets.fromLTRB(10.0,10,10,5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -53,6 +54,7 @@ class OrderDetail extends StatelessWidget {
                       fontSize: 14,
                     ),
                   ),
+
                   Text(
                     isReceived ? "Đã nhận hàng" : "Chưa nhận hàng",
                     style: TextStyle(
@@ -67,7 +69,7 @@ class OrderDetail extends StatelessWidget {
 
               // Sản phẩm trong giỏ hàng
               ShoppingCartItemFinal(
-                imageName: imageName,  // Sử dụng biến thay vì giá trị cố định
+                imageName: imageName, 
                 price: price,
                 title: title,
                 quantity: quantity,
@@ -75,30 +77,51 @@ class OrderDetail extends StatelessWidget {
 
               Divider(height: 24, thickness: 1, color: AppColors.blueLightest), // Đường kẻ phân cách
 
-              // Tổng tiền (sửa lỗi price)
-              Text(
-                "TỔNG: ${totalPrice.toStringAsFixed(0)} VND",
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: Colors.red,
+              // Tổng tiền 
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0), 
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "TỔNG:",
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: Colors.red,
+                      ),
+                    ),
+                    SizedBox(width: 160.0), 
+                    Text(
+                      "${totalPrice.toStringAsFixed(0)} VND",
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-
-              SizedBox(height: 19), // Thêm khoảng cách trước nút
+              SizedBox(height: 9), // Thêm khoảng cách trước nút
 
               // Nút đặt hàng
-              Align(
-                alignment: Alignment.center,
-                child: LargeButton(
-                  text: 'Đặt hàng',
-                  onTap: () {
-                    // Xử lý khi nhấn nút
-                    // Cần truyền biến ID sách ở đây nếu có
-                  },
-                ),
-              ),
+              Padding (
+                padding: const EdgeInsets.only(right: 8.0),
+                child: 
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: LargeButton(
+                      text: 'Đặt hàng',
+                      onTap: () {
+                        // Xử lý khi nhấn nút
+                        // Cần truyền biến ID sách ở đây nếu có
+                      },
+                    ),
+                  ),
+            )
             ],
           ),
         ),
