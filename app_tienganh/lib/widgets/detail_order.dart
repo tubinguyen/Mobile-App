@@ -30,7 +30,7 @@ class OrderDetail extends StatelessWidget {
       width: 369,
       height: 283, 
       child: Card(
-        color: AppColors.highlightLight,
+        color: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
           side: BorderSide(color: AppColors.blueLightest, width: 1),
@@ -46,22 +46,28 @@ class OrderDetail extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    date,
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      color: AppColors.textPrimary,
-                      fontSize: 14,
+                  Padding (
+                    padding: const EdgeInsets.only(left: 17.0),
+                    child: Text(
+                      date,
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 14,
+                        color: AppColors.textPrimary,
+                      ),
                     ),
                   ),
-
-                  Text(
+                  
+                  Padding (
+                    padding: const EdgeInsets.only(right: 15.0),
+                    child: Text(
                     isReceived ? "Đã nhận hàng" : "Chưa nhận hàng",
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 14,
                       color: AppColors.textPrimary,
                     ),
+                  ),
                   ),
                 ],
               ),

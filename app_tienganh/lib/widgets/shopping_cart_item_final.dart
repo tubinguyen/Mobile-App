@@ -52,6 +52,18 @@ class ShoppingCartItemFinal extends StatelessWidget {
                 ),
                 ),
 
+                Padding (
+                  padding: const EdgeInsets.only(left: 4.0),
+                  child: Text(
+                  '${price.toStringAsFixed(0)} VND',
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    color: AppColors.textSecondary,
+                    fontSize: 12,
+                  ),
+                ),
+                ),
+
                 const SizedBox(height: 15.0),
 
                 // Quantity and Price Section
