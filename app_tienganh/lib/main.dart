@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'routes/navigation_page.dart'; // Import màn hình chính
+import 'routes/navigation_page.dart'; 
 
 void main() {
   runApp(const MyApp());
