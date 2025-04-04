@@ -22,6 +22,7 @@ class LineOr extends StatelessWidget {
           style: TextStyle(
             color: AppColors.border,
             fontSize: 16,
+            fontFamily: 'Montserrat',
             fontWeight: FontWeight.bold,
           ),
         ),

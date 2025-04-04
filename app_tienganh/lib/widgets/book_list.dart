@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app_tienganh/widgets/book_in_list.dart'; // Import widget BookInList bạn đã có
+import 'package:app_tienganh/widgets/book_in_list.dart'; 
 import '../core/app_colors.dart';
 
 class BookList extends StatelessWidget {
@@ -23,11 +23,7 @@ class BookList extends StatelessWidget {
       imageUrl: 'assets/images/booktest.jpg',
     ),
   ];
-
   BookList({super.key});
-
-  // // Nhận danh sách books từ bên ngoài
-  // const BookList({super.key, required this.books});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +40,7 @@ class BookList extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Spacer(), // Đẩy "Xem thêm" về góc phải
+            Spacer(), 
             GestureDetector(
               onTap: () {
               },

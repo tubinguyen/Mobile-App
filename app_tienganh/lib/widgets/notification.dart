@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../core/app_colors.dart';
 
-// chưa xong
 class NotificationCard extends StatelessWidget {
   // Variables to pass data
   final String mainText;
@@ -11,12 +10,12 @@ class NotificationCard extends StatelessWidget {
   final String svgPath;
 
   const NotificationCard({
-    Key? key,
+    super.key,
     required this.mainText,
     required this.subText,
     required this.timeAgo,
     required this.svgPath,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,51 +24,33 @@ class NotificationCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.background,
         borderRadius: BorderRadius.circular(10),
-        // boxShadow: [
-        //   BoxShadow(
-        //     color: Colors.grey.withOpacity(0.1),
-        //     spreadRadius: 1,
-        //     blurRadius: 3,
-        //     offset: Offset(0, 1),
-        //   ),
-        // ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // SVG Image
-          Container(
-            // padding: EdgeInsets.all(0),
-            // decoration: BoxDecoration(
-            //   color: Colors.blue.withOpacity(0.2),
-            //   shape: BoxShape.circle,
-            // ),
-            child: SvgPicture.asset(svgPath, width: 40, height: 40),
-          ),
+          SvgPicture.asset(svgPath, width: 40, height: 40),
           SizedBox(width: 12),
-
-          // Text Content
           Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 mainText,
-                style: TextStyle(color: AppColors.textPrimary, fontSize: 12),
+                style: TextStyle(color: AppColors.textPrimary, fontSize: 12,  fontFamily: 'Montserrat',),
               ),
               SizedBox(height: 4),
               Text(
                 subText,
-                style: TextStyle(color: AppColors.textPrimary, fontSize: 12),
+                style: TextStyle(color: AppColors.textPrimary, fontSize: 12,  fontFamily: 'Montserrat',),
               ),
             ],
           ),
 
-          SizedBox(width: 40), // Added spacing between column and timeAgo
+          SizedBox(width: 40), 
           // Time
           Text(
             timeAgo,
-            style: TextStyle(color: AppColors.border, fontSize: 12),
+            style: TextStyle(color: AppColors.border, fontSize: 12, fontFamily: 'Montserrat',),
           ),
         ],
       ),

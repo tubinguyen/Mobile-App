@@ -38,8 +38,6 @@ class Card extends StatelessWidget {
                 color: AppColors.highlightDarkest,
               ),
               onPressed: () {
-                // Giả lập phát âm thanh
-                print("Phát âm thanh");
               },
             ),
           ),

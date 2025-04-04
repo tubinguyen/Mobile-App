@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../core/app_colors.dart';
-import '../../widgets/small_button.dart';  
+import '../../widgets/small_button.dart';
 
 class BookSmall extends StatelessWidget {
   final String id; 

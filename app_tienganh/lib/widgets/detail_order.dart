@@ -24,7 +24,7 @@ class OrderDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    double totalPrice = price * quantity; // Tính tổng tiền
+    double totalPrice = price * quantity; 
 
     return SizedBox(
       width: 369,
@@ -114,20 +114,18 @@ class OrderDetail extends StatelessWidget {
               SizedBox(height: 9), // Thêm khoảng cách trước nút
 
               // Nút đặt hàng
-              Padding (
+              Padding(
                 padding: const EdgeInsets.only(right: 8.0),
-                child: 
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: LargeButton(
-                      text: 'Đặt hàng',
-                      onTap: () {
-                        // Xử lý khi nhấn nút
-                        // Cần truyền biến ID sách ở đây nếu có
-                      },
-                    ),
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: LargeButton(
+                    text: 'Đặt hàng',
+                    onTap: () {
+                      // Xử lý khi nhấn nút
+                    },
                   ),
-            )
+                ),
+              ),
             ],
           ),
         ),

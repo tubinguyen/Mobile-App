@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../core/app_colors.dart';
 
 class AvatarName extends StatelessWidget {
-  const AvatarName({Key? key}) : super(key: key);
+  const AvatarName({super.key});
 
   @override
   Widget build(BuildContext context) {

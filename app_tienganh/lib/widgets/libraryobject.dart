@@ -7,7 +7,8 @@ class LibraryObject extends StatelessWidget {
   final String subtitle;
   final String username;
 
-  LibraryObject({
+  const LibraryObject({
+    super.key,
     required this.title,
     required this.subtitle,
     required this.username,
@@ -35,6 +36,7 @@ class LibraryObject extends StatelessWidget {
                 title,
                 style: TextStyle(
                   fontSize: 14,
+                  fontFamily: 'Montserrat',
                   fontWeight: FontWeight.bold,
                   color: AppColors.highlightDarkest,
                 ),
@@ -42,7 +44,7 @@ class LibraryObject extends StatelessWidget {
               SizedBox(height: 4),
               Text(
                 subtitle,
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold,fontFamily: 'Montserrat',),
                 overflow: TextOverflow.ellipsis,
               ),
             ],
@@ -53,7 +55,7 @@ class LibraryObject extends StatelessWidget {
               SizedBox(width: 8),
               Text(
                 username,
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Montserrat',),
                 overflow: TextOverflow.ellipsis,
               ),
               SizedBox(width: 8),

@@ -18,7 +18,7 @@ class CardPairing extends StatelessWidget {
   final VoidCallback? onTap;
 
   const CardPairing({
-    Key? key,
+    super.key,
     this.state = defaultState,
     this.text = 'text',
     this.textStyle,
@@ -27,7 +27,7 @@ class CardPairing extends StatelessWidget {
     this.padding,
     this.margin,
     this.onTap,
-  }) : super(key: key);
+  });
 
   // Method to get color based on state
   Color _getColorByState() {
@@ -35,7 +35,7 @@ class CardPairing extends StatelessWidget {
       case defaultState:
         return AppColors.background;
       case select:
-        return AppColors.lightblue;
+        return AppColors.blueLight;
       case correct:
         return AppColors.green;
       case wrong:
@@ -74,7 +74,7 @@ class CardPairing extends StatelessWidget {
           color: _getColorByState(),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: Colors.blue, // Viền màu xanh cố định
+            color: AppColors.highlightDarkest,
             width: 1,
           ),
         ),
@@ -87,6 +87,7 @@ class CardPairing extends StatelessWidget {
                   color: _getTextColorByState(),
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'Montserrat',
                 ),
           ),
         ),
@@ -94,66 +95,3 @@ class CardPairing extends StatelessWidget {
     );
   }
 }
-
-// cách sử dụng
-// class _MyAppState extends State<MyApp> {
-//   // State for first example (default → select → correct)
-//   String _firstBoxState = CardPairing.defaultState;
-
-//   // State for second example (default → select → wrong)
-//   String _secondBoxState = CardPairing.defaultState;
-
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               // First example: default → select → correct
-//               CardPairing(
-//                 state: _firstBoxState,
-//                 text: 'Correct Path', chữ trong ô
-//                 onTap: () {
-//                   setState(() {
-//                     switch (_firstBoxState) {
-//                       case CardPairing.defaultState:
-//                         _firstBoxState = CardPairing.select;
-//                         break;
-//                       case CardPairing.select:
-//                         _firstBoxState = CardPairing.correct;
-//                         break;
-//                       case CardPairing.correct:
-//                         // _firstBoxState = ConsequenceBox.defaultState;
-//                         break;
-//                       // default:
-//                       //   _firstBoxState = ConsequenceBox.defaultState;
-//                     }
-//                   });
-//                 },
-//               ),
-//               SizedBox(height: 20), // Khoảng cách giữa các ô
-//               // Second example: default → select → wrong
-//               CardPairing(
-//                 state: _secondBoxState,
-//                 text: 'Wrong Path',
-
-//                 onTap: () {
-//                   setState(() {
-//                     switch (_secondBoxState) {
-//                       case CardPairing.defaultState:
-//                         _secondBoxState = CardPairing.select;
-//                         break;
-//                       case CardPairing.select:
-//                         _secondBoxState = CardPairing.wrong;
-//                         break;
-//                       case CardPairing.wrong:
-//                         _secondBoxState = CardPairing.defaultState;
-//                         break;
-//                     }
-//                   });
-//                 },
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

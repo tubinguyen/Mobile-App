@@ -5,10 +5,10 @@ class CustomSearchBar extends StatefulWidget {
   const CustomSearchBar({super.key});
 
   @override
-  _CustomSearchBarState createState() => _CustomSearchBarState();
+  CustomSearchBarState createState() => CustomSearchBarState();
 }
 
-class _CustomSearchBarState extends State<CustomSearchBar> {
+class CustomSearchBarState extends State<CustomSearchBar> {
   bool _isFocused = false;
 
   @override

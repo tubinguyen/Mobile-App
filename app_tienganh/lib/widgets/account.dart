@@ -5,8 +5,7 @@ class Account extends StatelessWidget {
   final String profileImage;
   final String username;
 
-  const Account({Key? key, required this.profileImage, required this.username})
-    : super(key: key);
+  const Account({ super.key, required this.profileImage, required this.username});
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +21,7 @@ class Account extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
+            fontFamily: 'Montserrat',
             color: AppColors.highlightDarkest,
           ),
         ),

@@ -12,12 +12,11 @@ class ShoppingCartItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 335, // Độ rộng tổng thể
-      height: 100, // Độ cao tổng thể
-      padding: EdgeInsets.symmetric(vertical: 5.0), // Cách lề trái/phải
+      width: 335, 
+      height: 100, 
+      padding: EdgeInsets.symmetric(vertical: 5.0),
       child: Row(
         children: [
-          // Hình ảnh sản phẩm
           Image.asset(
             imageName, 
             width: 100,
@@ -30,13 +29,11 @@ class ShoppingCartItem extends StatelessWidget {
                 child: Icon(
                   Icons.broken_image,
                   color: AppColors.highlightDarkest50,
-                ),//icon
+                ),
               );
             },
           ),
-          SizedBox(width: 12), // **Cách ảnh với phần text**
-
-          // Phần thông tin sản phẩm
+          SizedBox(width: 12), 
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(top: 2.0),
@@ -54,8 +51,6 @@ class ShoppingCartItem extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 3.0), 
-
-                  // Giá sách
                   Text(
                     '${price.toStringAsFixed(0)} đ',
                     style: TextStyle(
@@ -64,32 +59,26 @@ class ShoppingCartItem extends StatelessWidget {
                       fontSize: 12,
                     ),
                   ),
-
-                  // SizedBox(height: 3.0),
-
-                  // **Padding chỉ bọc Row để canh chỉnh lề**
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 2.0), // **Cách ảnh 16px**
+                        padding: const EdgeInsets.only(left: 2.0),
                         child: NumberInputField(
                           min: 0,
                           max: 50,
                         ),
                       ),
-                      SizedBox(width: 36), // **Cách giữa số lượng và giá**
-
-                      // Giá sản phẩm
+                      SizedBox(width: 36),
                       Padding(
-                        padding: const EdgeInsets.only(right: 5.0), // **Cách phải 16px**
+                        padding: const EdgeInsets.only(right: 5.0), 
                         child: Text(
                           '${(price * 1).toStringAsFixed(0)} VND',
                           style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
                             color: AppColors.textPrimary,
-                            fontSize: 12,
+                            fontSize: 1,
                           ),
                         ),
                       ),

@@ -13,7 +13,7 @@ class EmptyCourse extends StatelessWidget {
   final Color? textColor;
 
   const EmptyCourse({
-    Key? key,
+    super.key,
     this.title = 'Bạn chưa có học phần nào',
     this.subtitle = 'Các học phần bạn tạo sẽ được lưu tại đây',
     this.buttonText = 'Tạo học phần',
@@ -21,7 +21,7 @@ class EmptyCourse extends StatelessWidget {
     this.onButtonPressed,
     this.backgroundColor = AppColors.background,
     this.textColor = AppColors.textPrimary,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +40,7 @@ class EmptyCourse extends StatelessWidget {
             style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.bold,
+              fontFamily: 'Montserrat',
               color: textColor,
             ),
             textAlign: TextAlign.center,
@@ -52,6 +53,7 @@ class EmptyCourse extends StatelessWidget {
             subtitle,
             style: TextStyle(
               fontSize: 12,
+              fontFamily: 'Montserrat',
               color: const Color.fromRGBO(128, 128, 128, 0.5),
             ),
             textAlign: TextAlign.center,
