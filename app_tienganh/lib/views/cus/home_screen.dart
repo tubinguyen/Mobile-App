@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:app_tienganh/widgets/search_bar.dart';
+import 'package:app_tienganh/widgets/book_list.dart';
 
 class HomeScreen extends StatelessWidget {
   final Function(int) onNavigate;
+
   const HomeScreen({super.key, required this.onNavigate});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text('Trang chủ')),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -17,13 +19,10 @@ class HomeScreen extends StatelessWidget {
               style: TextStyle(fontSize: 24),
             ),
             const SizedBox(height: 20),
-            CustomSearchBar(), // Nếu cần thanh tìm kiếm thì bỏ comment dòng này
-            // BookList(),
-            // ShoppingCartItemFinal(imageName: 'assets/img/booktest.jpg', price: 15000, title: 'Tiếng Anh cơ bản', quantity: 5 ),
-            // OrderDetail(date: '19/5/2004', isReceived: true, imageName: 'assets/img/booktest.jpg', price: 15000, title: 'English', quantity: 5)
+            BookList(), // Gọi BookList đúng cách
           ],
         ),
-      )
+      ),
     );
   }
 }

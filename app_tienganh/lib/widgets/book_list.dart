@@ -8,78 +8,81 @@ class BookList extends StatelessWidget {
       id: '1',
       title: 'Lập trình Flutter',
       price: 150000,
-      imageUrl: 'assets/images/booktest.jpg',
+      imageUrl: 'assets/img/user.jpg',
     ),
     BookInList(
       id: '2',
       title: 'Học Python cơ bản',
       price: 120000,
-      imageUrl: 'assets/images/booktest.jpg',
+      imageUrl: 'assets/img/user.jpg',
     ),
     BookInList(
       id: '3',
       title: 'Data Science với Python',
       price: 180000,
-      imageUrl: 'assets/images/booktest.jpg',
+      imageUrl: 'assets/img/user.jpg',
     ),
   ];
+
   BookList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
-      appBar: AppBar(
-        title: Row(
-          children: [
-            Text(
-              'Sách phù hợp với bạn',
-              style: TextStyle(
-                color: AppColors.textPrimary,
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Spacer(), 
-            GestureDetector(
-              onTap: () {
-              },
-              child: Text(
-                'Xem thêm',
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            children: [
+              Text(
+                'Sách phù hợp với bạn',
                 style: TextStyle(
-                  color: AppColors.highlightDarkest,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600, // Semi-bold
+                  color: AppColors.textPrimary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Montserrat',
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-      body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SizedBox(
-                width: 250,
-                child: Expanded(  // Cho phép nội dung mở rộng tự nhiên mà không gây lỗi
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: books.length,
-                    itemBuilder: (context, index) {
-                      final book = books[index];
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 16.0),
-                        child: BookInList(
-                          id: book.id,
-                          title: book.title,
-                          price: book.price,
-                          imageUrl: book.imageUrl,
-                        ),
-                      );
-                    },
+              Spacer(),
+              GestureDetector(
+                onTap: () {
+                  // Hành động khi nhấn vào "Xem thêm"
+                },
+                child: Text(
+                  'Xem thêm',
+                  style: TextStyle(
+                    color: AppColors.highlightDarkest,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'Montserrat',
                   ),
                 ),
               ),
-            ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          height: 280,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: books.length,
+            itemBuilder: (context, index) {
+              final book = books[index];
+              return Padding(
+                padding: const EdgeInsets.only(left: 1),
+                child: BookInList(
+                  id: book.id,
+                  title: book.title,
+                  price: book.price,
+                  imageUrl: book.imageUrl,
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
