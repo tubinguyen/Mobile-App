@@ -1,28 +1,25 @@
 import 'package:flutter/material.dart';
-import '../widgets/large_button.dart';
-class NotificationScreen extends StatelessWidget {
+import 'package:app_tienganh/widgets/book_list.dart';
+
+class HomeScreen extends StatelessWidget {
   final Function(int) onNavigate;
 
-  const NotificationScreen({super.key, required this.onNavigate});
+  const HomeScreen({super.key, required this.onNavigate});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text('Trang chủ')),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text(
-              'Thông báo',
+              'Nội dung Trang chủ',
               style: TextStyle(fontSize: 24),
             ),
-            const SizedBox(height: 20), 
-            LargeButton(
-              text: 'On tập',
-              onTap: () {
-                onNavigate(1); 
-              },
-            ),
+            const SizedBox(height: 20),
+            BookList(), // Gọi BookList đúng cách
           ],
         ),
       ),

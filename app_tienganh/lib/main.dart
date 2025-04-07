@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'routes/navigation_page.dart'; // Import màn hình chính
+import 'routes/navigation_page.dart'; 
 
 void main() {
   runApp(const MyApp());
@@ -10,12 +10,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp( 
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
       ),
       home: const NavigationPage(),
+        
     );
   }
 }

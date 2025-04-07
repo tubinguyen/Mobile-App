@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../widgets/google_button.dart';
-class HomeScreen extends StatelessWidget {
+
+class NotificationScreen extends StatelessWidget {
   final Function(int) onNavigate;
 
-  const HomeScreen({super.key, required this.onNavigate});
+  const NotificationScreen({super.key, required this.onNavigate});
 
   @override
   Widget build(BuildContext context) {
@@ -13,15 +13,10 @@ class HomeScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text(
-              'Nội dung Trang chủ',
+              'Thông báo',
               style: TextStyle(fontSize: 24),
             ),
             const SizedBox(height: 20), 
-            GoogleSignInButton(
-              onTap: () {
-                onNavigate(4); 
-              },
-            )
           ],
         ),
       ),

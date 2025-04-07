@@ -12,10 +12,10 @@ class Filter extends StatefulWidget {
   });
 
   @override
-  _FilterState createState() => _FilterState();
+  FilterState createState() => FilterState();
 }
 
-class _FilterState extends State<Filter> {
+class FilterState extends State<Filter> {
   String? selectedOption;
   OverlayEntry? _overlayEntry;
   final LayerLink _layerLink = LayerLink();

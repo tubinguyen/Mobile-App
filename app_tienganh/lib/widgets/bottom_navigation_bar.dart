@@ -33,7 +33,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
     return Theme(
       data: Theme.of(context).copyWith(
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: Colors.white, // ✅ Đặt màu nền trắng
+          backgroundColor: Colors.white, 
           selectedItemColor: AppColors.highlightDarkest,
           unselectedItemColor: AppColors.border,
           selectedLabelStyle: const TextStyle(

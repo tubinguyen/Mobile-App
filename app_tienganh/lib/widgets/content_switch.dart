@@ -1,17 +1,12 @@
 import 'package:app_tienganh/core/app_colors.dart';
 import 'package:flutter/material.dart';
-// import 'views/test.dart';
 
 class ContentSwitcher extends StatefulWidget {
-  // final Widget? lessonPage;
-  // final Widget? testPage;
   final Function(int) onNavigate;
 
   const ContentSwitcher({
     super.key,
-    // this.lessonPage, // Trang đích khi nhấn "Học phần"
-    // this.testPage, // Trang đích khi nhấn "Bài kiểm tra"
-    required this.onNavigate, // Hàm callback khi nhấn vào các mục
+    required this.onNavigate, 
   });
 
   @override
@@ -19,7 +14,7 @@ class ContentSwitcher extends StatefulWidget {
 }
 
 class _ContentSwitcherState extends State<ContentSwitcher> {
-  bool isLessonSelected = true; // Mặc định chọn "Học phần"
+  bool isLessonSelected = true; 
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +35,7 @@ class _ContentSwitcherState extends State<ContentSwitcher> {
               setState(() {
                 isLessonSelected = true;
               });
-              widget.onNavigate(1);
+              widget.onNavigate(1); //dieu huong
              
             },
           ),
@@ -52,7 +47,7 @@ class _ContentSwitcherState extends State<ContentSwitcher> {
               setState(() {
                 isLessonSelected = false;
               });
-              widget.onNavigate(3);
+              widget.onNavigate(3); //dieu huong
             },
           ),
         ],

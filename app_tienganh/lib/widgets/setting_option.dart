@@ -14,10 +14,10 @@ class SettingOption extends StatefulWidget {
   });
 
   @override
-  _SettingOptionState createState() => _SettingOptionState();
+  SettingOptionState createState() => SettingOptionState();
 }
 
-class _SettingOptionState extends State<SettingOption> {
+class SettingOptionState extends State<SettingOption> {
   String? settingOption; // Biến lưu option được chọn
 
   @override

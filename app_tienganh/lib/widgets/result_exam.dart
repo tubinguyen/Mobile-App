@@ -41,7 +41,7 @@ class ResultExamCustom extends StatelessWidget {
             Row(
               children: [
                 const Text(
-                  "Đúng ",
+                  "Đúng: ",
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
