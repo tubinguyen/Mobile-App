@@ -5,19 +5,23 @@ import 'package:app_tienganh/widgets/large_button.dart';
 
 
 class RecentActivity extends StatelessWidget {
-  final String status;
   final String title;
-  final String advice;
+  final String status;
+  final String className;
+  final String note;
+  final String buttonText;
   final int percentage;
-  final Function(int) onNavigate;
+  final VoidCallback onTap;
 
   const RecentActivity({
     super.key,
-    required this.status,
     required this.title,
-    required this.advice,
+    required this.status,
+    required this.className,
+    required this.note,
+    required this.buttonText,
     required this.percentage,
-    required this.onNavigate, // Biến truyền vào để điều hướng
+    required this.onTap, // Biến truyền vào để điều hướng
   });
 
   @override
@@ -26,7 +30,7 @@ class RecentActivity extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Hoạt động gần đây",
+          title,
           style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
@@ -81,7 +85,7 @@ class RecentActivity extends StatelessWidget {
                         softWrap: true,
                       ),
                       Text(
-                        title,
+                        className,
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
@@ -91,7 +95,7 @@ class RecentActivity extends StatelessWidget {
                         softWrap: true,
                       ),
                       Text(
-                        advice,
+                        note,
                         style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -106,10 +110,8 @@ class RecentActivity extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               LargeButton(
-                text: "Đi đến học phần của bạn",
-                onTap: () {
-                  onNavigate(1); // Gọi hàm từ NavigationPage để đổi trang
-                }, // Sử dụng biến truyền vào
+                text: buttonText,
+                onTap: () => onTap, // Sử dụng biến truyền vào
               ),
             ],
           ),
@@ -118,3 +120,6 @@ class RecentActivity extends StatelessWidget {
     );
   }
 }
+
+//cách gọi
+// RecentActivity(title: "title", status: "status", className: "className", note: "note", buttonText: "buttonText", percentage: 90, onTap: () {onNavigate(1);},),
