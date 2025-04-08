@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import '../core/app_colors.dart';
 
 class AvatarName extends StatelessWidget {
-  const AvatarName({super.key});
+  final String profileImage; // Đường dẫn hình ảnh jpg/png
+  final String username;
+
+  const AvatarName({
+    Key? key,
+    required this.profileImage,
+    required this.username,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,22 +23,25 @@ class AvatarName extends StatelessWidget {
             color: AppColors.background,
             borderRadius: BorderRadius.circular(50),
             boxShadow: [BoxShadow(color: AppColors.textPrimary)],
-          ),
-          child: Icon(
-            Icons.image,
-            color: const Color.fromARGB(255, 161, 220, 248),
-            size: 12.5,
+            image: DecorationImage(
+              image: AssetImage(profileImage), // ✅ dùng hình ảnh JPG/PNG
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         SizedBox(width: 8),
         Text(
-          'username',
+          username,
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
         ),
       ],
-      // Biểu tượng và username
     );
   }
 }
+
 // cách sử dụng
-// AvatarName(),
+// AvatarName(
+//             profileImage:
+//                 'assets/profile.jpg', // Đổi thành đường dẫn ảnh của bạn
+//             username: 'Nguyễn Phan Tú Bình',
+//           ),
