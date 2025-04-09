@@ -10,10 +10,10 @@ class FlashcardScreen extends StatefulWidget {
   const FlashcardScreen({super.key, required this.onNavigate});
 
   @override
-  _ReviewScreenState createState() => _ReviewScreenState();
+  ReviewScreenState createState() => ReviewScreenState();
 }
 
-class _ReviewScreenState extends State<FlashcardScreen> {
+class ReviewScreenState extends State<FlashcardScreen> {
   int currentCard = 1;
   int totalCards = 0;
   bool _isTranslationShown = false;

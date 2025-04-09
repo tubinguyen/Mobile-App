@@ -17,10 +17,10 @@ class Flashcard extends StatefulWidget {
   });
 
   @override
-  _FlashcardState createState() => _FlashcardState();
+  FlashcardState createState() => FlashcardState();
 }
 
-class _FlashcardState extends State<Flashcard> {
+class FlashcardState extends State<Flashcard> {
   late bool _isFrontSide;
   late FlutterTts flutterTts;
 
