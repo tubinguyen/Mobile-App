@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/header.dart';
-import '../../widgets/navbar.dart';
-import '../../widgets/plus_button.dart';
-import '../../widgets/content_switch.dart';
+import '../../widgets/top_app_bar.dart';
 import '../../widgets/notification.dart';
 
 class CourseCreationScreen extends StatelessWidget {
@@ -28,28 +26,7 @@ final Function(int) onNavigate;
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min, 
-          children: [ CustomNavBar(
-              title: "Thư viện của bạn",
-              leadingIconPath: "assets/img/back.svg",
-              actionIconPath: "assets/img/store.svg",
-              onLeadingPressed: () {
-                Navigator.pop(context);
-              },
-              onActionPressed: () {
-                onNavigate(3); 
-              },
-            ),
-
-            ContentSwitcher(
-              onNavigate: (index) {
-                onNavigate(index); 
-              },
-
-              
-            ),
-
-            SizedBox(height: 106),
-
+          children: [
             NotificationCard(
               mainText: 'Bạn chưa có học phần nào',
               subText: 'các học phần bạn tạo sẽ được lưu tại đây',
