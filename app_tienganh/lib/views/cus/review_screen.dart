@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../widgets/header.dart';
+import 'package:app_tienganh/core/app_colors.dart';
 import '../../widgets/navbar.dart';
 import '../../widgets/content_switch.dart';
-import '../../widgets/notification.dart';
+import '../../widgets/empty_course.dart';
 import '../../widgets/libraryobject.dart';
+import '../../widgets/test_result_card.dart';
 
 class ReviewScreen extends StatefulWidget {
   final Function(int) onNavigate;
@@ -22,16 +23,25 @@ class _ReviewScreenState extends State<ReviewScreen> {
     String username = 'Nhi';
     switch (index) {
       case 0: // Học phần
-        List<String> hocPhanList = []; // <-- giả lập lấy từ DB
+        List<String> hocPhanList = [
+          'Toán',
+          'Lý',
+          'Ngữ pháp cơ bản',
+        ]; // <-- giả lập lấy từ DB
 
         if (hocPhanList.isEmpty) {
           return Center(
-            child: NotificationCard(
-              mainText: 'Bạn chưa có học phần nào',
-              subText: 'các học phần bạn tạo sẽ được lưu tại đây',
-              timeAgo: '9m',
-              svgPath: 'assets/img/book.png',
-              margin: EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+            child: EmptyCourse(
+              title : 'Bạn chưa có học phần nào',
+              subtitle : 'Các học phần bạn tạo sẽ được lưu tại đây',
+              buttonText : 'Tạo học phần',
+              imagePath : 'assets/img/book.png', // Default image path
+              onButtonPressed : () {
+                // Handle button press
+                widget.onNavigate(3);
+              },
+              backgroundColor : AppColors.background,
+              textColor : AppColors.textPrimary,
             ),
           );
         } else {
@@ -40,26 +50,66 @@ class _ReviewScreenState extends State<ReviewScreen> {
             itemCount: hocPhanList.length,
             itemBuilder: (context, index) {
               final hocPhan = hocPhanList[index];
-              return LibraryObject(
-                title: hocPhan,
-                subtitle: subtitle,
-                username: username,
+              return Column(
+                children: [
+                  LibraryObject(
+                    title: hocPhan,
+                    subtitle: subtitle,
+                    username: username,
+                  ),
+                  SizedBox(height: 12),
+                ],
               );
             },
           );
         }
 
       case 1: // Kiểm tra
-        return Center(
-          child: NotificationCard(
-            mainText: 'Bạn chưa tạo bài kiểm tra nào',
-            subText: 'Tìm và làm các bài kiểm tra thử dựa trên những gì bạn đang học',
-            timeAgo: 'vừa xong',
-            svgPath: 'assets/img/test.png',
-            margin: EdgeInsets.symmetric(horizontal: 0, vertical: 4),
-          ),
-        );
+      //list ketqua gồm % hoàn thành, tên bài kiểm tra 
+        List<Map<String, dynamic>> ketquaList = [ //code backend kq trả về 1 list dictionary
+          {'title' : 'Kiểm tra từ vựng',
+          'subtitle' : 'Ngữ pháp cơ bản',
+          'progress' : 0.75, },
 
+          {'title' : 'Kiểm tra ngữ pháp',
+          'subtitle' : 'Ngữ pháp nâng cao', 
+          'progress' : 0.50, },
+          
+        ]; // <-- giả lập lấy từ DB
+
+        if (ketquaList.isEmpty) {
+          return Center(
+            //empty bai kiem tra
+            child: EmptyCourse(
+              title : 'Bạn chưa có bài kiểm tra nào',
+              subtitle : 'Tìm và làm các bài kiểm tra thử dựa trên những gì bạn đang học',
+              buttonText : 'Tìm kiếm bài kiểm tra',
+              imagePath : 'assets/img/file_check_bold.png', // Default image path
+              onButtonPressed : () {
+                // Handle button press
+                widget.onNavigate(3); //đang mặc định chưa chỉnh
+              },
+              backgroundColor : AppColors.background,
+              textColor : AppColors.textPrimary,
+            ),
+          );
+        } else {
+          return ListView.builder(
+            padding: EdgeInsets.all(16),
+            itemCount: ketquaList.length,
+            itemBuilder: (context, index) {
+              final ketqua = ketquaList[index];
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: TestResultCard(
+                  title: ketqua['title'],
+                  subtitle: ketqua['subtitle'],
+                  progress: ketqua['progress'],
+                    )
+              );
+                  }
+                );
+        }
       default:
         return SizedBox.shrink();
     }
@@ -68,27 +118,12 @@ class _ReviewScreenState extends State<ReviewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize( // Nếu Header không phải AppBar gốc
-        preferredSize: Size.fromHeight(60),
-        child: Header(
-          onHomeTap: () => widget.onNavigate(0),
-          onNotificationTap: () => widget.onNavigate(1),
-          onAuthTap: () => widget.onNavigate(2),
-        ),
-      ),
       body: Column(
         children: [
-          ContentSwitcher(
-            onNavigate: (index) {
-              setState(() {
-                selectedIndex = index;
-              });
-            },
-          ),
           CustomNavBar(
             title: "Thư viện của bạn",
             leadingIconPath: "assets/img/back.svg",
-            actionIconPath: "assets/img/store.svg",
+            actionIconPath: " ",
             onLeadingPressed: () {
               Navigator.pop(context);
             },
@@ -96,9 +131,15 @@ class _ReviewScreenState extends State<ReviewScreen> {
               widget.onNavigate(3);
             },
           ),
-          Expanded(
-            child: _buildContentForIndex(selectedIndex),
+
+          ContentSwitcher(
+            onNavigate: (index) {
+              setState(() {
+                selectedIndex = index;
+              });
+            },
           ),
+            Expanded(child: _buildContentForIndex(selectedIndex)),
         ],
       ),
     );
