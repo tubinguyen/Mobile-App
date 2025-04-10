@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import '../core/app_colors.dart';
 
 class EmptyNotificationWidget extends StatelessWidget {
+  const EmptyNotificationWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
