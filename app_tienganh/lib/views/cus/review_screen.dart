@@ -100,7 +100,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
             itemBuilder: (context, index) {
               final ketqua = ketquaList[index];
               return Padding(
-                padding: const EdgeInsets.only(bottom: 16),
+                padding: const EdgeInsets.only(bottom: 30),
                 child: TestResultCard(
                   title: ketqua['title'],
                   subtitle: ketqua['subtitle'],
@@ -116,9 +116,11 @@ class _ReviewScreenState extends State<ReviewScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
+Widget build(BuildContext context) {
+  return Scaffold(
+    body: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 36), // ← Cách lề trái/phải 36
+      child: Column(
         children: [
           CustomNavBar(
             title: "Thư viện của bạn",
@@ -131,7 +133,6 @@ class _ReviewScreenState extends State<ReviewScreen> {
               widget.onNavigate(3);
             },
           ),
-
           ContentSwitcher(
             onNavigate: (index) {
               setState(() {
@@ -139,9 +140,11 @@ class _ReviewScreenState extends State<ReviewScreen> {
               });
             },
           ),
-            Expanded(child: _buildContentForIndex(selectedIndex)),
+          SizedBox(height: 40),
+          Expanded(child: _buildContentForIndex(selectedIndex)),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 }
