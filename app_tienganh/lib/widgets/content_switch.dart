@@ -14,7 +14,7 @@ class ContentSwitcher extends StatefulWidget {
 }
 
 class _ContentSwitcherState extends State<ContentSwitcher> {
-  bool isLessonSelected = true; 
+  int isLessonSelected = 0; // 0 for lesson, 1 for test 
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +30,10 @@ class _ContentSwitcherState extends State<ContentSwitcher> {
         children: [
           _buildNavItem(
             text: "Học phần",
-            isSelected: isLessonSelected,
+            isSelected: isLessonSelected == 0,
             onTap: () {
               setState(() {
-                isLessonSelected = true;
+                isLessonSelected = 0;
               });
               widget.onNavigate(1); //dieu huong
              
@@ -42,10 +42,10 @@ class _ContentSwitcherState extends State<ContentSwitcher> {
           _divider(),
           _buildNavItem(
             text: "Bài kiểm tra",
-            isSelected: !isLessonSelected,
+            isSelected: isLessonSelected == 1,
             onTap: () {
               setState(() {
-                isLessonSelected = false;
+                isLessonSelected = 1;
               });
               widget.onNavigate(3); //dieu huong
             },
