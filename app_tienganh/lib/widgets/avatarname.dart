@@ -6,10 +6,10 @@ class AvatarName extends StatelessWidget {
   final String username;
 
   const AvatarName({
-    Key? key,
+    super.key,
     required this.profileImage,
     required this.username,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
