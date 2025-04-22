@@ -31,7 +31,7 @@ class _NavigationPageState extends State<NavigationPage> {
     _pages.addAll([
       HomeScreen(onNavigate: _onItemTapped), 
       ReviewScreen(onNavigate:_onItemTapped),
-      CourseCreationScreen(onNavigate:_onItemTapped),
+      CourseCreationScreen(onNavigate:_onItemTapped),//2
       StoreScreen(onNavigate:_onItemTapped),
       NotificationScreen(onNavigate:_onItemTapped),
       ProfileScreen(onNavigate:_onItemTapped),
