@@ -10,6 +10,7 @@ import '../views/admin/account_management.dart';
 import '../views/cus/store_screen.dart';
 import '../views/cus/profile_screen.dart';
 import '../views/cus/notification_screen.dart';
+import '../views/cus/study_session_screen.dart';
 import '../widgets/bottom_navigation_bar.dart';
 import '../widgets/header.dart';
 
@@ -40,10 +41,11 @@ class _NavigationPageState extends State<NavigationPage> {
       ProductManagement(onNavigate:_onItemTapped),
       OrderManagement(onNavigate:_onItemTapped),
       AccountManagement(onNavigate:_onItemTapped),
+      StudySessionPage(onNavigate:_onItemTapped),
     ]);
   }
 
-  final Set<int> _pagesWithHeader = {0, 1, 3, 4, 5};
+  final Set<int> _pagesWithHeader = {0, 1, 3, 4, 5,11};
   final Set<int> _pagesWithBottomNavigationBar = {0, 1, 3, 4, 5};
 
   void _onItemTapped(int index) {

@@ -2,11 +2,11 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:app_tienganh/core/app_colors.dart';
 
-class VocabularyCard extends StatelessWidget {
+class VocabularyFlipCard extends StatelessWidget {
   final String word;
   final String meaning;
 
-  const VocabularyCard({
+  const VocabularyFlipCard({
     super.key,
     required this.word,
     required this.meaning,

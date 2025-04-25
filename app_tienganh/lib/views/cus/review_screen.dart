@@ -16,32 +16,33 @@ class ReviewScreen extends StatefulWidget {
 }
 
 class _ReviewScreenState extends State<ReviewScreen> {
+
   int selectedIndex = 0;
 
   Widget _buildContentForIndex(int index) {
-    String subtitle = 'Học phần này được tạo bởi bạn'; // <-- giả lập DB
+    String subtitle = 'Học phần này được tạo bởi bạn';
     String username = 'Nhi';
+
     switch (index) {
       case 0: // Học phần
-        List<String> hocPhanList = [
-          'Toán',
-          'Lý',
-          'Ngữ pháp cơ bản',
-        ]; // <-- giả lập lấy từ DB
+        List<Map<String, dynamic>> hocPhanList = [
+          {'id': 1, 'title': 'Toán'},
+          {'id': 2, 'title': 'Lý'},
+          {'id': 3, 'title': 'Ngữ pháp cơ bản'},
+        ];
 
         if (hocPhanList.isEmpty) {
           return Center(
             child: EmptyCourse(
-              title : 'Bạn chưa có học phần nào',
-              subtitle : 'Các học phần bạn tạo sẽ được lưu tại đây',
-              buttonText : 'Tạo học phần',
-              imagePath : 'assets/img/book.png', // Default image path
-              onButtonPressed : () {
-                // Handle button press
+              title: 'Bạn chưa có học phần nào',
+              subtitle: 'Các học phần bạn tạo sẽ được lưu tại đây',
+              buttonText: 'Tạo học phần',
+              imagePath: 'assets/img/book.png',
+              onButtonPressed: () {
                 widget.onNavigate(3);
               },
-              backgroundColor : AppColors.background,
-              textColor : AppColors.textPrimary,
+              backgroundColor: AppColors.background,
+              textColor: AppColors.textPrimary,
             ),
           );
         } else {
@@ -52,10 +53,20 @@ class _ReviewScreenState extends State<ReviewScreen> {
               final hocPhan = hocPhanList[index];
               return Column(
                 children: [
-                  LibraryObject(
-                    title: hocPhan,
-                    subtitle: subtitle,
-                    username: username,
+                  GestureDetector(
+                    onTap: () {
+                      widget.onNavigate(11); // Chuyển tab/màn hình
+                      // Nếu cần lưu hocphanID để StudySessionPage dùng thì thêm logic tại đây
+                    },
+                    child: LibraryObject(
+                      hocphanID: hocPhan['id'],
+                      title: hocPhan['title'],
+                      subtitle: subtitle,
+                      username: username,
+                      onNavigate: (id) {
+                        widget.onNavigate(11); // Điều hướng
+                      },
+                    ),
                   ),
                   SizedBox(height: 12),
                 ],
@@ -65,32 +76,23 @@ class _ReviewScreenState extends State<ReviewScreen> {
         }
 
       case 1: // Kiểm tra
-      //list ketqua gồm % hoàn thành, tên bài kiểm tra 
-        List<Map<String, dynamic>> ketquaList = [ //code backend kq trả về 1 list dictionary
-          {'title' : 'Kiểm tra từ vựng',
-          'subtitle' : 'Ngữ pháp cơ bản',
-          'progress' : 0.75, },
-
-          {'title' : 'Kiểm tra ngữ pháp',
-          'subtitle' : 'Ngữ pháp nâng cao', 
-          'progress' : 0.50, },
-          
-        ]; // <-- giả lập lấy từ DB
+        List<Map<String, dynamic>> ketquaList = [
+          {'title': 'Kiểm tra từ vựng', 'subtitle': 'Ngữ pháp cơ bản', 'progress': 0.75},
+          {'title': 'Kiểm tra ngữ pháp', 'subtitle': 'Ngữ pháp nâng cao', 'progress': 0.50},
+        ];
 
         if (ketquaList.isEmpty) {
           return Center(
-            //empty bai kiem tra
             child: EmptyCourse(
-              title : 'Bạn chưa có bài kiểm tra nào',
-              subtitle : 'Tìm và làm các bài kiểm tra thử dựa trên những gì bạn đang học',
-              buttonText : 'Tìm kiếm bài kiểm tra',
-              imagePath : 'assets/img/file_check_bold.png', // Default image path
-              onButtonPressed : () {
-                // Handle button press
-                widget.onNavigate(3); //đang mặc định chưa chỉnh
+              title: 'Bạn chưa có bài kiểm tra nào',
+              subtitle: 'Tìm và làm các bài kiểm tra thử dựa trên những gì bạn đang học',
+              buttonText: 'Tìm kiếm bài kiểm tra',
+              imagePath: 'assets/img/file_check_bold.png',
+              onButtonPressed: () {
+                widget.onNavigate(3);
               },
-              backgroundColor : AppColors.background,
-              textColor : AppColors.textPrimary,
+              backgroundColor: AppColors.background,
+              textColor: AppColors.textPrimary,
             ),
           );
         } else {
@@ -105,46 +107,48 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   title: ketqua['title'],
                   subtitle: ketqua['subtitle'],
                   progress: ketqua['progress'],
-                    )
+                ),
               );
-                  }
-                );
+            },
+          );
         }
+
       default:
         return SizedBox.shrink();
     }
   }
 
   @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    body: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 36), // ← Cách lề trái/phải 36
-      child: Column(
-        children: [
-          CustomNavBar(
-            title: "Thư viện của bạn",
-            leadingIconPath: "assets/img/back.svg",
-            actionIconPath: " ",
-            onLeadingPressed: () {
-              Navigator.pop(context);
-            },
-            onActionPressed: () {
-              widget.onNavigate(3);
-            },
-          ),
-          ContentSwitcher(
-            onNavigate: (index) {
-              setState(() {
-                selectedIndex = index;
-              });
-            },
-          ),
-          SizedBox(height: 40),
-          Expanded(child: _buildContentForIndex(selectedIndex)),
-        ],
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 36),
+        child: Column(
+          children: [
+            CustomNavBar(
+              title: "Thư viện của bạn",
+              leadingIconPath: "assets/img/back.svg",
+              actionIconPath: " ",
+              onLeadingPressed: () {
+                Navigator.pop(context);
+              },
+              onActionPressed: () {
+                widget.onNavigate(3);
+              },
+            ),
+            ContentSwitcher(
+              selectedIndex: selectedIndex,
+              onNavigate: (index) {
+                setState(() {
+                  selectedIndex = index;
+                });
+              },
+            ),
+            SizedBox(height: 40),
+            Expanded(child: _buildContentForIndex(selectedIndex)),
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 }

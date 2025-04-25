@@ -1,20 +1,15 @@
 import 'package:app_tienganh/core/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class ContentSwitcher extends StatefulWidget {
+class ContentSwitcher extends StatelessWidget {
+  final int selectedIndex;
   final Function(int) onNavigate;
 
   const ContentSwitcher({
     super.key,
-    required this.onNavigate, 
+    required this.selectedIndex,
+    required this.onNavigate,
   });
-
-  @override
-  State<ContentSwitcher> createState() => _ContentSwitcherState();
-}
-
-class _ContentSwitcherState extends State<ContentSwitcher> {
-  int isLessonSelected = 0; // 0 for lesson, 1 for test 
 
   @override
   Widget build(BuildContext context) {
@@ -30,32 +25,25 @@ class _ContentSwitcherState extends State<ContentSwitcher> {
         children: [
           _buildNavItem(
             text: "Học phần",
-            isSelected: isLessonSelected == 0,
-            onTap: () {
-              setState(() {
-                isLessonSelected = 0;
-              });
-              widget.onNavigate(1); //dieu huong
-             
-            },
+            isSelected: selectedIndex == 0,
+            onTap: () => onNavigate(0),
           ),
           _divider(),
           _buildNavItem(
             text: "Bài kiểm tra",
-            isSelected: isLessonSelected == 1,
-            onTap: () {
-              setState(() {
-                isLessonSelected = 1;
-              });
-              widget.onNavigate(3); //dieu huong
-            },
+            isSelected: selectedIndex == 1,
+            onTap: () => onNavigate(1),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildNavItem({required String text, required bool isSelected, required VoidCallback onTap}) {
+  Widget _buildNavItem({
+    required String text,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
     return Expanded(
       child: GestureDetector(
         onTap: onTap,
@@ -71,7 +59,9 @@ class _ContentSwitcherState extends State<ContentSwitcher> {
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.bold,
-              color: isSelected ? AppColors.highlightDarkest : AppColors.textSecondary,
+              color: isSelected
+                  ? AppColors.highlightDarkest
+                  : AppColors.textSecondary,
               fontFamily: 'Montserrat',
             ),
           ),
@@ -84,5 +74,3 @@ class _ContentSwitcherState extends State<ContentSwitcher> {
     return Container(width: 1, height: 10, color: AppColors.textSecondary);
   }
 }
-// Cách gọi
-//   ContentSwitcher(onNavigate: onNavigate,),
