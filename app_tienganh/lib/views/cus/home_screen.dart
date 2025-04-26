@@ -41,13 +41,13 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 20),
 
                   // Khối hoạt động gần đây
-                  RecentActivity(
-                    status: "Đang học",
-                    title: "Từ vựng TOIEC",
-                    advice: "Tiếp tục nào",
-                    percentage: 72,
-                    onNavigate: onNavigate, // Truyền hàm điều hướng
-                  ),
+                  // RecentActivity(
+                  //   status: "Đang học",
+                  //   title: "Từ vựng TOIEC",
+                  //   advice: "Tiếp tục nào",
+                  //   percentage: 72,
+                  //   onNavigate: onNavigate, // Truyền hàm điều hướng
+                  // ),
 
                   // Khoảng cách giữa các thành phần
                   const SizedBox(height: 20),
