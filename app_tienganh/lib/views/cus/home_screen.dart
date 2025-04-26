@@ -42,11 +42,13 @@ class HomeScreen extends StatelessWidget {
 
                   // Khối hoạt động gần đây
                   RecentActivity(
+                    title: "Hoạt động gần đây",
                     status: "Đang học",
-                    title: "Từ vựng TOIEC",
-                    advice: "Tiếp tục nào",
+                    className: "Từ vựng TOIEC",
+                    note: "Tiếp tục nào",
+                    buttonText: "Xem chi tiết",
                     percentage: 72,
-                    onNavigate: onNavigate, // Truyền hàm điều hướng
+                    onTap: () {onNavigate(1);}, // Truyền hàm điều hướng
                   ),
 
                   // Khoảng cách giữa các thành phần
