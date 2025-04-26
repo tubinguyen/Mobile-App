@@ -4,31 +4,38 @@ import '../core/app_colors.dart';
 class NumberInputField extends StatefulWidget {
   final int min;
   final int max;
+  final TextEditingController? controller; // Thêm controller
+  final ValueChanged<String>? onChanged; // Thêm callback onChanged
 
-  const NumberInputField({super.key, this.min = 0, this.max = 100});
+  const NumberInputField({
+    super.key,
+    this.min = 0,
+    this.max = 100,
+    this.controller,
+    this.onChanged,
+  });
 
   @override
   NumberInputFieldState createState() => NumberInputFieldState();
 }
 
 class NumberInputFieldState extends State<NumberInputField> {
-  int _value = 1;
   late TextEditingController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: _value.toString());
+    _controller = widget.controller ?? TextEditingController(text: widget.min.toString());
   }
 
   void _updateValue(int newValue) {
     if (newValue >= widget.min && newValue <= widget.max) {
       setState(() {
-        _value = newValue;
-        _controller.text = _value.toString();
+        _controller.text = newValue.toString();
+        if (widget.onChanged != null) {
+          widget.onChanged!(_controller.text); // Gọi callback onChanged
+        }
       });
-    } else {
-      _controller.text = _value.toString();
     }
   }
 
@@ -37,7 +44,7 @@ class NumberInputFieldState extends State<NumberInputField> {
     if (newValue != null) {
       _updateValue(newValue);
     } else {
-      _controller.text = _value.toString(); // Reset nếu nhập sai
+      _controller.text = widget.min.toString(); // Reset nếu nhập sai
     }
   }
 
@@ -46,13 +53,11 @@ class NumberInputFieldState extends State<NumberInputField> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        // borderRadius: BorderRadius.circular(12),
-        // boxShadow: [BoxShadow(color: Colors.white, blurRadius: 0)],
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildButton(Icons.remove, () => _updateValue(_value - 1)),
+          _buildButton(Icons.remove, () => _updateValue(int.parse(_controller.text) - 1)),
           SizedBox(
             width: 50,
             child: TextField(
@@ -67,15 +72,14 @@ class NumberInputFieldState extends State<NumberInputField> {
               ),
               onSubmitted: _onSubmitted,
               onChanged: (input) {
-                int? newValue = int.tryParse(input);
-                if (newValue != null) {
-                  _value = newValue; // Cập nhật ngay khi nhập
+                if (widget.onChanged != null) {
+                  widget.onChanged!(input); // Gọi callback onChanged khi thay đổi
                 }
               },
               decoration: const InputDecoration(border: InputBorder.none),
             ),
           ),
-          _buildButton(Icons.add, () => _updateValue(_value + 1)),
+          _buildButton(Icons.add, () => _updateValue(int.parse(_controller.text) + 1)),
         ],
       ),
     );
@@ -104,6 +108,12 @@ class NumberInputFieldState extends State<NumberInputField> {
 
 //cách dùng
 // NumberInputField(
-//   min: 0,
-//   max: 50,
+//   min: 1,
+//   max: vocabList.length, // Giới hạn số câu hỏi tối đa bằng số từ vựng
+//   controller: questionCountController,
+//   onChanged: (value) {
+//     setState(() {
+//       totalQuestions = int.tryParse(value) ?? 1; // Cập nhật số câu hỏi
+//     });
+//   },
 // ),

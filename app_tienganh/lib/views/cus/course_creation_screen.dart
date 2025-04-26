@@ -46,7 +46,7 @@ class _CourseCreationScreenState extends State<CourseCreationScreen> {
     const SizedBox(height: 10),
     InputCreate(label: 'Giải nghĩa',controller: meanController),
     const SizedBox(height: 60),
-];
+  ];
 
   @override
   //khởi tạo trạng thái ban đầu của widget được gọi khi widget được tạo ra lần đầu tiên
@@ -102,7 +102,7 @@ class _CourseCreationScreenState extends State<CourseCreationScreen> {
 
 
 //Cài đặt phương thức của "COURSE CREATION SETTING"
-void resetPageSetting() {
+  void resetPageSetting() {
     setState(() {
       accessSelected = null; // Đặt lại trạng thái cho "Ai có thể xem"
       updateSelected = null; // Đặt lại trạng thái cho "Ai có thể sửa"
@@ -148,14 +148,34 @@ void resetPageSetting() {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: const Text("Xác nhận"),
-                  content: const Text("Bạn có chắc chắn muốn xóa học phần đã tạo không?"),
+                  backgroundColor: Colors.white, // Nền màu trắng
+                  title: Text(
+                    "Xác nhận",
+                    style: const TextStyle(
+                      fontFamily: 'Montserrat', // Font Montserrat
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary, // Chữ màu AppColors.textPrimary
+                    ),
+                  ),
+                  content: Text(
+                    "Bạn có chắc chắn muốn xóa học phần đã tạo không?",
+                    style: const TextStyle(
+                      fontFamily: 'Montserrat', // Font Montserrat
+                      color: AppColors.textPrimary, // Chữ màu AppColors.textPrimary
+                    ),
+                  ),
                   actions: [
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).pop(); // Đóng popup
                       },
-                      child: const Text("Không"),
+                      child: const Text(
+                        "Không",
+                        style: TextStyle(
+                          fontFamily: 'Montserrat', // Font Montserrat
+                          color: AppColors.textPrimary, // Chữ màu AppColors.textPrimary
+                        ),
+                      ),
                     ),
                     TextButton(
                       onPressed: () {
@@ -163,7 +183,13 @@ void resetPageSetting() {
                         resetPage(); // Đặt lại trạng thái
                         widget.onNavigate(0); // Quay lại trang trước đó
                       },
-                      child: const Text("Có"),
+                      child: const Text(
+                        "Có",
+                        style: TextStyle(
+                          fontFamily: 'Montserrat', // Font Montserrat
+                          color: AppColors.textPrimary, // Chữ màu AppColors.textPrimary
+                        ),
+                      ),
                     ),
                   ],
                 );
