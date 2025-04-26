@@ -23,7 +23,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
         child: Row(
           children: [
             Image.asset(
-              'assets/img/logo.png',
+              'assets/img/logoEddy.png',
               height: 40,
             )
           ],

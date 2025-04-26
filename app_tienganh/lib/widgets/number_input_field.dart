@@ -4,20 +4,29 @@ import '../core/app_colors.dart';
 class NumberInputField extends StatefulWidget {
   final int min;
   final int max;
+  final int initialValue;
+  final ValueChanged<int>? onChanged;
 
-  const NumberInputField({super.key, this.min = 0, this.max = 100});
+  const NumberInputField({
+    super.key,
+    this.min = 0,
+    this.max = 100,
+    this.initialValue = 1,
+    this.onChanged,
+  });
 
   @override
   NumberInputFieldState createState() => NumberInputFieldState();
 }
 
 class NumberInputFieldState extends State<NumberInputField> {
-  int _value = 1;
+  late int _value;
   late TextEditingController _controller;
 
   @override
   void initState() {
     super.initState();
+    _value = widget.initialValue;
     _controller = TextEditingController(text: _value.toString());
   }
 
@@ -26,6 +35,7 @@ class NumberInputFieldState extends State<NumberInputField> {
       setState(() {
         _value = newValue;
         _controller.text = _value.toString();
+        widget.onChanged?.call(_value); // Gửi giá trị mới ra ngoài
       });
     } else {
       _controller.text = _value.toString();
@@ -46,8 +56,6 @@ class NumberInputFieldState extends State<NumberInputField> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        // borderRadius: BorderRadius.circular(12),
-        // boxShadow: [BoxShadow(color: Colors.white, blurRadius: 0)],
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -69,7 +77,8 @@ class NumberInputFieldState extends State<NumberInputField> {
               onChanged: (input) {
                 int? newValue = int.tryParse(input);
                 if (newValue != null) {
-                  _value = newValue; // Cập nhật ngay khi nhập
+                  _value = newValue;
+                  widget.onChanged?.call(_value);
                 }
               },
               decoration: const InputDecoration(border: InputBorder.none),
@@ -100,10 +109,3 @@ class NumberInputFieldState extends State<NumberInputField> {
     );
   }
 }
-
-
-//cách dùng
-// NumberInputField(
-//   min: 0,
-//   max: 50,
-// ),

@@ -90,11 +90,11 @@ class TextInputState extends State<TextInput> {
               fillColor: widget.enabled ? Colors.white : Colors.grey.shade200,
 
               border: OutlineInputBorder(
-                borderSide: BorderSide(color: _getBorderColor(), width: 1.5),
+                borderSide: BorderSide(color: _getBorderColor(), width: 2),
                 borderRadius: BorderRadius.circular(12),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: _getBorderColor(), width: 1.5),
+                borderSide: BorderSide(color: _getBorderColor(), width: 2),
                 borderRadius: BorderRadius.circular(12),
               ),
               focusedBorder: OutlineInputBorder(
@@ -102,7 +102,7 @@ class TextInputState extends State<TextInput> {
                 borderRadius: BorderRadius.circular(12),
               ),
               disabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey, width: 1.5),
+                borderSide: BorderSide(color: Colors.grey, width: 2),
                 borderRadius: BorderRadius.circular(12),
               ),
             ),

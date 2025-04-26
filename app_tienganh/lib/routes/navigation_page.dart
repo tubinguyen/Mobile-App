@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../views/cus/home_screen.dart';
 import '../views/cus/review_screen.dart';
 import '../views/cus/login_screen.dart';
+import '../views/cus/forget_password_screen.dart';
+import '../views/cus/register_screen.dart';
 import '../views/cus/course_creation_screen.dart';
 import '../views/admin/user_management.dart';
 import '../views/admin/product_management.dart';
@@ -12,6 +14,7 @@ import '../views/cus/profile_screen.dart';
 import '../views/cus/notification_screen.dart';
 import '../widgets/bottom_navigation_bar.dart';
 import '../widgets/header.dart';
+
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});
@@ -36,6 +39,8 @@ class _NavigationPageState extends State<NavigationPage> {
       NotificationScreen(onNavigate:_onItemTapped),
       ProfileScreen(onNavigate:_onItemTapped),
       LoginScreen(onNavigate:_onItemTapped),
+      ForgetPasswordScreen(onNavigate:_onItemTapped),
+      RegisterScreen(onNavigate: _onItemTapped),
       UserManagement(onNavigate:_onItemTapped),
       ProductManagement(onNavigate:_onItemTapped),
       OrderManagement(onNavigate:_onItemTapped),
