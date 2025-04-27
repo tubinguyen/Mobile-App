@@ -1,3 +1,4 @@
+import 'package:app_tienganh/views/cus/flashcard_screen.dart';
 import 'package:flutter/material.dart';
 import '../views/cus/home_screen.dart';
 import '../views/cus/review_screen.dart';
@@ -29,17 +30,18 @@ class _NavigationPageState extends State<NavigationPage> {
   void initState() {
     super.initState();
     _pages.addAll([
-      HomeScreen(onNavigate: _onItemTapped), 
-      ReviewScreen(onNavigate:_onItemTapped),
-      CourseCreationScreen(onNavigate:_onItemTapped),
-      StoreScreen(onNavigate:_onItemTapped),
-      NotificationScreen(onNavigate:_onItemTapped),
-      ProfileScreen(onNavigate:_onItemTapped),
-      LoginScreen(onNavigate:_onItemTapped),
-      UserManagement(onNavigate:_onItemTapped),
-      ProductManagement(onNavigate:_onItemTapped),
-      OrderManagement(onNavigate:_onItemTapped),
-      AccountManagement(onNavigate:_onItemTapped),
+      HomeScreen(onNavigate: _onItemTapped),
+      ReviewScreen(onNavigate: _onItemTapped),
+      CourseCreationScreen(onNavigate: _onItemTapped),
+      StoreScreen(onNavigate: _onItemTapped),
+      NotificationScreen(onNavigate: _onItemTapped),
+      ProfileScreen(onNavigate: _onItemTapped),
+      LoginScreen(onNavigate: _onItemTapped),
+      UserManagement(onNavigate: _onItemTapped),
+      ProductManagement(onNavigate: _onItemTapped),
+      OrderManagement(onNavigate: _onItemTapped),
+      AccountManagement(onNavigate: _onItemTapped),
+      FlashcardScreen(onNavigate: _onItemTapped),
     ]);
   }
 
@@ -55,24 +57,22 @@ class _NavigationPageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _pagesWithHeader.contains(_selectedIndex)
-          ? Header(
-              onHomeTap: () => _onItemTapped(0),
-              onNotificationTap: () => _onItemTapped(4),
-              onAuthTap: () => _onItemTapped(6),
-            )
-          : null,
-      body:  
-      IndexedStack(
-        index: _selectedIndex,
-        children: _pages,
-      ),
-      bottomNavigationBar: _pagesWithBottomNavigationBar.contains(_selectedIndex)
-          ? CustomBottomNavigationBar(
-              selectedIndex: _selectedIndex,
-              onItemTapped: _onItemTapped,
-            )
-          : null,
+      appBar:
+          _pagesWithHeader.contains(_selectedIndex)
+              ? Header(
+                onHomeTap: () => _onItemTapped(0),
+                onNotificationTap: () => _onItemTapped(4),
+                onAuthTap: () => _onItemTapped(6),
+              )
+              : null,
+      body: IndexedStack(index: _selectedIndex, children: _pages),
+      bottomNavigationBar:
+          _pagesWithBottomNavigationBar.contains(_selectedIndex)
+              ? CustomBottomNavigationBar(
+                selectedIndex: _selectedIndex,
+                onItemTapped: _onItemTapped,
+              )
+              : null,
     );
   }
 }

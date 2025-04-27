@@ -36,6 +36,7 @@ dependencies:
   flutter_svg: ^2.0.17
   carousel_slider: ^5.0.0
   flutter_tts: ^3.8.3
+  flip_card: ^0.6.0
 
 dev_dependencies:
   flutter_test:

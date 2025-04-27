@@ -5,11 +5,7 @@ class LargeButton extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
 
-  const LargeButton({
-    super.key,
-    required this.text,
-    required this.onTap,
-  });
+  const LargeButton({super.key, required this.text, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
