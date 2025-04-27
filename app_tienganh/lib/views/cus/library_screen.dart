@@ -6,16 +6,16 @@ import '../../widgets/empty_course.dart';
 import '../../widgets/libraryobject.dart';
 import '../../widgets/test_result_card.dart';
 
-class ReviewScreen extends StatefulWidget {
+class LibraryScreen extends StatefulWidget {
   final Function(int) onNavigate;
 
-  const ReviewScreen({super.key, required this.onNavigate});
+  const LibraryScreen({super.key, required this.onNavigate});
 
   @override
-  State<ReviewScreen> createState() => _ReviewScreenState();
+  State<LibraryScreen> createState() => _LibraryScreenState();
 }
 
-class _ReviewScreenState extends State<ReviewScreen> {
+class _LibraryScreenState extends State<LibraryScreen> {
 
   int selectedIndex = 0;
 
@@ -53,21 +53,16 @@ class _ReviewScreenState extends State<ReviewScreen> {
               final hocPhan = hocPhanList[index];
               return Column(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      widget.onNavigate(11); // Chuyển tab/màn hình
-                      // Nếu cần lưu hocphanID để StudySessionPage dùng thì thêm logic tại đây
-                    },
-                    child: LibraryObject(
+                      LibraryObject(
                       hocphanID: hocPhan['id'],
                       title: hocPhan['title'],
                       subtitle: subtitle,
                       username: username,
-                      onNavigate: (id) {
+                      onTap: () {
                         widget.onNavigate(11); // Điều hướng
                       },
                     ),
-                  ),
+                  
                   SizedBox(height: 12),
                 ],
               );

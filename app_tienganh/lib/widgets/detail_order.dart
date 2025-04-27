@@ -119,7 +119,7 @@ class OrderDetail extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.bottomRight,
                   child: LargeButton(
-                    text: 'Đặt hàng',
+                    text: 'Đã nhận hàng',
                     onTap: () {
                       // Xử lý khi nhấn nút
                     },

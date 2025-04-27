@@ -22,7 +22,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
 
   static const List<String> labels = [
     'Trang chủ',
-    'Ôn tập',
+    'Thư viện',
     'Tạo mới',
     'Cửa hàng',
     'Tài khoản',
