@@ -1,4 +1,3 @@
-import 'package:app_tienganh/views/cus/flashcard_screen.dart';
 import 'package:flutter/material.dart';
 import '../views/cus/home_screen.dart';
 import '../views/cus/library_screen.dart';
@@ -17,6 +16,7 @@ import '../views/cus/notification_screen.dart';
 import '../widgets/bottom_navigation_bar.dart';
 import '../widgets/header.dart';
 import '../views/cus/test_screen.dart';
+import '../views/cus/flashcard_screen.dart';
 
 
 
@@ -52,7 +52,7 @@ class _NavigationPageState extends State<NavigationPage> {
       EditProduct(onNavigate: _onItemTapped),
       TestScreen(onNavigate: _onItemTapped),
       FlashcardScreen(onNavigate: _onItemTapped),
-  ]);
+    ]);
 }
 
   final Set<int> _pagesWithHeader = {0, 1, 3, 4};

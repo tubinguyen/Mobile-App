@@ -1,6 +1,5 @@
 import 'package:app_tienganh/widgets/flash_card_counter.dart';
 import 'package:app_tienganh/widgets/flashcard.dart';
-
 import 'package:app_tienganh/widgets/premium_button.dart';
 import 'package:app_tienganh/widgets/recent_activity.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +10,10 @@ class FlashcardScreen extends StatefulWidget {
   const FlashcardScreen({super.key, required this.onNavigate});
 
   @override
-  _ReviewScreenState createState() => _ReviewScreenState();
+  ReviewScreenState createState() => ReviewScreenState();
 }
 
-class _ReviewScreenState extends State<FlashcardScreen> {
+class ReviewScreenState extends State<FlashcardScreen> {
   int currentCard = 1;
   int totalCards = 0;
   bool isCompleted = false;

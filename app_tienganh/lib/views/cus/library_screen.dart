@@ -13,7 +13,7 @@ class LibraryScreen extends StatelessWidget {
         child: LoginAndRegisterButton(
           text: 'Dang nhap',
           onTap: () {
-            onNavigate(14); // Sửa tại đây
+            onNavigate(15); // Sửa tại đây
           },
           stateLoginOrRegister: AuthButtonState.login,
           textColor: AppColors.text,
