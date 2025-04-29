@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:app_tienganh/widgets/book_list.dart';
 
 class HomeScreen extends StatelessWidget {
-  // Hàm điều hướng giữa các trang
   final Function(int) onNavigate;
 
   const HomeScreen({super.key, required this.onNavigate});

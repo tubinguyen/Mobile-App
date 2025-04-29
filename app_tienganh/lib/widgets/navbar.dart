@@ -6,7 +6,7 @@ import '../core/app_colors.dart';
 class CustomNavBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final String leadingIconPath;
-  final String actionIconPath;
+  final String? actionIconPath;
   final VoidCallback? onLeadingPressed;
   final VoidCallback? onActionPressed;
 
@@ -14,7 +14,7 @@ class CustomNavBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     required this.title,
     required this.leadingIconPath,
-    required this.actionIconPath,
+    this.actionIconPath,
     this.onLeadingPressed,
     this.onActionPressed,
   });
@@ -24,14 +24,17 @@ class CustomNavBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: AppColors.background,
       elevation: 0,
-      leading: IconButton(
-        icon: SvgPicture.asset(
-          leadingIconPath,
-          width: 20,
-          height: 20,
-        ),
-        onPressed: onLeadingPressed ?? () => Navigator.of(context).pop(),
-      ),
+    
+      leading: leadingIconPath.isNotEmpty
+        ? IconButton(
+            icon: SvgPicture.asset(
+              leadingIconPath,
+              width: 20,
+              height: 20,
+            ),
+            onPressed: onLeadingPressed ?? () => Navigator.of(context).pop(),
+          )
+        : const SizedBox.shrink(),
       title: Text(
         title,
         style: const TextStyle(
@@ -43,24 +46,22 @@ class CustomNavBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       centerTitle: true,
       actions: [
-        IconButton(
-          icon: SvgPicture.asset(
-            actionIconPath,
-            width: 20,
-            height: 20,
+        if (actionIconPath != null)
+          IconButton(
+            icon: SvgPicture.asset(
+              actionIconPath!,
+              width: 20,
+              height: 20,
+            ),
+            onPressed: onActionPressed ??
+                () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => NavigationPage(),
+                    ),
+                  );
+                },
           ),
-          onPressed: () {
-            if (onActionPressed != null) {
-              onActionPressed!();
-            } else {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => NavigationPage(), 
-                ),
-              );
-            }
-          },
-        ),
       ],
     );
   }
@@ -68,6 +69,7 @@ class CustomNavBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
+
  //Cach su dung
  //appBar: CustomNavBar(
       //   title: "Thư viện của bạn",

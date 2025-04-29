@@ -6,6 +6,7 @@ class PasswordInput extends StatefulWidget {
   final String hint;
   final bool enabled;
   final bool isError;
+  final bool showForgotPassword;
   final TextEditingController? controller;
   final VoidCallback? onForgotPasswordTap;
 
@@ -13,6 +14,7 @@ class PasswordInput extends StatefulWidget {
     super.key,
     this.label = 'Mật khẩu',
     this.hint = 'Nhập mật khẩu',
+    this.showForgotPassword = true,
     this.enabled = true,
     this.isError = false,
     this.controller,
@@ -130,7 +132,7 @@ class PasswordInputState extends State<PasswordInput> {
             ),
           ),
         ),
-        if (widget.enabled)
+        if (widget.enabled && widget.showForgotPassword)
           Padding(
             padding: const EdgeInsets.only(top: 5, right: 10),
             child: Align(
@@ -143,6 +145,7 @@ class PasswordInputState extends State<PasswordInput> {
                     color: AppColors.highlightDarkest,
                     fontSize: 16,
                     fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),

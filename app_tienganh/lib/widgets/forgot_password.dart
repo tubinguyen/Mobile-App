@@ -3,7 +3,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../core/app_colors.dart';
 
 class ForgotPasswordWidget extends StatelessWidget {
-  const ForgotPasswordWidget({super.key});
+  final String title;
+  final String description;
+  final VoidCallback onBack;
+
+  const ForgotPasswordWidget({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.onBack,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,21 +22,24 @@ class ForgotPasswordWidget extends StatelessWidget {
         Row(
           children: [
             GestureDetector(
-              onTap: () => Navigator.pop(context),
+              onTap: onBack, // Gọi hàm được truyền vào
               child: SizedBox(
                 width: 24,
                 height: 24,
                 child: SvgPicture.asset(
                   'assets/img/arrow_left.svg',
-                  colorFilter: const ColorFilter.mode(AppColors.highlightDarkest, BlendMode.srcIn),
+                  colorFilter: const ColorFilter.mode(
+                    AppColors.highlightDarkest,
+                    BlendMode.srcIn,
+                  ),
                 ),
               ),
             ),
             const SizedBox(width: 30.0), 
-            const Expanded(
+            Expanded(
               child: Text(
-                'Quên mật khẩu',
-                style: TextStyle(
+                title,
+                style: const TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Montserrat',
@@ -38,14 +50,14 @@ class ForgotPasswordWidget extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 4), 
-        const Padding(
-          padding: EdgeInsets.only(left: 54), 
+        Padding(
+          padding: const EdgeInsets.only(left: 54), 
           child: Text(
-            'Vui lòng nhập email để đặt lại mật khẩu.',
-            style: TextStyle(
+            description,
+            style: const TextStyle(
               fontSize: 15,
               fontFamily: 'Montserrat',
-              color: AppColors.textPrimary
+              color: AppColors.textPrimary,
             ),
           ),
         ),
@@ -53,6 +65,3 @@ class ForgotPasswordWidget extends StatelessWidget {
     );
   }
 }
-
-//Cach su dung
-//ForgotPasswordWidget()

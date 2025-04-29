@@ -4,12 +4,14 @@ import 'package:app_tienganh/core/app_colors.dart';
 class SettingOption extends StatefulWidget {
   final List<String> options; // Danh sách option truyền vào
   final List<int> pagesIndex; // Danh sách các trang tương ứng
+  final List<String?>? selectedOption; // Biến lưu option được chọn
   final Function(int) onNavigate;
 
   const SettingOption({
     super.key,
     required this.options,
-    required this.pagesIndex, // Danh sách các trang tương ứng
+    required this.pagesIndex, 
+    this.selectedOption,
     required this.onNavigate,
   });
 
@@ -41,8 +43,10 @@ class SettingOptionState extends State<SettingOption> {
                   color: AppColors.textPrimary,
                 ),
               ),
-              trailing: const Text(
-                "Chọn",
+              trailing: Text(
+                (widget.selectedOption == null || widget.selectedOption!.length <= index || widget.selectedOption![index] == null)
+                    ? "Chọn"
+                    : widget.selectedOption![index]!,
                 style: TextStyle(
                   color: AppColors.highlightDarkest,
                   fontSize: 14,
@@ -54,7 +58,7 @@ class SettingOptionState extends State<SettingOption> {
                 setState(() {
                   settingOption = option;
                 });
-                widget.onNavigate(widget.pagesIndex[index]); // Gọi hàm onNavigate với index tương ứng
+                widget.onNavigate(widget.pagesIndex[index]); 
               },
             ),
             if (isLast) _divider(), // Thêm _divider() phía dưới option cuối cùng
@@ -70,5 +74,5 @@ class SettingOptionState extends State<SettingOption> {
 }
 
 
-// Cách gọi
-// SettingOption(options: ["Từ vựng","Giải nghĩa"], pagesIndex: [1,3], onNavigate: onNavigate,),
+// // Cách gọi
+// // SettingOption(options: ["Từ vựng","Giải nghĩa"], pagesIndex: [1,3], onNavigate: onNavigate,),
