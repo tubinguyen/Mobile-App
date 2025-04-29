@@ -24,14 +24,17 @@ class CustomNavBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: AppColors.background,
       elevation: 0,
-      leading: IconButton(
-        icon: SvgPicture.asset(
-          leadingIconPath,
-          width: 20,
-          height: 20,
-        ),
-        onPressed: onLeadingPressed ?? () => Navigator.of(context).pop(),
-      ),
+    
+      leading: leadingIconPath.isNotEmpty
+        ? IconButton(
+            icon: SvgPicture.asset(
+              leadingIconPath,
+              width: 20,
+              height: 20,
+            ),
+            onPressed: onLeadingPressed ?? () => Navigator.of(context).pop(),
+          )
+        : const SizedBox.shrink(),
       title: Text(
         title,
         style: const TextStyle(

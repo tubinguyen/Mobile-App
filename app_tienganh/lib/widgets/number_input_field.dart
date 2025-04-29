@@ -5,6 +5,7 @@ class NumberInputField extends StatefulWidget {
   final int min;
   final int max;
   final int initialValue;
+  final TextEditingController? controller;
   final ValueChanged<int>? onChanged;
 
   const NumberInputField({
@@ -12,6 +13,7 @@ class NumberInputField extends StatefulWidget {
     this.min = 0,
     this.max = 100,
     this.initialValue = 1,
+    this.controller,
     this.onChanged,
   });
 
@@ -22,12 +24,21 @@ class NumberInputField extends StatefulWidget {
 class NumberInputFieldState extends State<NumberInputField> {
   late int _value;
   late TextEditingController _controller;
+  bool _isExternalController = false;
 
   @override
   void initState() {
     super.initState();
     _value = widget.initialValue;
-    _controller = TextEditingController(text: _value.toString());
+
+    // Dùng controller bên ngoài nếu có, ngược lại thì tạo mới
+    _isExternalController = widget.controller != null;
+    _controller = widget.controller ?? TextEditingController(text: _value.toString());
+
+    // Đồng bộ ban đầu
+    if (!_isExternalController) {
+      _controller.text = _value.toString();
+    }
   }
 
   void _updateValue(int newValue) {
@@ -35,26 +46,26 @@ class NumberInputFieldState extends State<NumberInputField> {
       setState(() {
         _value = newValue;
         _controller.text = _value.toString();
-        widget.onChanged?.call(_value); // Gửi giá trị mới ra ngoài
+        widget.onChanged?.call(_value);
       });
     } else {
-      _controller.text = _value.toString();
+      _controller.text = _value.toString(); // Reset nếu vượt giới hạn
     }
   }
 
   void _onSubmitted(String input) {
-    int? newValue = int.tryParse(input);
+    final newValue = int.tryParse(input);
     if (newValue != null) {
       _updateValue(newValue);
     } else {
-      _controller.text = _value.toString(); // Reset nếu nhập sai
+      _controller.text = _value.toString();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
       ),
       child: Row(
@@ -75,7 +86,7 @@ class NumberInputFieldState extends State<NumberInputField> {
               ),
               onSubmitted: _onSubmitted,
               onChanged: (input) {
-                int? newValue = int.tryParse(input);
+                final newValue = int.tryParse(input);
                 if (newValue != null) {
                   _value = newValue;
                   widget.onChanged?.call(_value);

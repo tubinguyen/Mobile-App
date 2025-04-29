@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import '../views/cus/home_screen.dart';
-import '../views/cus/review_screen.dart';
+import '../views/cus/library_screen.dart';
 import '../views/cus/login_screen.dart';
 import '../views/cus/forget_password_screen.dart';
 import '../views/cus/register_screen.dart';
-import '../views/cus/library_screen.dart';
 import '../views/admin/user_management.dart';
 import '../views/admin/product_management.dart';
 import '../views/admin/order_management.dart';
@@ -16,6 +15,8 @@ import '../views/cus/profile_screen.dart';
 import '../views/cus/notification_screen.dart';
 import '../widgets/bottom_navigation_bar.dart';
 import '../widgets/header.dart';
+import '../views/cus/test_screen.dart';
+
 
 
 class NavigationPage extends StatefulWidget {
@@ -35,7 +36,6 @@ class _NavigationPageState extends State<NavigationPage> {
     super.initState();
     _pages.addAll([
       HomeScreen(onNavigate: _onItemTapped), 
-      ReviewScreen(onNavigate:_onItemTapped),
       LibraryScreen(onNavigate:_onItemTapped),
       StoreScreen(onNavigate:_onItemTapped),
       NotificationScreen(onNavigate:_onItemTapped),
@@ -49,7 +49,8 @@ class _NavigationPageState extends State<NavigationPage> {
       AccountManagement(onNavigate:_onItemTapped),
       AddProduct(onNavigate:_onItemTapped),
       EditProduct(onNavigate: _onItemTapped),
-      ]);
+      TestScreen(onNavigate: _onItemTapped),
+    ]);
   }
 
   final Set<int> _pagesWithHeader = {0, 1, 3, 4, 5};
