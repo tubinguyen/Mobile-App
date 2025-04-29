@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class ReviewScreen extends StatelessWidget {
+class LibraryScreen extends StatelessWidget {
   final Function(int) onNavigate;
-  const ReviewScreen({super.key,required this.onNavigate});
+  const LibraryScreen({super.key,required this.onNavigate});
 
   @override
   Widget build(BuildContext context) {
