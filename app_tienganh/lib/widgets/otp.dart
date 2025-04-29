@@ -62,7 +62,7 @@ class _OTPState extends State<OTP> {
         return Container(
           width: 50, // Chiều rộng ô nhập
           height: 50, // Chiều cao ô nhập
-          margin: const EdgeInsets.symmetric(horizontal: 10), // Khoảng cách giữa các ô
+          margin: const EdgeInsets.symmetric(horizontal: 9), // Khoảng cách giữa các ô
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12), // Bo góc ô nhập
             border: Border.all(

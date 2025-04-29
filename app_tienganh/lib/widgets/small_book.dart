@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../core/app_colors.dart';
 import '../../widgets/small_button.dart';
-
+import '../views/cus/details_book_screen.dart';
 class BookSmall extends StatelessWidget {
   final String id; 
   final String title;
@@ -34,6 +34,7 @@ class BookSmall extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Card(
+       color: AppColors.background,
         elevation: 5,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
@@ -94,7 +95,14 @@ class BookSmall extends StatelessWidget {
                   child: SmallButton(
                   text: 'Xem thêm',
                   onTap: () {
-                  },
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BookDetailScreen(bookId: id),
+                      ),
+                    );
+                  }
+
                 ),
               )
             ),

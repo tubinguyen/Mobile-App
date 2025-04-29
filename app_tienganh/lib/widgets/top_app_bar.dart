@@ -64,21 +64,21 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       position: const RelativeRect.fromLTRB(10, 70, 100, 0),
       items: [
         const PopupMenuItem<int>(
-          value: 7,
+          value: 9,
           child: Text(
             "Quản lý người dùng",
             style: TextStyle(fontFamily: 'Montserrat', fontSize: 14),
           ),
         ),
         const PopupMenuItem<int>(
-          value: 8,
+          value: 10,
           child: Text(
             "Quản lý sản phẩm",
             style: TextStyle(fontFamily: 'Montserrat', fontSize: 14),
           ),
         ),
         const PopupMenuItem<int>(
-          value: 9,
+          value: 11,
           child: Text(
             "Quản lý đơn hàng",
             style: TextStyle(fontFamily: 'Montserrat', fontSize: 14),
