@@ -17,7 +17,12 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
-  File? _image; 
+  File? _image;
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _quantityController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   Future<void> _requestPermission() async {
     if (await Permission.photos.isGranted) {
@@ -45,93 +50,142 @@ class _AddProductState extends State<AddProduct> {
     }
   }
 
+  void _resetForm() {
+    _nameController.clear();
+    _priceController.clear();
+    _quantityController.clear();
+    _descriptionController.clear();
+    setState(() {
+      _image = null;
+    });
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _priceController.dispose();
+    _quantityController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: "Quản lý sản phẩm",
-        onItemTapped: (value) {
-          widget.onNavigate(value);
-        },
-      ),
-      body: SingleChildScrollView( 
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center, 
-          children: [
-            CustomNavBar(
-              title: "Thêm sản phẩm",
-              leadingIconPath: "assets/img/back.svg",
-              onLeadingPressed: () {
-                widget.onNavigate(10);
-              },
-            ),
-            const SizedBox(height: 20),
-            Center(
-              child: _image == null
-                  ? const Text(
-                      "Chưa có ảnh nào được chọn",
-                      style: TextStyle(color: AppColors.highlightDarkest, fontSize: 16),
-                    )
-                  : Image.file(
-                      _image!,
-                      width: 160,
-                      height: 160,
-                      fit: BoxFit.cover,
-                    ),
-            ),
-            const SizedBox(height: 20),
-            GestureDetector(
-              onTap: _requestPermission,
-              child: Text(
-                'Tải ảnh sản phẩm',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontFamily: 'Montserrat',
-                  color: AppColors.highlightDarkest,
-                  decoration: TextDecoration.underline,
-                  decorationColor: AppColors.highlightDarkest, 
+    return WillPopScope(
+      onWillPop: () async {
+        _resetForm();
+        return true;
+      },
+      child: Scaffold(
+        appBar: CustomAppBar(
+          title: "Quản lý sản phẩm",
+          onItemTapped: (value) {
+            widget.onNavigate(value);
+          },
+        ),
+        body: SingleChildScrollView( 
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center, 
+            children: [
+              CustomNavBar(
+                title: "Thêm sản phẩm",
+                leadingIconPath: "assets/img/back.svg",
+                onLeadingPressed: () {
+                  _resetForm();
+                  widget.onNavigate(10);
+                },
+              ),
+              const SizedBox(height: 20),
+              Center(
+                child: _image == null
+                    ? const Text(
+                        "Chưa có ảnh nào được chọn",
+                        style: TextStyle(color: AppColors.highlightDarkest, fontSize: 16),
+                      )
+                    : Image.file(
+                        _image!,
+                        width: 160,
+                        height: 160,
+                        fit: BoxFit.cover,
+                      ),
+              ),
+              const SizedBox(height: 20),
+              GestureDetector(
+                onTap: _requestPermission,
+                child: Text(
+                  'Tải ảnh sản phẩm',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'Montserrat',
+                    color: AppColors.highlightDarkest,
+                    decoration: TextDecoration.underline,
+                    decorationColor: AppColors.highlightDarkest, 
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            const TextInput(
-              label: 'Tên sản phẩm',
-              hint: 'Nhập tên sản phẩm',
-              enabled: true,
-            ),
-            const SizedBox(height: 15),
-            const TextInput(
-              label: 'Gía sản phẩm',
-              hint: 'Nhập giá sản phẩm',
-              enabled: true,
-            ),
-            const SizedBox(height: 15),
-            const TextInput(
-              label: 'Số lượng sản phẩm',
-              hint: 'Nhập số lượng sản phẩm',
-              enabled: true,
-            ),const SizedBox(height: 15),
-            const TextInput(
-              label: 'Mô tả sản phẩm',
-              hint: 'Nhập mô tả sản phẩm',
-              enabled: true,
-            ),
-            const SizedBox(height: 24),
-            LoginAndRegisterButton(
-              text: 'Thêm sản phẩm',
-              onTap: () {
+              const SizedBox(height: 20),
+              TextInput(
+                label: 'Tên sản phẩm',
+                hint: 'Nhập tên sản phẩm',
+                controller: _nameController,
+                enabled: true,
+              ),
+              const SizedBox(height: 15),
+              TextInput(
+                label: 'Gía sản phẩm',
+                hint: 'Nhập giá sản phẩm',
+                controller: _priceController,
+                enabled: true,
+              ),
+              const SizedBox(height: 15),
+              TextInput(
+                label: 'Số lượng sản phẩm',
+                hint: 'Nhập số lượng sản phẩm',
+                controller: _quantityController,
+                enabled: true,
+              ),
+              const SizedBox(height: 15),
+              TextInput(
+                label: 'Mô tả sản phẩm',
+                hint: 'Nhập mô tả sản phẩm',
+                controller: _descriptionController,
+                enabled: true,
+              ),
+              const SizedBox(height: 24),
+              LoginAndRegisterButton(
+                text: 'Thêm sản phẩm',
+                onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Thêm sản phẩm thành công!'),
-                    duration: Duration(seconds: 2),
-                    backgroundColor: Colors.green,
+                    const SnackBar(
+                      content: Text('Thêm sản phẩm thành công!'),
+                      duration: Duration(seconds: 2),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                  _resetForm(); // Reset sau khi thêm sản phẩm
+                },
+                stateLoginOrRegister: AuthButtonState.login,
+                textColor: AppColors.text,
+              ),
+              const SizedBox(height: 24),
+              GestureDetector(
+                onTap: () {
+                  _resetForm();
+                  widget.onNavigate(10); 
+                },
+                child: const Text(
+                  'Quay lại trang trước',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat',
                   ),
-                );
-              },
-              stateLoginOrRegister: AuthButtonState.login,
-              textColor: AppColors.text,
-            ),
-          ],
+                ),
+              ),          
+              const SizedBox(height: 24),
+            ],
+          ),
         ),
       ),
     );

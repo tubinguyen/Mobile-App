@@ -70,12 +70,12 @@ class ProductManagement extends StatelessWidget {
                         price: book['price'],
                         quantity: book['quantity'],
                         description: book['description'],
-                        imagePath: book['imagePath'], // truyền imagePath vô đây
+                        imagePath: book['imagePath'], 
                         onDelete: () {
                           // Xử lý xóa sản phẩm
                         },
                         onEdit: () {
-                          onNavigate(14);
+                          onNavigate(13);
                         },
                       ),
                     );
@@ -85,7 +85,7 @@ class ProductManagement extends StatelessWidget {
                       child: LoginAndRegisterButton(
                         text: 'Thêm sản phẩm',
                         onTap: () {
-                          onNavigate(13); // chuyển đến màn thêm sản phẩm
+                          onNavigate(12); 
                         },
                         stateLoginOrRegister: AuthButtonState.login,
                         textColor: AppColors.text,

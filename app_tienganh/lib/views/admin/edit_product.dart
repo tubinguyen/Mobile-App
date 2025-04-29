@@ -119,6 +119,21 @@ class _EditProductState extends State<EditProduct> {
             ),
             const SizedBox(height: 24),
             _buildUpdateButton(),
+            const SizedBox(height: 12),
+            GestureDetector(
+              onTap: () {
+                widget.onNavigate(10); 
+              },
+              child: const Text(
+                'Quay lại trang trước',
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Montserrat',
+                ),
+              ),
+            ),          
           ],
         ),
       ),
@@ -167,13 +182,11 @@ class _EditProductState extends State<EditProduct> {
     return LoginAndRegisterButton(
       text: 'Cập nhật thông tin',
       onTap: () {
-        // Lấy dữ liệu sau khi người dùng chỉnh sửa
         final name = _nameController.text;
         final price = _priceController.text;
         final quantity = _quantityController.text;
         final description = _descriptionController.text;
 
-        // Ví dụ: in ra console (sau này có thể gửi dữ liệu lên server)
         print('Tên sản phẩm: $name');
         print('Giá sản phẩm: $price');
         print('Số lượng: $quantity');

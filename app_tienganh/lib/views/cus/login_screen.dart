@@ -8,6 +8,7 @@ import 'package:app_tienganh/core/app_colors.dart';
 
 class LoginScreen extends StatefulWidget {
   final Function(int) onNavigate;
+
   const LoginScreen({super.key, required this.onNavigate});
 
   @override
@@ -17,6 +18,11 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  void resetFields() {
+    _emailController.clear();
+    _passwordController.clear();
+  }
 
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -32,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _showSnackBar("Vui lòng nhập đầy đủ email và mật khẩu.");
     } else {
       widget.onNavigate(0); 
+      resetFields(); 
     }
   }
 
@@ -73,6 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   enabled: true,
                   onForgotPasswordTap: () {
                     widget.onNavigate(7);
+                    resetFields(); // Reset khi chuyển trang quên mật khẩu
                   },
                 ),
                 const SizedBox(height: 24),
@@ -90,7 +98,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 GoogleSignInButton(
                   onTap: () {
-                    widget.onNavigate(9); //Test
+                    widget.onNavigate(9);
+                    resetFields();
                   },
                 ),
                 const SizedBox(height: 16),
@@ -107,7 +116,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        widget.onNavigate(8);
+                        widget.onNavigate(8); // Đăng ký
+                        resetFields();
                       },
                       child: const Text(
                         "Đăng ký",

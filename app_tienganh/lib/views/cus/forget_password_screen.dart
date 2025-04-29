@@ -28,12 +28,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _currentStep = ForgotPasswordStep.inputEmail;
-  }
-
   void _goToPreviousStep() {
     setState(() {
       switch (_currentStep) {
@@ -52,6 +46,37 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     });
   }
 
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  void _validateEmailInput() {
+    String email = _emailController.text.trim();
+    if (email.isEmpty) {
+      _showSnackBar('Vui lòng nhập email!');
+    } else {
+      setState(() {
+        _currentStep = ForgotPasswordStep.enterOTP;
+      });
+    }
+  }
+
+  void _validatePasswordInput() {
+    String newPassword = _newPasswordController.text;
+    String confirmPassword = _confirmPasswordController.text;
+
+    if (newPassword.isEmpty || confirmPassword.isEmpty) {
+      _showSnackBar('Vui lòng nhập đầy đủ mật khẩu mới và xác nhận mật khẩu!');
+    } else if (newPassword != confirmPassword) {
+      _showSnackBar('Mật khẩu không khớp!');
+    } else {
+      _showSnackBar('Mật khẩu đã được cập nhật!');
+      setState(() {
+        _currentStep = ForgotPasswordStep.inputEmail;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,12 +84,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: switch (_currentStep) {
-              ForgotPasswordStep.inputEmail => _buildFormContent(),
-              ForgotPasswordStep.enterOTP => _buildSuccessContent(),
-              ForgotPasswordStep.confirmReset => _buildNewPasswordContent(),
-              ForgotPasswordStep.setNewPassword => _buildSetPassContent(),
-            },
+            child: _buildStepContent(),
           ),
         ),
       ),
@@ -81,7 +101,22 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     );
   }
 
-  Widget _buildFormContent() {
+  Widget _buildStepContent() {
+    switch (_currentStep) {
+      case ForgotPasswordStep.inputEmail:
+        return _buildEmailInputContent();
+      case ForgotPasswordStep.enterOTP:
+        return _buildOTPSuccessContent();
+      case ForgotPasswordStep.confirmReset:
+        return _buildNewPasswordContent();
+      case ForgotPasswordStep.setNewPassword:
+        return _buildSetNewPasswordContent();
+      default:
+        return Container();
+    }
+  }
+
+  Widget _buildEmailInputContent() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -101,11 +136,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         const SizedBox(height: 23),
         LoginAndRegisterButton(
           text: 'Đặt lại mật khẩu',
-          onTap: () {
-            setState(() {
-              _currentStep = ForgotPasswordStep.enterOTP;
-            });
-          },
+          onTap: _validateEmailInput, 
           stateLoginOrRegister: AuthButtonState.login,
           textColor: AppColors.text,
         ),
@@ -114,7 +145,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     );
   }
 
-  Widget _buildSuccessContent() {
+  Widget _buildOTPSuccessContent() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -140,7 +171,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         const SizedBox(height: 18),
         GestureDetector(
           onTap: () {
-            // Gửi lại mã xác thực
           },
           child: const Text(
             'Gửi lại mã xác thực',
@@ -182,7 +212,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     );
   }
 
-  Widget _buildSetPassContent() {
+  Widget _buildSetNewPasswordContent() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -208,48 +238,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         ),
         const SizedBox(height: 29),
         LoginAndRegisterButton(
-  text: 'Cập nhật mật khẩu',
-  onTap: () {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: AppColors.background,
-          title: const Text(
-            'Thành công',
-              style: TextStyle(
-              fontFamily: 'Montserrat',
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: AppColors.highlightDarkest,
-            ),
-          ),
-          content: const Text(
-            'Mật khẩu đã được cập nhật thành công!',
-            style: TextStyle(
-              fontFamily: 'Montserrat',
-              fontSize: 16,
-              color: AppColors.textPrimary,
-            ),
-          ),
-          actions: [
-            LoginAndRegisterButton(
-              text: 'Đăng nhập',
-              onTap: () {
-                Navigator.pop(context); 
-                _emailController.clear();
-                _newPasswordController.clear();
-                _confirmPasswordController.clear();
-                setState(() {
-                  _currentStep = ForgotPasswordStep.inputEmail;
-                });
-                widget.onNavigate(6);
-              },
-              stateLoginOrRegister: AuthButtonState.login,
-              textColor: AppColors.text,
-            ),],
-           ); },
-          );},
+          text: 'Cập nhật mật khẩu',
+          onTap: _validatePasswordInput, 
           stateLoginOrRegister: AuthButtonState.login,
           textColor: AppColors.text,
         ),
