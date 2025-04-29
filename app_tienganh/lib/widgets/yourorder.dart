@@ -1,12 +1,13 @@
+import 'package:app_tienganh/views/cus/order_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../core/app_colors.dart';
 
 class YourOrder extends StatelessWidget {
   final String text;
-  final Widget destination;
+  final VoidCallback onTap;  // Chuyển từ Widget destination sang VoidCallback onTap
 
-  const YourOrder({super.key, required this.text, required this.destination});
+  const YourOrder({super.key, required this.text, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +22,8 @@ class YourOrder extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
         ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => destination),
-          );
-        },
+      // Gọi onTap khi bấm nút
+      onPressed: onTap,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -39,9 +36,8 @@ class YourOrder extends StatelessWidget {
                 fontFamily: 'Montserrat',
               ),
             ),
-            // Gán cứng hình ảnh SVG
             SvgPicture.asset(
-              'assets/img/ArrowRight.svg', // Hình cố định
+              'assets/img/ArrowRight.svg',
               width: 24,
               height: 24,
             ),
@@ -51,9 +47,3 @@ class YourOrder extends StatelessWidget {
     );
   }
 }
-
-// Cách sử dụng, ví dụ:
-//  YourOther(
-//                 text: 'Go to Settings',
-//                 destination: const DummyPage(),// click để chuyển hướng đến trang này vd: đến trang DummyPage
-//               ),

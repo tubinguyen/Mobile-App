@@ -1,3 +1,4 @@
+import 'package:app_tienganh/views/cus/order_screen.dart';
 import 'package:flutter/material.dart';
 import '../views/cus/home_screen.dart';
 import '../views/cus/library_screen.dart';
@@ -18,8 +19,8 @@ import '../widgets/bottom_navigation_bar.dart';
 import '../widgets/header.dart';
 import '../views/cus/test_screen.dart';
 import '../views/cus/flashcard_screen.dart';
-
-
+import '../views/cus/update_profile_screen.dart';
+import '../views/cus/update_password_screen.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});
@@ -41,8 +42,8 @@ class _NavigationPageState extends State<NavigationPage> {
       LibraryScreen(onNavigate:_onItemTapped),
       CourseCreationScreen(onNavigate:_onItemTapped),
       StoreScreen(onNavigate:_onItemTapped),
-      NotificationScreen(onNavigate:_onItemTapped),
       ProfileScreen(onNavigate:_onItemTapped),
+      NotificationScreen(onNavigate:_onItemTapped),
       LoginScreen(onNavigate:_onItemTapped),
       ForgetPasswordScreen(onNavigate:_onItemTapped),
       RegisterScreen(onNavigate: _onItemTapped),
@@ -54,10 +55,13 @@ class _NavigationPageState extends State<NavigationPage> {
       EditProduct(onNavigate: _onItemTapped),
       TestScreen(onNavigate: _onItemTapped),
       FlashcardScreen(onNavigate: _onItemTapped),
+      OrderScreen(onNavigate: _onItemTapped),
+      UpdateProfileScreen(onNavigate: _onItemTapped), //13: update profile
+      UpdatePasswordScreen(onNavigate: _onItemTapped) //14: Update pass
     ]);
 }
 
-  final Set<int> _pagesWithHeader = {0, 1, 3, 4, 5,11};
+  final Set<int> _pagesWithHeader = {0, 1, 3, 4, 5,11,12,13,14};
   final Set<int> _pagesWithBottomNavigationBar = {0, 1, 3, 4, 5};
 
   void _onItemTapped(int index) {

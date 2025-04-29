@@ -7,7 +7,7 @@ class LibraryObject extends StatelessWidget {
   final String title;
   final String subtitle;
   final String username;
-  final Function (int) onNavigate;
+   final VoidCallback onTap;
 
   const LibraryObject({
     super.key,
@@ -15,15 +15,13 @@ class LibraryObject extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.username,
-    required this.onNavigate,
+    required this.onTap,
   });
 
   @override
 Widget build(BuildContext context) {
   return GestureDetector(
-    onTap: () {
-      onNavigate(hocphanID); // <-- gọi hàm callback kèm theo ID
-    },
+    onTap: onTap ,
     child: Container(
       width: 342,
       height: 102,
