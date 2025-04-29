@@ -664,7 +664,7 @@ Widget _buildResultScreen() {
                 
                 LargeButtonSecondary(
                   text: "Ôn tập",
-                  onTap: () => {widget.onNavigate(0), resetPage()},
+                  onTap: () => {widget.onNavigate(0), resetPage()}, //Dieuhuong ve trang on tap
                 ),
                 const SizedBox(height: 20),
                 LargeButton(
