@@ -4,13 +4,15 @@ import '../core/app_colors.dart';
 class NumberInputField extends StatefulWidget {
   final int min;
   final int max;
-  final TextEditingController? controller; // Thêm controller
-  final ValueChanged<String>? onChanged; // Thêm callback onChanged
+  final int initialValue;
+  final TextEditingController? controller;
+  final ValueChanged<int>? onChanged;
 
   const NumberInputField({
     super.key,
     this.min = 0,
     this.max = 100,
+    this.initialValue = 1,
     this.controller,
     this.onChanged,
   });
@@ -20,44 +22,56 @@ class NumberInputField extends StatefulWidget {
 }
 
 class NumberInputFieldState extends State<NumberInputField> {
+  late int _value;
   late TextEditingController _controller;
+  bool _isExternalController = false;
 
   @override
   void initState() {
     super.initState();
-    _controller = widget.controller ?? TextEditingController(text: widget.min.toString());
+    _value = widget.initialValue;
+
+    // Dùng controller bên ngoài nếu có, ngược lại thì tạo mới
+    _isExternalController = widget.controller != null;
+    _controller = widget.controller ?? TextEditingController(text: _value.toString());
+
+    // Đồng bộ ban đầu
+    if (!_isExternalController) {
+      _controller.text = _value.toString();
+    }
   }
 
   void _updateValue(int newValue) {
     if (newValue >= widget.min && newValue <= widget.max) {
       setState(() {
-        _controller.text = newValue.toString();
-        if (widget.onChanged != null) {
-          widget.onChanged!(_controller.text); // Gọi callback onChanged
-        }
+        _value = newValue;
+        _controller.text = _value.toString();
+        widget.onChanged?.call(_value);
       });
+    } else {
+      _controller.text = _value.toString(); // Reset nếu vượt giới hạn
     }
   }
 
   void _onSubmitted(String input) {
-    int? newValue = int.tryParse(input);
+    final newValue = int.tryParse(input);
     if (newValue != null) {
       _updateValue(newValue);
     } else {
-      _controller.text = widget.min.toString(); // Reset nếu nhập sai
+      _controller.text = _value.toString();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildButton(Icons.remove, () => _updateValue(int.parse(_controller.text) - 1)),
+          _buildButton(Icons.remove, () => _updateValue(_value - 1)),
           SizedBox(
             width: 50,
             child: TextField(
@@ -72,14 +86,16 @@ class NumberInputFieldState extends State<NumberInputField> {
               ),
               onSubmitted: _onSubmitted,
               onChanged: (input) {
-                if (widget.onChanged != null) {
-                  widget.onChanged!(input); // Gọi callback onChanged khi thay đổi
+                final newValue = int.tryParse(input);
+                if (newValue != null) {
+                  _value = newValue;
+                  widget.onChanged?.call(_value);
                 }
               },
               decoration: const InputDecoration(border: InputBorder.none),
             ),
           ),
-          _buildButton(Icons.add, () => _updateValue(int.parse(_controller.text) + 1)),
+          _buildButton(Icons.add, () => _updateValue(_value + 1)),
         ],
       ),
     );
@@ -104,16 +120,3 @@ class NumberInputFieldState extends State<NumberInputField> {
     );
   }
 }
-
-
-//cách dùng
-// NumberInputField(
-//   min: 1,
-//   max: vocabList.length, // Giới hạn số câu hỏi tối đa bằng số từ vựng
-//   controller: questionCountController,
-//   onChanged: (value) {
-//     setState(() {
-//       totalQuestions = int.tryParse(value) ?? 1; // Cập nhật số câu hỏi
-//     });
-//   },
-// ),

@@ -329,7 +329,7 @@ Widget _buildTestSettingScreen() {
                 controller: questionCountController,
                 onChanged: (value) {
                   setState(() {
-                    totalQuestions = int.tryParse(value) ?? 1; // Cập nhật số câu hỏi
+                    totalQuestions = value; // Cập nhật số câu hỏi
                   });
                 },
               ),
@@ -664,7 +664,7 @@ Widget _buildResultScreen() {
                 
                 LargeButtonSecondary(
                   text: "Ôn tập",
-                  onTap: () => {widget.onNavigate(0), resetPage()},
+                  onTap: () => {widget.onNavigate(0), resetPage()}, //Dieuhuong ve trang on tap
                 ),
                 const SizedBox(height: 20),
                 LargeButton(

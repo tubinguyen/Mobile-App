@@ -6,15 +6,15 @@ import '../core/app_colors.dart';
 class CustomNavBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final String leadingIconPath;
-  final String actionIconPath;
+  final String? actionIconPath;
   final VoidCallback? onLeadingPressed;
   final VoidCallback? onActionPressed;
 
   const CustomNavBar({
     super.key,
     required this.title,
-    this.leadingIconPath = '',
-    this.actionIconPath = '',
+    required this.leadingIconPath,
+    this.actionIconPath,
     this.onLeadingPressed,
     this.onActionPressed,
   });
@@ -45,30 +45,31 @@ class CustomNavBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       centerTitle: true,
-      
-      actions: actionIconPath.isNotEmpty
-        ? [
-            IconButton(
-              icon: SvgPicture.asset(
-                actionIconPath,
-                width: 20,
-                height: 20,
-              ),
-              onPressed: onActionPressed ??
-                  () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => NavigationPage(),
-                        ),
-                      ),
+      actions: [
+        if (actionIconPath != null)
+          IconButton(
+            icon: SvgPicture.asset(
+              actionIconPath!,
+              width: 20,
+              height: 20,
             ),
-          ]
-        : [],
+            onPressed: onActionPressed ??
+                () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => NavigationPage(),
+                    ),
+                  );
+                },
+          ),
+      ],
     );
   }
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
+
  //Cach su dung
  //appBar: CustomNavBar(
       //   title: "Thư viện của bạn",

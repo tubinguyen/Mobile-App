@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:app_tienganh/widgets/book_list.dart';
 
 class HomeScreen extends StatelessWidget {
-  // Hàm điều hướng giữa các trang
   final Function(int) onNavigate;
 
   const HomeScreen({super.key, required this.onNavigate});
@@ -48,10 +47,12 @@ class HomeScreen extends StatelessWidget {
                     note: "Tiếp tục nào",
                     buttonText: "Xem chi tiết",
                     percentage: 72,
-                    onTap: () {onNavigate(1);}, // Truyền hàm điều hướng
+                    onTap: () {
+                      onNavigate(1);
+                    }, // Truyền hàm điều hướng
                   ),
 
-                  // Khoảng cách giữa các thành phần
+                  //Khoảng cách giữa các thành phần
                   const SizedBox(height: 20),
 
                   // Danh sách sách

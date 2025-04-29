@@ -1,7 +1,7 @@
 import 'package:app_tienganh/widgets/empty_notification.dart';
 import 'package:app_tienganh/widgets/notification.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
 
 class NotificationScreen extends StatelessWidget {
   final Function(int) onNavigate;
