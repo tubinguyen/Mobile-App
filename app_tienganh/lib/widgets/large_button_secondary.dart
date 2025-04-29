@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import '../core/app_colors.dart';
 
 class LargeButtonSecondary extends StatelessWidget {
+  final Color? foregroundColor;
+  final Color? borderSideColor;
+  final Color? textColor;
   final String text;
   final VoidCallback onTap;
 
   const LargeButtonSecondary({
     super.key,
+    this.foregroundColor = AppColors.highlightDarkest,
+    this.borderSideColor,
+    this.textColor = AppColors.highlightDarkest,
     required this.text,
     required this.onTap,
   });
@@ -17,8 +23,8 @@ class LargeButtonSecondary extends StatelessWidget {
       height: 40, 
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
-          foregroundColor: AppColors.highlightDarkest, 
-          side: BorderSide(color: AppColors.highlightDarkest, width: 1.5), 
+          foregroundColor: foregroundColor, 
+          side: BorderSide(color: borderSideColor ?? AppColors.highlightDarkest, width: 1.5), 
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15), 
           ),
@@ -27,9 +33,9 @@ class LargeButtonSecondary extends StatelessWidget {
         child: Text(
           text,
           style: TextStyle(
-            fontSize: 15,
+            fontSize: 14,
             fontWeight: FontWeight.bold,
-            color: AppColors.highlightDarkest, 
+            color: textColor, 
             fontFamily: 'Montserrat',
           ),
           textAlign: TextAlign.center,

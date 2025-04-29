@@ -2,23 +2,41 @@ import 'package:flutter/material.dart';
 import '../core/app_colors.dart';
 import 'package:app_tienganh/widgets/number_input_field.dart';
 
-class ShoppingCartItem extends StatelessWidget {
+class ShoppingCartItem extends StatefulWidget {
   final String imageName;
   final double price;
   final String title;
+  final VoidCallback onRemove;
 
-  const ShoppingCartItem({super.key, required this.imageName, required this.price, required this.title});
+  const ShoppingCartItem({
+    super.key,
+    required this.imageName,
+    required this.price,
+    required this.title,
+    required this.onRemove,
+  });
+
+  @override
+  State<ShoppingCartItem> createState() => _ShoppingCartItemState();
+}
+
+class _ShoppingCartItemState extends State<ShoppingCartItem> {
+  int quantity = 1;
 
   @override
   Widget build(BuildContext context) {
+    double totalPrice = widget.price * quantity;
+
     return Container(
-      width: 335, 
-      height: 100, 
-      padding: EdgeInsets.symmetric(vertical: 5.0),
-      child: Row(
+  width: 335,
+  height: 100,
+  padding: const EdgeInsets.symmetric(vertical: 5.0),
+  child: Stack(
+    children: [
+      Row(
         children: [
           Image.asset(
-            imageName, 
+            widget.imageName,
             width: 100,
             height: 100,
             errorBuilder: (context, error, stackTrace) {
@@ -33,7 +51,6 @@ class ShoppingCartItem extends StatelessWidget {
               );
             },
           ),
-          SizedBox(width: 12), 
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(top: 2.0),
@@ -42,18 +59,18 @@ class ShoppingCartItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    title,
-                    style: TextStyle(
+                    widget.title,
+                    style: const TextStyle(
                       fontFamily: 'Montserrat',
                       color: AppColors.textPrimary,
-                      fontWeight: FontWeight.bold, 
+                      fontWeight: FontWeight.bold,
                       fontSize: 12,
                     ),
                   ),
-                  SizedBox(height: 3.0), 
+                  const SizedBox(height: 3.0),
                   Text(
-                    '${price.toStringAsFixed(0)} đ',
-                    style: TextStyle(
+                    '${widget.price.toStringAsFixed(0)} đ',
+                    style: const TextStyle(
                       fontFamily: 'Montserrat',
                       color: AppColors.textSecondary,
                       fontSize: 12,
@@ -65,20 +82,26 @@ class ShoppingCartItem extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 2.0),
                         child: NumberInputField(
-                          min: 0,
+                          min: 1,
                           max: 50,
+                          initialValue: quantity,
+                          onChanged: (value) {
+                            setState(() {
+                              quantity = value;
+                            });
+                          },
                         ),
                       ),
-                      SizedBox(width: 36),
+                      const SizedBox(width: 36),
                       Padding(
-                        padding: const EdgeInsets.only(right: 5.0), 
+                        padding: const EdgeInsets.only(right: 10.0),
                         child: Text(
-                          '${(price * 1).toStringAsFixed(0)} VND',
-                          style: TextStyle(
+                          '${totalPrice.toStringAsFixed(0)} VND',
+                          style: const TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
                             color: AppColors.textPrimary,
-                            fontSize: 1,
+                            fontSize: 14,
                           ),
                         ),
                       ),
@@ -90,6 +113,18 @@ class ShoppingCartItem extends StatelessWidget {
           ),
         ],
       ),
-    );
+      // Nút X nằm trên góc
+      Positioned(
+        top: 0,
+        right: 0,
+        child: IconButton(
+          icon: const Icon(Icons.close, color: Colors.red),
+          onPressed: widget.onRemove,
+        ),
+      ),
+    ],
+  ),
+);
+
   }
 }

@@ -1,8 +1,6 @@
-// import 'package:app_tienganh/views/cus/home_screen.dart';
 import 'package:app_tienganh/core/app_colors.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/account.dart';
-import '../../widgets/yourorder.dart';
 import '../../widgets/text_input.dart';
 import '../../widgets/large_button.dart';
 import '../../widgets/navbar.dart';

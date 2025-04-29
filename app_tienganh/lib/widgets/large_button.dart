@@ -5,11 +5,7 @@ class LargeButton extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
 
-  const LargeButton({
-    super.key,
-    required this.text,
-    required this.onTap,
-  });
+  const LargeButton({super.key, required this.text, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +23,7 @@ class LargeButton extends StatelessWidget {
           child: Text(
             text,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.bold,
               color: AppColors.text,
               fontFamily: 'Montserrat',

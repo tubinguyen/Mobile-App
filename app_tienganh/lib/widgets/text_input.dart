@@ -76,7 +76,7 @@ class TextInputState extends State<TextInput> {
             ),
             decoration: InputDecoration(
               labelText: widget.label,
-              labelStyle: TextStyle(color: _getLabelColor(), fontSize: 14),
+              labelStyle: TextStyle(color: _getLabelColor(), fontSize: 14, fontFamily: 'Montserrat'),  
               hintText: widget.hint,
               hintStyle: TextStyle(
                 color: widget.enabled ? AppColors.border : Colors.grey.shade400,
@@ -87,14 +87,14 @@ class TextInputState extends State<TextInput> {
                 vertical: 18,
               ),
               filled: true,
-              fillColor: widget.enabled ? Colors.white : Colors.grey.shade200,
+              fillColor: widget.enabled ? Colors.white : AppColors.background,
 
               border: OutlineInputBorder(
-                borderSide: BorderSide(color: _getBorderColor(), width: 1.5),
+                borderSide: BorderSide(color: _getBorderColor(), width: 2),
                 borderRadius: BorderRadius.circular(12),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: _getBorderColor(), width: 1.5),
+                borderSide: BorderSide(color: _getBorderColor(), width: 2),
                 borderRadius: BorderRadius.circular(12),
               ),
               focusedBorder: OutlineInputBorder(
@@ -102,7 +102,7 @@ class TextInputState extends State<TextInput> {
                 borderRadius: BorderRadius.circular(12),
               ),
               disabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey, width: 1.5),
+                borderSide: BorderSide(color: Colors.grey, width: 1),
                 borderRadius: BorderRadius.circular(12),
               ),
             ),

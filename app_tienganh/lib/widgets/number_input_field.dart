@@ -4,21 +4,41 @@ import '../core/app_colors.dart';
 class NumberInputField extends StatefulWidget {
   final int min;
   final int max;
+  final int initialValue;
+  final TextEditingController? controller;
+  final ValueChanged<int>? onChanged;
 
-  const NumberInputField({super.key, this.min = 0, this.max = 100});
+  const NumberInputField({
+    super.key,
+    this.min = 0,
+    this.max = 100,
+    this.initialValue = 1,
+    this.controller,
+    this.onChanged,
+  });
 
   @override
   NumberInputFieldState createState() => NumberInputFieldState();
 }
 
 class NumberInputFieldState extends State<NumberInputField> {
-  int _value = 1;
+  late int _value;
   late TextEditingController _controller;
+  bool _isExternalController = false;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: _value.toString());
+    _value = widget.initialValue;
+
+    // Dùng controller bên ngoài nếu có, ngược lại thì tạo mới
+    _isExternalController = widget.controller != null;
+    _controller = widget.controller ?? TextEditingController(text: _value.toString());
+
+    // Đồng bộ ban đầu
+    if (!_isExternalController) {
+      _controller.text = _value.toString();
+    }
   }
 
   void _updateValue(int newValue) {
@@ -26,28 +46,27 @@ class NumberInputFieldState extends State<NumberInputField> {
       setState(() {
         _value = newValue;
         _controller.text = _value.toString();
+        widget.onChanged?.call(_value);
       });
     } else {
-      _controller.text = _value.toString();
+      _controller.text = _value.toString(); // Reset nếu vượt giới hạn
     }
   }
 
   void _onSubmitted(String input) {
-    int? newValue = int.tryParse(input);
+    final newValue = int.tryParse(input);
     if (newValue != null) {
       _updateValue(newValue);
     } else {
-      _controller.text = _value.toString(); // Reset nếu nhập sai
+      _controller.text = _value.toString();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
-        // borderRadius: BorderRadius.circular(12),
-        // boxShadow: [BoxShadow(color: Colors.white, blurRadius: 0)],
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -67,9 +86,10 @@ class NumberInputFieldState extends State<NumberInputField> {
               ),
               onSubmitted: _onSubmitted,
               onChanged: (input) {
-                int? newValue = int.tryParse(input);
+                final newValue = int.tryParse(input);
                 if (newValue != null) {
-                  _value = newValue; // Cập nhật ngay khi nhập
+                  _value = newValue;
+                  widget.onChanged?.call(_value);
                 }
               },
               decoration: const InputDecoration(border: InputBorder.none),
@@ -100,10 +120,3 @@ class NumberInputFieldState extends State<NumberInputField> {
     );
   }
 }
-
-
-//cách dùng
-// NumberInputField(
-//   min: 0,
-//   max: 50,
-// ),

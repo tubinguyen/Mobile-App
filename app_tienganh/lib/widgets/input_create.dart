@@ -4,8 +4,14 @@ import '../core/app_colors.dart';
 class InputCreate extends StatelessWidget {
   final String label;
   final String? subtitle;
+  final TextEditingController controller;
 
-  const InputCreate({super.key, required this.label, this.subtitle});
+  const InputCreate({
+    super.key,
+    required this.label,
+    required this.controller,
+    this.subtitle,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +21,7 @@ class InputCreate extends StatelessWidget {
         Text(
           label,
           style: const TextStyle(
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: FontWeight.bold,
             color: AppColors.highlightDarkest,
             fontFamily: 'Montserrat',
@@ -25,8 +31,9 @@ class InputCreate extends StatelessWidget {
           alignment: Alignment.bottomLeft,
           children: [
             SizedBox(
-              width: 372, // Set the specific width here
+              width: 372,
               child: TextField(
+                controller: controller, //điều khiển textfield
                 decoration: InputDecoration(
                   enabledBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: AppColors.border, width: 1),
@@ -37,14 +44,13 @@ class InputCreate extends StatelessWidget {
                       width: 1,
                     ),
                   ),
-                  // Remove content padding to keep the input compact
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
             ),
             if (subtitle != null)
               Padding(
-                padding: const EdgeInsets.only(bottom: 2.0),
+                padding: const EdgeInsets.only(bottom: 0.0),
                 child: Text(
                   subtitle!,
                   style: const TextStyle(
@@ -61,11 +67,13 @@ class InputCreate extends StatelessWidget {
   }
 }
 
+
 // cách sử dụng
 // Column(
 //             mainAxisSize: MainAxisSize.min,
 //             children: [
 //               InputCreate(label: 'Tiêu đề'),
 //               SizedBox(height: 16), khoảng cách giữa các ô
-//               InputCreate(label: 'Tiêu đề', subtitle: 'Chủ đề, Chương'),
+//               InputCreate(label: 'Tiêu đề', subtitle: 'Chủ đề, Chương', controller: TextEditingController(),),
 //             ],),
+

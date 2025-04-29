@@ -40,6 +40,7 @@ class VocabularyFlipCard extends StatelessWidget {
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: isBack ? AppColors.highlightDarkest : AppColors.textPrimary,
+
                 fontFamily: 'Montserrat',
               ),
             ),

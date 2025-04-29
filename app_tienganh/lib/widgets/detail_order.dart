@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../core/app_colors.dart';
 import 'package:app_tienganh/widgets/shopping_cart_item_final.dart';
 import 'package:app_tienganh/widgets/large_button.dart';
+import 'package:app_tienganh/views/admin/order_detail_screen.dart'; // Import màn hình chi tiết đơn hàng
 
 class OrderDetail extends StatelessWidget {
   final String date;
@@ -23,12 +24,10 @@ class OrderDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-    double totalPrice = price * quantity; 
+    double totalPrice = price * quantity;
 
     return SizedBox(
-      width: 369,
-      height: 283, 
+      height: 283,
       child: Card(
         color: Colors.white,
         shape: RoundedRectangleBorder(
@@ -38,7 +37,7 @@ class OrderDetail extends StatelessWidget {
         elevation: 4,
         margin: EdgeInsets.all(10.0),
         child: Padding(
-          padding: EdgeInsets.fromLTRB(10.0,10,10,5),
+          padding: EdgeInsets.fromLTRB(10.0, 10, 10, 5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -46,7 +45,7 @@ class OrderDetail extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding (
+                  Padding(
                     padding: const EdgeInsets.only(left: 17.0),
                     child: Text(
                       date,
@@ -57,17 +56,16 @@ class OrderDetail extends StatelessWidget {
                       ),
                     ),
                   ),
-                  
-                  Padding (
+                  Padding(
                     padding: const EdgeInsets.only(right: 15.0),
                     child: Text(
-                    isReceived ? "Đã nhận hàng" : "Chưa nhận hàng",
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 14,
-                      color: AppColors.textPrimary,
+                      isReceived ? "Đã nhận hàng" : "Chưa nhận hàng",
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 14,
+                        color: AppColors.textPrimary,
+                      ),
                     ),
-                  ),
                   ),
                 ],
               ),
@@ -75,7 +73,7 @@ class OrderDetail extends StatelessWidget {
 
               // Sản phẩm trong giỏ hàng
               ShoppingCartItemFinal(
-                imageName: imageName, 
+                imageName: imageName,
                 price: price,
                 title: title,
                 quantity: quantity,
@@ -83,9 +81,9 @@ class OrderDetail extends StatelessWidget {
 
               Divider(height: 24, thickness: 1, color: AppColors.blueLightest), // Đường kẻ phân cách
 
-              // Tổng tiền 
+              // Tổng tiền
               Padding(
-                padding: const EdgeInsets.only(left: 16.0), 
+                padding: const EdgeInsets.only(left: 16.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -98,7 +96,7 @@ class OrderDetail extends StatelessWidget {
                         color: Colors.red,
                       ),
                     ),
-                    SizedBox(width: 160.0), 
+                    SizedBox(width: 160.0),
                     Text(
                       "${totalPrice.toStringAsFixed(0)} VND",
                       style: TextStyle(
@@ -111,7 +109,7 @@ class OrderDetail extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 9), // Thêm khoảng cách trước nút
+              SizedBox(height: 9),
 
               // Nút đặt hàng
               Padding(
@@ -121,7 +119,20 @@ class OrderDetail extends StatelessWidget {
                   child: LargeButton(
                     text: 'Đã nhận hàng',
                     onTap: () {
-                      // Xử lý khi nhấn nút
+                      // Điều hướng đến màn hình chi tiết đơn hàng khi nhấn nút
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => OrderDetailScreen(
+                            date: date,
+                            isReceived: isReceived,
+                            imageName: imageName,
+                            price: price,
+                            title: title,
+                            quantity: quantity,
+                          ),
+                        ),
+                      );
                     },
                   ),
                 ),

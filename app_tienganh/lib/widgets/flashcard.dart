@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flip_card/flip_card.dart';
 import 'package:app_tienganh/core/app_colors.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
@@ -21,16 +22,15 @@ class Flashcard extends StatefulWidget {
 }
 
 class _FlashcardState extends State<Flashcard> {
-  late bool _isFrontSide;
   late FlutterTts flutterTts;
+  late GlobalKey<FlipCardState> cardKey;
 
   @override
   void initState() {
     super.initState();
-    _isFrontSide = !widget.initialSide;
-
     // Khởi tạo FlutterTts
     flutterTts = FlutterTts();
+    cardKey = GlobalKey<FlipCardState>();
 
     // Cấu hình ban đầu cho TTS
     _setupTts();
@@ -53,37 +53,8 @@ class _FlashcardState extends State<Flashcard> {
     }
   }
 
-  void _toggleSide() {
-    setState(() {
-      _isFrontSide = !_isFrontSide;
-      widget.onFlip?.call();
-    });
-  }
-
-  @override
-  void dispose() {
-    // Giải phóng tài nguyên khi widget bị hủy
-    flutterTts.stop();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: _toggleSide,
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 500),
-        transitionBuilder: (Widget child, Animation<double> animation) {
-          return RotationTransition(turns: animation, child: child);
-        },
-        child: _buildFlashcardContent(),
-      ),
-    );
-  }
-
-  Widget _buildFlashcardContent() {
+  Widget _buildCard(String text, {bool isBack = false}) {
     return Container(
-      key: ValueKey<bool>(_isFrontSide),
       width: 372,
       height: 449,
       decoration: BoxDecoration(
@@ -95,7 +66,7 @@ class _FlashcardState extends State<Flashcard> {
         children: [
           Center(
             child: Text(
-              _isFrontSide ? widget.word : widget.translation,
+              text,
               style: const TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
@@ -113,14 +84,29 @@ class _FlashcardState extends State<Flashcard> {
                 Icons.volume_up,
                 color: AppColors.highlightDarkest,
               ),
-              onPressed: () {
-                // Phát âm từ hiện tại
-                _speak(_isFrontSide ? widget.word : widget.translation);
-              },
+              onPressed: () => _speak(text),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  @override
+  void dispose() {
+    // Giải phóng tài nguyên khi widget bị hủy
+    flutterTts.stop();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FlipCard(
+      key: cardKey,
+      direction: FlipDirection.HORIZONTAL, // Lật ngang
+      front: _buildCard(widget.word),
+      back: _buildCard(widget.translation, isBack: true),
+      onFlip: widget.onFlip,
     );
   }
 }
