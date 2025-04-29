@@ -1,3 +1,4 @@
+import 'package:app_tienganh/views/cus/flashcard_screen.dart';
 import 'package:flutter/material.dart';
 import '../views/cus/home_screen.dart';
 import '../views/cus/library_screen.dart';
@@ -50,8 +51,9 @@ class _NavigationPageState extends State<NavigationPage> {
       AddProduct(onNavigate:_onItemTapped),
       EditProduct(onNavigate: _onItemTapped),
       TestScreen(onNavigate: _onItemTapped),
-    ]);
-  }
+      FlashcardScreen(onNavigate: _onItemTapped),
+  ]);
+}
 
   final Set<int> _pagesWithHeader = {0, 1, 3, 4};
   final Set<int> _pagesWithBottomNavigationBar = {0, 1, 2, 3, 4};
@@ -65,24 +67,22 @@ class _NavigationPageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _pagesWithHeader.contains(_selectedIndex)
-          ? Header(
-              onHomeTap: () => _onItemTapped(0),
-              onNotificationTap: () => _onItemTapped(4),
-              onAuthTap: () => _onItemTapped(6),
-            )
-          : null,
-      body:  
-      IndexedStack(
-        index: _selectedIndex,
-        children: _pages,
-      ),
-      bottomNavigationBar: _pagesWithBottomNavigationBar.contains(_selectedIndex)
-          ? CustomBottomNavigationBar(
-              selectedIndex: _selectedIndex,
-              onItemTapped: _onItemTapped,
-            )
-          : null,
+      appBar:
+          _pagesWithHeader.contains(_selectedIndex)
+              ? Header(
+                onHomeTap: () => _onItemTapped(0),
+                onNotificationTap: () => _onItemTapped(4),
+                onAuthTap: () => _onItemTapped(6),
+              )
+              : null,
+      body: IndexedStack(index: _selectedIndex, children: _pages),
+      bottomNavigationBar:
+          _pagesWithBottomNavigationBar.contains(_selectedIndex)
+              ? CustomBottomNavigationBar(
+                selectedIndex: _selectedIndex,
+                onItemTapped: _onItemTapped,
+              )
+              : null,
     );
   }
 }
