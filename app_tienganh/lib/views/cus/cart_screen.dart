@@ -20,7 +20,7 @@ class CartScreenState extends State<CartScreen> {
       'price': 180000.0,
     },
     {
-      'imageName': 'assets/img/vocabulary.jpg',
+      'imageName': 'assets/img/starter-toeic.jpg',
       'title': 'Từ vựng TOEIC',
       'price': 150000.0,
     },

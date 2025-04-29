@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (email.isEmpty || password.isEmpty) {
       _showSnackBar("Vui lòng nhập đầy đủ email và mật khẩu.");
     } else {
-      widget.onNavigate(1); 
+      widget.onNavigate(0); 
     }
   }
 
@@ -89,7 +89,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 16),
 
                 GoogleSignInButton(
-                  onTap: () {},
+                  onTap: () {
+                    widget.onNavigate(9); //Test
+                  },
                 ),
                 const SizedBox(height: 16),
                 Row(

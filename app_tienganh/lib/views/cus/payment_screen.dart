@@ -61,7 +61,7 @@ class PaymentScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             LoginAndRegisterButton(
-              text: 'Đặt hàng',
+              text: 'Thanh toán',
               onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(

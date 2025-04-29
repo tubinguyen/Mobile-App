@@ -30,7 +30,14 @@
 import 'package:flutter/material.dart';
 import 'routes/navigation_page.dart'; 
 
-void main() {
+void main() async{
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await [
+  //   Permission.photos,
+  //   Permission.videos,
+  //   Permission.audio,
+  //   Permission.storage,
+  // ].request();
   runApp(const MyApp());
 }
 
