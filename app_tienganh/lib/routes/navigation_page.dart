@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../views/cus/home_screen.dart';
-import '../views/cus/review_screen.dart';
+import '../views/cus/library_screen.dart';
 import '../views/cus/login_screen.dart';
 import '../views/cus/course_creation_screen.dart';
 import '../views/admin/user_management.dart';
@@ -12,6 +12,8 @@ import '../views/cus/profile_screen.dart';
 import '../views/cus/notification_screen.dart';
 import '../widgets/bottom_navigation_bar.dart';
 import '../widgets/header.dart';
+import '../views/cus/test_screen.dart';
+
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});
@@ -30,8 +32,8 @@ class _NavigationPageState extends State<NavigationPage> {
     super.initState();
     _pages.addAll([
       HomeScreen(onNavigate: _onItemTapped), 
-      ReviewScreen(onNavigate:_onItemTapped),
-      CourseCreationScreen(onNavigate:_onItemTapped),
+      LibraryScreen(onNavigate:_onItemTapped),
+      CourseCreationScreen(onNavigate:_onItemTapped),//2
       StoreScreen(onNavigate:_onItemTapped),
       NotificationScreen(onNavigate:_onItemTapped),
       ProfileScreen(onNavigate:_onItemTapped),
@@ -40,6 +42,7 @@ class _NavigationPageState extends State<NavigationPage> {
       ProductManagement(onNavigate:_onItemTapped),
       OrderManagement(onNavigate:_onItemTapped),
       AccountManagement(onNavigate:_onItemTapped),
+      TestScreen(onNavigate: _onItemTapped),
     ]);
   }
 

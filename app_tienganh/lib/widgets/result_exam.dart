@@ -19,7 +19,7 @@ class ResultExamCustom extends StatelessWidget {
     double percentage = (totalQuestions > 0) ? ((correctAnswersAdjusted / totalQuestions) * 100) : 0;
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         CircularProgressIndicatorCustom(
           progress: percentage / 100, // Chia cho 100 để chuyển đổi sang tỷ lệ 0.0 - 1.0
