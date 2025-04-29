@@ -117,7 +117,7 @@ class OrderDetail extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.bottomRight,
                   child: LargeButton(
-                    text: 'Đặt hàng',
+                    text: 'Đã nhận hàng',
                     onTap: () {
                       // Điều hướng đến màn hình chi tiết đơn hàng khi nhấn nút
                       Navigator.push(
