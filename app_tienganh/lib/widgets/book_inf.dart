@@ -9,6 +9,7 @@ class BookInf extends StatelessWidget {
   final String description;
   final VoidCallback onDelete;
   final VoidCallback onEdit;
+  final String? imagePath;
 
   const BookInf({
     super.key,
@@ -18,6 +19,7 @@ class BookInf extends StatelessWidget {
     required this.description,
     required this.onDelete,
     required this.onEdit,
+    this.imagePath,
   });
 
   @override
@@ -25,29 +27,40 @@ class BookInf extends StatelessWidget {
     return SizedBox(
       width: 369,
       child: Card(
-        color: Colors.white, 
+        color: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
           side: const BorderSide(
-            color: AppColors.borderLight, 
-            width: 1, 
+            color: AppColors.borderLight,
+            width: 1,
           ),
         ),
         elevation: 4,
         child: Padding(
-          padding: const EdgeInsets.all(12.0), 
+          padding: const EdgeInsets.all(12.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ClipRRect(
+                borderRadius: BorderRadius.circular(8),
                 child: Image.asset(
-                  'assets/img/user.jpg',
-                  width: 135, 
+                  imagePath ?? 'assets/img/user.jpg',
+                  width: 135,
                   height: 171,
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      width: 135,
+                      height: 171,
+                      color: Colors.grey[300],
+                      child: const Center(
+                        child: Icon(Icons.broken_image, size: 48, color: Colors.grey),
+                      ),
+                    );
+                  },
                 ),
               ),
-              const SizedBox(width: 20), 
+              const SizedBox(width: 20),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,19 +78,31 @@ class BookInf extends StatelessWidget {
                     const SizedBox(height: 6),
                     Text(
                       'Giá: $price',
-                      style: const TextStyle(fontSize: 10, fontFamily: 'Montserrat',fontWeight: FontWeight.normal,),
+                      style: const TextStyle(
+                        fontSize: 10,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
                     Text(
                       'Số lượng: $quantity',
-                      style: const TextStyle(fontSize: 10, fontFamily: 'Montserrat',fontWeight: FontWeight.normal,),
+                      style: const TextStyle(
+                        fontSize: 10,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
                     Text(
                       'Mô tả sản phẩm: $description',
-                      style: const TextStyle(fontSize: 10,  fontFamily: 'Montserrat',fontWeight: FontWeight.normal,),
+                      style: const TextStyle(
+                        fontSize: 10,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
-                    const SizedBox(height: 10), 
+                    const SizedBox(height: 10),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center, 
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         PremiumButton(
                           text: 'Xóa',
@@ -85,7 +110,7 @@ class BookInf extends StatelessWidget {
                           state: ButtonState.failure,
                           textColor: AppColors.text,
                         ),
-                        const SizedBox(width: 5), 
+                        const SizedBox(width: 5),
                         PremiumButton(
                           text: 'Chỉnh sửa',
                           onTap: onEdit,
@@ -104,14 +129,3 @@ class BookInf extends StatelessWidget {
     );
   }
 }
-
-
-//Cach su dung
-// BookInf(
-//   name: "Check your English Vocabulary for Toeic",
-//   price: 200000,
-//   quantity: 10,
-//   description: "Sách TOEIC Preparation LC + RC Volume 1, 2",
-//   onDelete: () {},
-//   onEdit: () {},
-// ),

@@ -27,7 +27,7 @@ class UserInfoCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
           side: const BorderSide(
-            color: AppColors.background, 
+            color: AppColors.blueLightest, 
             width: 1, 
           ),
         ),
@@ -54,7 +54,7 @@ class UserInfoCard extends StatelessWidget {
                     Text(
                       'Tên người dùng: $name',
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 12,
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.bold,
                         color: AppColors.highlightDarkest,

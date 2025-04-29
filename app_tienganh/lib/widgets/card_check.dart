@@ -39,7 +39,8 @@ class VocabularyFlipCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: isBack ? AppColors.highlightDarkest : AppColors.textPrimary,
+                color:
+                    isBack ? AppColors.highlightDarkest : AppColors.textPrimary,
                 fontFamily: 'Montserrat',
               ),
             ),
@@ -49,7 +50,10 @@ class VocabularyFlipCard extends StatelessWidget {
               top: 10,
               right: 10,
               child: IconButton(
-                icon: const Icon(Icons.volume_up, color: AppColors.highlightDarkest),
+                icon: const Icon(
+                  Icons.volume_up,
+                  color: AppColors.highlightDarkest,
+                ),
                 onPressed: () {
                   // TODO: Play pronunciation
                 },

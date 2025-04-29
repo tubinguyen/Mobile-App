@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
 import '../views/cus/home_screen.dart';
-import '../views/cus/review_screen.dart';
+import '../views/cus/library_screen.dart';
 import '../views/cus/login_screen.dart';
+import '../views/cus/forget_password_screen.dart';
 import '../views/cus/course_creation_screen.dart';
+import '../views/cus/register_screen.dart';
 import '../views/admin/user_management.dart';
 import '../views/admin/product_management.dart';
 import '../views/admin/order_management.dart';
-import '../views/admin/account_management.dart';
+import '../views/admin/add_product.dart';
+import '../views/admin/edit_product.dart';
 import '../views/cus/store_screen.dart';
 import '../views/cus/profile_screen.dart';
 import '../views/cus/notification_screen.dart';
 import '../views/cus/study_session_screen.dart';
 import '../widgets/bottom_navigation_bar.dart';
 import '../widgets/header.dart';
+import '../views/cus/test_screen.dart';
+import '../views/cus/flashcard_screen.dart';
+
+
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});
@@ -31,19 +38,24 @@ class _NavigationPageState extends State<NavigationPage> {
     super.initState();
     _pages.addAll([
       HomeScreen(onNavigate: _onItemTapped), 
-      ReviewScreen(onNavigate:_onItemTapped),
+      LibraryScreen(onNavigate:_onItemTapped),
       CourseCreationScreen(onNavigate:_onItemTapped),
       StoreScreen(onNavigate:_onItemTapped),
       NotificationScreen(onNavigate:_onItemTapped),
       ProfileScreen(onNavigate:_onItemTapped),
       LoginScreen(onNavigate:_onItemTapped),
+      ForgetPasswordScreen(onNavigate:_onItemTapped),
+      RegisterScreen(onNavigate: _onItemTapped),
       UserManagement(onNavigate:_onItemTapped),
       ProductManagement(onNavigate:_onItemTapped),
       OrderManagement(onNavigate:_onItemTapped),
-      AccountManagement(onNavigate:_onItemTapped),
       StudySessionPage(onNavigate:_onItemTapped),
+      AddProduct(onNavigate:_onItemTapped),
+      EditProduct(onNavigate: _onItemTapped),
+      TestScreen(onNavigate: _onItemTapped),
+      FlashcardScreen(onNavigate: _onItemTapped),
     ]);
-  }
+}
 
   final Set<int> _pagesWithHeader = {0, 1, 3, 4, 5,11};
   final Set<int> _pagesWithBottomNavigationBar = {0, 1, 3, 4, 5};
@@ -57,24 +69,22 @@ class _NavigationPageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _pagesWithHeader.contains(_selectedIndex)
-          ? Header(
-              onHomeTap: () => _onItemTapped(0),
-              onNotificationTap: () => _onItemTapped(4),
-              onAuthTap: () => _onItemTapped(6),
-            )
-          : null,
-      body:  
-      IndexedStack(
-        index: _selectedIndex,
-        children: _pages,
-      ),
-      bottomNavigationBar: _pagesWithBottomNavigationBar.contains(_selectedIndex)
-          ? CustomBottomNavigationBar(
-              selectedIndex: _selectedIndex,
-              onItemTapped: _onItemTapped,
-            )
-          : null,
+      appBar:
+          _pagesWithHeader.contains(_selectedIndex)
+              ? Header(
+                onHomeTap: () => _onItemTapped(0),
+                onNotificationTap: () => _onItemTapped(4),
+                onAuthTap: () => _onItemTapped(6),
+              )
+              : null,
+      body: IndexedStack(index: _selectedIndex, children: _pages),
+      bottomNavigationBar:
+          _pagesWithBottomNavigationBar.contains(_selectedIndex)
+              ? CustomBottomNavigationBar(
+                selectedIndex: _selectedIndex,
+                onItemTapped: _onItemTapped,
+              )
+              : null,
     );
   }
 }
