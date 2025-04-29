@@ -21,7 +21,7 @@ class FunctionCard extends StatelessWidget {
         width: 352,
         height: 80,
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        margin: const EdgeInsets.symmetric(vertical: 15),
+        margin: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
           color: AppColors.highlightLight,
           borderRadius: BorderRadius.circular(12),

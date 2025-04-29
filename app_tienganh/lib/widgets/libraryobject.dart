@@ -3,20 +3,26 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../core/app_colors.dart';
 
 class LibraryObject extends StatelessWidget {
+  final int hocphanID;
   final String title;
   final String subtitle;
   final String username;
+   final VoidCallback onTap;
 
   const LibraryObject({
     super.key,
+    required this.hocphanID,
     required this.title,
     required this.subtitle,
     required this.username,
+    required this.onTap,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+Widget build(BuildContext context) {
+  return GestureDetector(
+    onTap: onTap ,
+    child: Container(
       width: 342,
       height: 102,
       padding: EdgeInsets.all(15),
@@ -44,7 +50,11 @@ class LibraryObject extends StatelessWidget {
               SizedBox(height: 4),
               Text(
                 subtitle,
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold,fontFamily: 'Montserrat',),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Montserrat',
+                ),
                 overflow: TextOverflow.ellipsis,
               ),
             ],
@@ -55,7 +65,11 @@ class LibraryObject extends StatelessWidget {
               SizedBox(width: 8),
               Text(
                 username,
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Montserrat',),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Montserrat',
+                ),
                 overflow: TextOverflow.ellipsis,
               ),
               SizedBox(width: 8),
@@ -68,8 +82,9 @@ class LibraryObject extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 }
 
 // cách sử dụng

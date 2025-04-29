@@ -52,7 +52,7 @@ class HomeScreen extends StatelessWidget {
                     }, // Truyền hàm điều hướng
                   ),
 
-                  // Khoảng cách giữa các thành phần
+                  //Khoảng cách giữa các thành phần
                   const SizedBox(height: 20),
 
                   // Danh sách sách
