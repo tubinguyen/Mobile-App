@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:app_tienganh/views/cus/cart_screen.dart';
 import 'package:app_tienganh/widgets/navbar.dart';
 import 'package:app_tienganh/widgets/login_and_register_button.dart';
+import 'package:app_tienganh/widgets/number_input_field.dart';
 
 class BookDetailScreen extends StatelessWidget {
   final String bookId;
@@ -90,11 +91,33 @@ class BookDetailScreen extends StatelessWidget {
                     book['title']!,
                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontFamily: 'Montserrat', color: AppColors.highlightDarkest),  
                   ),
-                  const SizedBox(height: 20),
-                  Text('${book['price']} đ', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, fontFamily: 'Montserrat', color: AppColors.red)),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 15),
                   Text(book['description']!, style: const TextStyle(fontSize: 13, fontFamily: 'Montserrat', color: AppColors.textPrimary),),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 15),
+                  Text(
+                    'Giá: ${book['price']} đ',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Montserrat',
+                      color: AppColors.red,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      const Text(
+                        'Số lượng:',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'Montserrat',
+                          color: AppColors.highlightDarkest,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      NumberInputField(),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
                   LoginAndRegisterButton(
                     text: 'Thêm vào giỏ hàng', 
                     onTap: (){

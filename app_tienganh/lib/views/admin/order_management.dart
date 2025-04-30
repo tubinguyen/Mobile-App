@@ -9,7 +9,6 @@ class OrderManagement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Dữ liệu đơn hàng mẫu (ở đây chỉ có một đơn hàng, bạn có thể mở rộng thêm)
     List<OrderDetail> orderDetails = [
       OrderDetail(
         date: '2025-04-27',
@@ -18,8 +17,8 @@ class OrderManagement extends StatelessWidget {
         price: 350000,
         title: 'Sản phẩm A',
         quantity: 2,
+        isAdmin : true,
       ),
-      // Thêm các đơn hàng khác vào danh sách nếu cần
       OrderDetail(
         date: '2025-04-28',
         isReceived: true,
@@ -27,6 +26,7 @@ class OrderManagement extends StatelessWidget {
         price: 200000,
         title: 'Sản phẩm B',
         quantity: 1,
+        isAdmin: true,
       ),
     ];
 

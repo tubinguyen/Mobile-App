@@ -95,6 +95,7 @@ class BookInList extends StatelessWidget {
               child: LargeButtonSecondary(
                 text: 'Xem thêm',
                 onTap: () {},
+                //Điều hướng đến trang xem chi tiết của sách
               ),
             ),
           ),

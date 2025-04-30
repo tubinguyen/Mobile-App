@@ -15,21 +15,21 @@ class ProductManagement extends StatelessWidget {
       'price': 200000,
       'quantity': 10,
       'description': "Sách TOEIC Preparation LC + RC Volume 1, 2",
-      'imagePath': 'assets/img/book.jpg', 
+      'imagePath': 'assets/img/starter-toeic.jpg',
     },
     {
       'name': "600 Essential Words for the TOEIC Test",
       'price': 180000,
       'quantity': 15,
       'description': "Cuốn sách giúp cải thiện từ vựng cho kỳ thi TOEIC",
-      'imagePath': 'assets/img/book.jpg',
+      'imagePath': 'assets/img/starter-toeic.jpg',
     },
     {
       'name': "Barron's TOEIC with MP3",
       'price': 250000,
       'quantity': 5,
       'description': "Bộ sách luyện thi TOEIC kèm file nghe MP3",
-      'imagePath': 'assets/img/book.jpg',
+      'imagePath': 'assets/img/starter-toeic.jpg',
     },
   ];
 
@@ -57,6 +57,7 @@ class ProductManagement extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
+
             Expanded(
               child: ListView.builder(
                 itemCount: books.length + 1,
@@ -70,12 +71,12 @@ class ProductManagement extends StatelessWidget {
                         price: book['price'],
                         quantity: book['quantity'],
                         description: book['description'],
-                        imagePath: book['imagePath'], 
+                        imagePath: book['imagePath'],
                         onDelete: () {
                           // Xử lý xóa sản phẩm
                         },
                         onEdit: () {
-                          onNavigate(13);
+                          onNavigate(14); // Điều hướng tới trang chỉnh sửa
                         },
                       ),
                     );
@@ -85,7 +86,7 @@ class ProductManagement extends StatelessWidget {
                       child: LoginAndRegisterButton(
                         text: 'Thêm sản phẩm',
                         onTap: () {
-                          onNavigate(12); 
+                          onNavigate(13); // Điều hướng tới trang thêm sản phẩm
                         },
                         stateLoginOrRegister: AuthButtonState.login,
                         textColor: AppColors.text,

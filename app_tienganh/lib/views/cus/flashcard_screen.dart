@@ -63,7 +63,7 @@ class ReviewScreenState extends State<FlashcardScreen> {
   void _handleContinueOrComplete() {
     if (isCompleted) {
       // Đã hoàn thành toàn bộ từ vựng
-      widget.onNavigate(0);
+      widget.onNavigate(20);
     } else {
       _nextCard();
     }
@@ -81,7 +81,7 @@ class ReviewScreenState extends State<FlashcardScreen> {
               width: 32,
               height: 32,
             ),
-            onPressed: () => widget.onNavigate(0),
+            onPressed: () => widget.onNavigate(20),
           ),
           title: const Text(
             'Kết quả',
@@ -103,7 +103,7 @@ class ReviewScreenState extends State<FlashcardScreen> {
                 note: "$totalCards/$totalCards từ vựng",
                 buttonText: "Kiểm tra cũng cố",
                 percentage: 100,
-                onTap: () => widget.onNavigate(1),
+                onTap: () {widget.onNavigate(15);}, //Chưa điều hướng được vào Test_screen
               ),
             ),
           ],
@@ -120,7 +120,7 @@ class ReviewScreenState extends State<FlashcardScreen> {
             width: 32,
             height: 32,
           ),
-          onPressed: () => widget.onNavigate(0),
+          onPressed: () => widget.onNavigate(20),
         ),
         title: FlashcardCounter(
           currentCard: currentCard,

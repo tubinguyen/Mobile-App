@@ -209,12 +209,12 @@ class _CourseCreationScreenState extends State<CourseCreationScreen> {
           if (currentScreen == 0){
             switchScreen(1);
           }else if (currentScreen == 1){
-            widget.onNavigate(0); //chuyển đến trang học phần của ynhi
+            widget.onNavigate(1); //chuyển đến trang học phần của ynhi
             resetPage();
             resetPageSetting(); // Đặt lại trạng thái
             currentScreen = 0; // Đặt lại currentScreen về 0
           } else {
-            switchScreen(1); // Quay lại màn hình "Cài đặt học phần"
+            switchScreen(2); // Quay lại màn hình "Cài đặt học phần"
           }
         }
       ),

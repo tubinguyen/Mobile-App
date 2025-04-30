@@ -664,12 +664,12 @@ Widget _buildResultScreen() {
                 
                 LargeButtonSecondary(
                   text: "Ôn tập",
-                  onTap: () => {widget.onNavigate(0), resetPage()}, //Dieuhuong ve trang on tap
+                  onTap: () => {widget.onNavigate(16), resetPage()}, //Dieuhuong ve trang on tap
                 ),
                 const SizedBox(height: 20),
                 LargeButton(
                   text: "Làm kiểm tra lại",
-                  onTap: () => resetPage(),
+                  onTap: () => {widget.onNavigate(15), resetPage()},
                 ),
                 const SizedBox(height: 20),
               ],
