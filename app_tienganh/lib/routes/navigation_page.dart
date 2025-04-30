@@ -1,3 +1,4 @@
+import 'package:app_tienganh/views/cus/course_edit_screen.dart';
 import 'package:app_tienganh/views/cus/order_screen.dart';
 import 'package:flutter/material.dart';
 import '../views/cus/home_screen.dart';
@@ -57,11 +58,12 @@ class _NavigationPageState extends State<NavigationPage> {
       FlashcardScreen(onNavigate: _onItemTapped),
       OrderScreen(onNavigate: _onItemTapped),
       UpdateProfileScreen(onNavigate: _onItemTapped), //13: update profile
-      UpdatePasswordScreen(onNavigate: _onItemTapped) //14: Update pass
+      UpdatePasswordScreen(onNavigate: _onItemTapped), //14: Update pass
+      CourseEditScreen(onNavigate: _onItemTapped), 
     ]);
 }
 
-  final Set<int> _pagesWithHeader = {0, 1, 3, 4, 5,11,12,13,14};
+  final Set<int> _pagesWithHeader = {0, 1, 3, 4, 5,11,12,13,14,15};
   final Set<int> _pagesWithBottomNavigationBar = {0, 1, 3, 4, 5};
 
   void _onItemTapped(int index) {
