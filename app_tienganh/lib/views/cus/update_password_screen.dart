@@ -1,4 +1,3 @@
-// import 'package:app_tienganh/views/cus/home_screen.dart';
 import 'package:app_tienganh/core/app_colors.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/account.dart';
@@ -39,7 +38,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen>{
               mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset(
-                  '../../assets/img/Success_Mark.png',
+                  'assets/img/Success_Mark.png',
                   width: 70,
                   height: 70,
                 ),
@@ -69,17 +68,13 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen>{
   }
 
   @override
-Widget build(BuildContext context) { // chữ context viết thường nha
+Widget build(BuildContext context) {
   return Scaffold(
     appBar: CustomNavBar(
         title: 'Thông tin tài khoản', 
         leadingIconPath: "assets/img/back.svg",
-        actionIconPath: '',
          onLeadingPressed: () {
-             widget.onNavigate(12); //quay lại trang update profile
-              },
-              onActionPressed: () {
-                widget.onNavigate(4);
+             widget.onNavigate(4); 
               },
         ),
 

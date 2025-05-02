@@ -24,7 +24,6 @@ class SettingStudySection extends StatelessWidget {
       child: Column(
         children: [
           _buildMenuItem(Icons.edit, "Sửa học phần"),
-          _buildMenuItem(Icons.copy, "Tạo bản sao"),
           _buildMenuItem(Icons.delete, "Xóa học phần"),
         ],
       ),
@@ -55,8 +54,6 @@ class SettingStudySection extends StatelessWidget {
   //   onSelected: (title) {
   //     if (title == "Sửa học phần") {
   //       // Xử lý sửa học phần
-  //     } else if (title == "Tạo bản sao") {
-  //       // Xử lý tạo bản sao
   //     } else if (title == "Xóa học phần") {
   //       // Xử lý xóa học phần
   //     }

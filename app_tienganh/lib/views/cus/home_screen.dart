@@ -48,8 +48,8 @@ class HomeScreen extends StatelessWidget {
                     buttonText: "Xem chi tiết",
                     percentage: 72,
                     onTap: () {
-                      onNavigate(1);
-                    }, // Truyền hàm điều hướng
+                      //Điều hướng đến trang học phần đó
+                    }, 
                   ),
 
                   //Khoảng cách giữa các thành phần

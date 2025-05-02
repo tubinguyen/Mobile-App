@@ -95,7 +95,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   void _manageAccount() {
     if (onItemTapped != null) {
-      onItemTapped!(10); 
+       onItemTapped!(21); 
     }
   }
 
@@ -129,7 +129,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             onPressed: () {
               Navigator.pop(context);
               if (onItemTapped != null) {
-                onItemTapped!(2); 
+                onItemTapped!(6); 
               }
             },
             child: const Text(

@@ -182,8 +182,7 @@ class _CourseCreationScreenState extends State<CourseCreationScreen> {
                       onPressed: () {
                         Navigator.of(context).pop(); // Đóng popup
                         resetPage(); // Đặt lại trạng thái
-                        // widget.onNavigate(0); // Quay lại trang trước đó
-                        widget.onNavigate(20);
+                        widget.onNavigate(0); // Quay lại trang trước đó
                       },
                       child: const Text(
                         "Có",
@@ -304,7 +303,7 @@ class _CourseCreationScreenState extends State<CourseCreationScreen> {
               currentScreen = 0; // Đặt lại currentScreen về 0
             }
           } else {
-            switchScreen(1); // Quay lại màn hình "Cài đặt học phần"
+            switchScreen(2); // Quay lại màn hình "Cài đặt học phần"
           }
         },
       ),

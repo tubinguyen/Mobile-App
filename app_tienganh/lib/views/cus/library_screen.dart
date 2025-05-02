@@ -24,7 +24,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
     String username = 'Nhi';
 
     switch (index) {
-      case 0: // Học phần
+      case 0: 
         List<Map<String, dynamic>> hocPhanList = [
           {'id': 1, 'title': 'Toán'},
           {'id': 2, 'title': 'Lý'},
@@ -59,7 +59,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                       subtitle: subtitle,
                       username: username,
                       onTap: () {
-                        widget.onNavigate(11); // Điều hướng
+                        widget.onNavigate(20); // Điều hướng
                       },
                     ),
                   
@@ -120,17 +120,14 @@ class _LibraryScreenState extends State<LibraryScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 36),
         child: Column(
           children: [
-            CustomNavBar(
-              title: "Thư viện của bạn",
-              leadingIconPath: "assets/img/back.svg",
-              actionIconPath: " ",
-              onLeadingPressed: () {
-                Navigator.pop(context);
-              },
-              onActionPressed: () {
-                widget.onNavigate(3);
-              },
-            ),
+            //Fix
+             CustomNavBar(
+                title: "Thư viện của bạn",
+                leadingIconPath: "assets/img/back.svg",
+                onLeadingPressed: () {
+                  widget.onNavigate(0);
+                },
+              ),
             ContentSwitcher(
               selectedIndex: selectedIndex,
               onNavigate: (index) {

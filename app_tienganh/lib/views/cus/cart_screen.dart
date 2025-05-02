@@ -26,16 +26,10 @@ class CartScreenState extends State<CartScreen> {
     },
   ];
 
-  // Tính tổng giá trị giỏ hàng
   double get totalPrice {
-    double total = 0;
-    for (var item in cartItems) {
-      total += item['price'];
-    }
-    return total;
+    return cartItems.fold(0, (sum, item) => sum + item['price']);
   }
 
-  // Function to remove item from cart
   void removeItem(int index) {
     setState(() {
       cartItems.removeAt(index);
@@ -49,97 +43,126 @@ class CartScreenState extends State<CartScreen> {
         title: 'Giỏ hàng của bạn',
         leadingIconPath: "assets/img/back.svg",
         actionIconPath: "assets/img/store.svg",
-        onLeadingPressed: () {
-          Navigator.pop(context);
-        },
-        onActionPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CartScreen()),
-          );
-        },
+        onLeadingPressed: () => Navigator.pop(context),
+        onActionPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const CartScreen()),
+        ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),
-              child: ListView.separated(
-                padding: const EdgeInsets.all(16.0),
-                itemCount: cartItems.length + 1,
-                itemBuilder: (context, index) {
-                  if (index < cartItems.length) {
-                    return ShoppingCartItem(
-                      imageName: cartItems[index]['imageName'],
-                      title: cartItems[index]['title'],
-                      price: cartItems[index]['price'],
-                      onRemove: () => removeItem(index),
-                    );
-                  } else {
-                    return Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 4.0),
-                                child: Text(
-                                  'TỔNG:',
-                                  style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    color: AppColors.red,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                '${totalPrice.toStringAsFixed(0)} VND',
-                                style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  color: AppColors.red,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 20.0),
-                            child: LoginAndRegisterButton(
-                              text: 'Thanh toán',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        PaymentScreen(totalPrice: totalPrice),
-                                  ),
-                                );
-                              },
-                              stateLoginOrRegister: AuthButtonState.login,
-                              textColor: AppColors.text,
-                            ),
-                          ),
-                        ],
+      body: cartItems.isEmpty
+          ? Center(
+              child: Padding(
+                padding: EdgeInsets.all(32.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/img/empty_cart.png',
+                      height: 180,
+                    ),
+                    SizedBox(height: 24),
+                    Text(
+                      'Giỏ hàng của bạn đang trống',
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.highlightDarkest,
                       ),
-                    );
-                  }
-                },
-                separatorBuilder: (context, index) {
-                  return const Divider(
-                    thickness: 1,
-                    color: AppColors.blueLightest,
-                    height: 24,
+                    ),
+                    SizedBox(height: 12),
+                    Text(
+                      'Hãy thêm một vài sản phẩm để bắt đầu nhé!',
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 16,
+                        color: AppColors.highlightDarkest,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 24),
+                  ],
+                ),
+              ),
+            )
+          : Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: ListView.separated(
+                padding: const EdgeInsets.only(top: 16.0, bottom: 100.0),
+                itemCount: cartItems.length,
+                itemBuilder: (context, index) {
+                  return ShoppingCartItem(
+                    imageName: cartItems[index]['imageName'],
+                    title: cartItems[index]['title'],
+                    price: cartItems[index]['price'],
+                    onRemove: () => removeItem(index),
                   );
                 },
+                separatorBuilder: (context, index) => const Divider(
+                  thickness: 1,
+                  color: AppColors.blueLightest,
+                  height: 24,
+                ),
               ),
             ),
-          ),
-        ],
-      ),
+      bottomNavigationBar: cartItems.isNotEmpty
+          ? Container(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 8,
+                    color: Colors.black12,
+                    offset: Offset(0, -1),
+                  )
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'TỔNG:',
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.red,
+                        ),
+                      ),
+                      Text(
+                        '${totalPrice.toStringAsFixed(0)} VND',
+                        style: const TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.red,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  LoginAndRegisterButton(
+                    text: 'Thanh toán',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              PaymentScreen(totalPrice: totalPrice),
+                        ),
+                      );
+                    },
+                    stateLoginOrRegister: AuthButtonState.login,
+                    textColor: AppColors.text,
+                  ),
+                ],
+              ),
+            )
+          : null,
     );
   }
 }

@@ -90,36 +90,12 @@ class _CourseEditScreenState extends State<CourseEditScreen> {
     const SizedBox(height: 60),
   ];
 
-  // @override
-  //khởi tạo trạng thái ban đầu của widget được gọi khi widget được tạo ra lần đầu tiên
-    // void initState() {
-    //   super.initState();
-    //   resetPage();
-    // }
 
-@override
-void initState() {
-  super.initState();
-  resetPage();
-
-  // Khởi tạo vocabInputs từ vocabList
-  // for (var vocab in course.vocabList) {
-  //   final vocabController = TextEditingController(text: vocab.word);
-  //   final meanController = TextEditingController(text: vocab.meaning);
-
-  //   vocabControllers.add({
-  //     'vocab': vocabController,
-  //     'mean': meanController,
-  //   });
-
-  //   vocabInputs.addAll([
-  //     InputCreate(label: 'Từ vựng', controller: vocabController),
-  //     const SizedBox(height: 10),
-  //     InputCreate(label: 'Giải nghĩa', controller: meanController),
-  //     const SizedBox(height: 60),
-  //   ]);
-  // }
-}
+  @override
+  void initState() {
+    super.initState();
+    resetPage();
+  }
 
   @override
   //reset widget khi thoát ra và quay lại
@@ -243,7 +219,7 @@ void initState() {
                       onPressed: () {
                         Navigator.of(context).pop(); // Đóng popup
                         resetPage(); // Đặt lại trạng thái
-                        widget.onNavigate(15); // Quay lại trang học phần
+                        widget.onNavigate(20); // Quay lại trang học phần
                       },
                       child: const Text(
                         "Có",
@@ -331,80 +307,6 @@ void initState() {
   }
 
 
-  //Màn hình "COURSE Edit"
-  // Widget _buildCourseEditScreen() {
-  //   // Gán giá trị ban đầu cho các controller
-  //   titleController.text = course.title;
-  //   descriptionController.text = course.description.isNotEmpty ? course.description : "";
-
-  //   // Khởi tạo danh sách vocabInputs từ vocabList
-  //   vocabInputs = course.vocabList.map((vocab) {
-  //     final vocabController = TextEditingController(text: vocab.word);
-  //     final meanController = TextEditingController(text: vocab.meaning);
-
-  //     vocabControllers.add({
-  //       'vocab': vocabController,
-  //       'mean': meanController,
-  //     });
-
-  //     return Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         InputCreate(label: 'Từ vựng', controller: vocabController),
-  //         const SizedBox(height: 10),
-  //         InputCreate(label: 'Giải nghĩa', controller: meanController),
-  //         const SizedBox(height: 60),
-  //       ],
-  //     );
-  //   }).toList();
-
-  //   return Scaffold(
-  //     body: SafeArea(
-  //       child: SingleChildScrollView(
-  //         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             // Tiêu đề học phần
-  //             InputCreate(label: 'Tiêu đề học phần', controller: titleController),
-  //             const SizedBox(height: 10),
-
-  //             // Mô tả
-  //             if (course.description.isEmpty && !showShortDescription) ...[
-  //               Align(
-  //                 alignment: Alignment.centerRight,
-  //                 child: PremiumButton(
-  //                   text: '+ Mô tả',
-  //                   onTap: () {
-  //                     setState(() {
-  //                       showShortDescription = true;
-  //                     });
-  //                   },
-  //                   state: ButtonState.premium,
-  //                   textColor: Colors.white,
-  //                 ),
-  //               ),
-  //             ] else ...[
-  //               InputCreate(label: 'Mô tả', controller: descriptionController),
-  //               const SizedBox(height: 10),
-  //             ],
-
-  //             const SizedBox(height: 40),
-
-  //             // Danh sách từ vựng
-  //             ...vocabInputs,
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-
-  //     // Thêm từ vựng và định nghĩa
-  //     floatingActionButton: PlusButton(
-  //       onPressed: addVocabInput,
-  //     ),
-  //     floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-  //   );
-  // }
 Widget _buildCourseEditScreen() {
   // Gán giá trị ban đầu cho các controller
   titleController.text = course.title;

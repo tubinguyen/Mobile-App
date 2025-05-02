@@ -1,8 +1,6 @@
-// import 'package:app_tienganh/views/cus/home_screen.dart';
 import 'package:app_tienganh/core/app_colors.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/account.dart';
-import '../../widgets/yourorder.dart';
 import '../../widgets/text_input.dart';
 import '../../widgets/large_button.dart';
 import '../../widgets/navbar.dart';
@@ -40,7 +38,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen>{
               mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset(
-                  '../../assets/img/Success_Mark.png',
+                  'assets/img/Success_Mark.png',
                   width: 70,
                   height: 70,
                 ),
@@ -74,13 +72,9 @@ Widget build(BuildContext context) { // chữ context viết thường nha
     appBar: CustomNavBar(
         title: 'Thông tin tài khoản', 
         leadingIconPath: "assets/img/back.svg",
-        actionIconPath: '',
          onLeadingPressed: () {
-             widget.onNavigate(4);
-              },
-              onActionPressed: () {
-                widget.onNavigate(4);
-              },
+          widget.onNavigate(4);
+        },
         ),
 
     body: SingleChildScrollView(
@@ -141,7 +135,7 @@ Widget build(BuildContext context) { // chữ context viết thường nha
             //Đổi mật khẩu
             GestureDetector(
                 onTap: () {
-                  widget.onNavigate(14); 
+                  widget.onNavigate(19); 
                 },
                 child: Text(
                   'Đổi mật khẩu',

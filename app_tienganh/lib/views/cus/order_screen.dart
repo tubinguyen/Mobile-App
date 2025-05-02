@@ -1,6 +1,3 @@
-// import 'dart:ffi'; // Removed as it's not needed
-
-import 'package:app_tienganh/views/cus/home_screen.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/navbar.dart';
 import '../../widgets/detail_order.dart';
@@ -36,6 +33,7 @@ class _OrderScreenState extends State<OrderScreen> {
       'title': 'IELTS Vocabulary',
       'price': 100000,
       'quantity': 2,
+      'isAdmin': false,
     },
     {
       'date': '20/5/2024',
@@ -44,6 +42,7 @@ class _OrderScreenState extends State<OrderScreen> {
       'title': 'TOEIC Practice',
       'price': 80000,
       'quantity': 1,
+      'isAdmin': false,
     },
     {
       'date': '21/5/2024',
@@ -52,6 +51,7 @@ class _OrderScreenState extends State<OrderScreen> {
       'title': 'English Grammar',
       'price': 120000,
       'quantity': 3,
+      'isAdmin': false,
     },
   ];
 
@@ -61,14 +61,10 @@ class _OrderScreenState extends State<OrderScreen> {
       appBar: CustomNavBar(
         title: 'Đơn hàng của bạn', 
         leadingIconPath: "assets/img/back.svg",
-        actionIconPath: '',
          onLeadingPressed: () {
-             widget.onNavigate(4);
-              },
-              onActionPressed: () {
-                widget.onNavigate(4);
-              },
-        ),
+          widget.onNavigate(4);
+        },
+     ),
 
         body: ListView.builder(
           padding: const EdgeInsets.all(16.0),
@@ -84,6 +80,7 @@ class _OrderScreenState extends State<OrderScreen> {
               title: order['title'],
               price: order['price'].toDouble(),
               quantity: order['quantity'],
+              isAdmin: order['isAdmin'],
             ),
           );
         },

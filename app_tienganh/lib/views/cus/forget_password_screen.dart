@@ -111,8 +111,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         return _buildNewPasswordContent();
       case ForgotPasswordStep.setNewPassword:
         return _buildSetNewPasswordContent();
-      default:
-        return Container();
+      // default:
+      //   return Container();
     }
   }
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../core/app_colors.dart';
 import 'package:app_tienganh/widgets/shopping_cart_item_final.dart';
-import 'package:app_tienganh/widgets/large_button.dart';
-import 'package:app_tienganh/views/admin/order_detail_screen.dart'; // Import màn hình chi tiết đơn hàng
+import 'package:app_tienganh/widgets/premium_button.dart';
+import 'package:app_tienganh/views/admin/order_detail_screen.dart'; 
 
 class OrderDetail extends StatelessWidget {
   final String date;
@@ -11,6 +11,7 @@ class OrderDetail extends StatelessWidget {
   final double price;
   final String title;
   final int quantity;
+  final bool isAdmin;
 
   const OrderDetail({
     super.key,
@@ -20,6 +21,7 @@ class OrderDetail extends StatelessWidget {
     required this.price,
     required this.title,
     required this.quantity,
+    required this.isAdmin,
   });
 
   @override
@@ -41,7 +43,6 @@ class OrderDetail extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Ngày & Trạng thái đơn hàng
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -79,7 +80,7 @@ class OrderDetail extends StatelessWidget {
                 quantity: quantity,
               ),
 
-              Divider(height: 24, thickness: 1, color: AppColors.blueLightest), // Đường kẻ phân cách
+              Divider(height: 24, thickness: 1, color: AppColors.blueLightest), 
 
               // Tổng tiền
               Padding(
@@ -88,7 +89,7 @@ class OrderDetail extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      "TỔNG:",
+                      "TỔNG: ",
                       style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.bold,
@@ -96,14 +97,16 @@ class OrderDetail extends StatelessWidget {
                         color: Colors.red,
                       ),
                     ),
-                    SizedBox(width: 160.0),
-                    Text(
-                      "${totalPrice.toStringAsFixed(0)} VND",
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: Colors.red,
+                    Expanded(
+                      child: Text(
+                        "${totalPrice.toStringAsFixed(0)} VND",
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: Colors.red,
+                        ),
+                        textAlign: TextAlign.end, // Căn phải
                       ),
                     ),
                   ],
@@ -116,27 +119,77 @@ class OrderDetail extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 8.0),
                 child: Align(
                   alignment: Alignment.bottomRight,
-                  child: LargeButton(
-                    text: 'Đã nhận hàng',
-                    onTap: () {
-                      // Điều hướng đến màn hình chi tiết đơn hàng khi nhấn nút
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => OrderDetailScreen(
-                            date: date,
-                            isReceived: isReceived,
-                            imageName: imageName,
-                            price: price,
-                            title: title,
-                            quantity: quantity,
+                  child: isAdmin 
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          PremiumButton(
+                            text: 'Xem chi tiết',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => OrderDetailScreen(
+                                    date: date,
+                                    isReceived: isReceived,
+                                    imageName: imageName,
+                                    price: price,
+                                    title: title,
+                                    quantity: quantity,
+                                  ),
+                                ),
+                              );
+                            },
+                            state: ButtonState.premium,
+                            textColor: AppColors.background,
                           ),
-                        ),
-                      );
-                    },
-                  ),
+                          SizedBox(width: 8),
+                          PremiumButton(
+                            text: 'Đã giao hàng',
+                            onTap: () {
+                              // Xử lý khi admin nhấn "Đã giao hàng"
+                            },
+                            state: ButtonState.success,
+                            textColor: AppColors.background,
+                          ),
+                        ],
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          PremiumButton(
+                            text: 'Xem chi tiết',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => OrderDetailScreen(
+                                    date: date,
+                                    isReceived: isReceived,
+                                    imageName: imageName,
+                                    price: price,
+                                    title: title,
+                                    quantity: quantity,
+                                  ),
+                                ),
+                              );
+                            },
+                            state: ButtonState.premium,
+                            textColor: AppColors.background,
+                          ),
+                          SizedBox(width: 8),
+                          PremiumButton(
+                            text: 'Đã nhận hàng',
+                            onTap: () {
+                              // Xử lý khi admin nhấn "Đã giao hàng"
+                            },
+                            state: ButtonState.success,
+                            textColor: AppColors.background,
+                          ),
+                        ],
+                      ),
                 ),
-              ),
+              )
             ],
           ),
         ),
