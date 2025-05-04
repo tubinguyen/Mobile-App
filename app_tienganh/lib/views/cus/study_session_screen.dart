@@ -42,7 +42,7 @@ Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
       title: CustomNavBar(
-        title: "Thư viện của bạn",
+        title: "Học phần của bạn",
         leadingIconPath: "assets/img/back.svg",
         onLeadingPressed: () {
           widget.onNavigate(1);
@@ -81,6 +81,7 @@ Widget build(BuildContext context) {
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: AppColors.highlightDarkest,
+                            fontFamily: 'Montserrat'
                           ),
                         ),
 
@@ -166,7 +167,10 @@ Widget build(BuildContext context) {
 
                     const Text(
                       'Mô tả',
-                      style: TextStyle(fontSize: 12, color: Colors.black),
+                      style: TextStyle(
+                        fontSize: 12, 
+                        color: Colors.black,
+                        fontFamily: 'Montserrat'),
                     ),
 
                     const SizedBox(height: 12),
@@ -194,6 +198,7 @@ Widget build(BuildContext context) {
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                         color: Colors.blue,
+                        fontFamily: 'Montserrat',
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -201,7 +206,7 @@ Widget build(BuildContext context) {
                     Column(
                       children: vocabulary
                           .map((word) => Padding(
-                                padding: const EdgeInsets.only(bottom: 5),
+                                padding: const EdgeInsets.only(bottom: 7),
                                 child: Voca(label: word),
                               ))
                           .toList(),

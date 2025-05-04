@@ -29,8 +29,8 @@ class _ProfileScreenState extends State<ProfileScreen>{
 
   @override
 Widget build(BuildContext context) { // chữ context viết thường nha
-  return Scaffold(
-    body: SingleChildScrollView(
+  return Center(
+    child: SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(31, 10, 31, 10),
         child: Column(
@@ -52,8 +52,8 @@ Widget build(BuildContext context) { // chữ context viết thường nha
 
             Text(
               'Thông tin người dùng',
-              style: TextStyle(
-                fontFamily: 'Semibold',
+                style: TextStyle(
+                fontFamily: 'Montserrat',
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Colors.blue,

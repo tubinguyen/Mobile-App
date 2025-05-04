@@ -77,8 +77,9 @@ Widget build(BuildContext context) { // chữ context viết thường nha
         },
         ),
 
-    body: SingleChildScrollView(
-      child: Padding(
+    body: Center(
+      child: SingleChildScrollView(
+       child: Padding(
         padding: const EdgeInsets.fromLTRB(31, 10, 31, 25),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center, // 🛠 thêm dòng này để canh giữa
@@ -164,6 +165,7 @@ Widget build(BuildContext context) { // chữ context viết thường nha
         ),
       ),
     ),
+    )
   );
 }
 }
