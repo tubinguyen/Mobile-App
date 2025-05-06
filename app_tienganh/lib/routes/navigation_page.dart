@@ -23,6 +23,7 @@ import '../views/cus/update_profile_screen.dart';
 import '../views/cus/update_password_screen.dart';
 import '../views/admin/account_management_screen.dart';
 import '../views/admin/edit_account_screen.dart';
+import '../views/cus/course_edit_screen.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});
@@ -97,6 +98,8 @@ class _NavigationPageState extends State<NavigationPage> {
           initialAddress: 'Địa chỉ mẫu',
           initialPhone: '0123456789',
         );
+      case 23:
+        return CourseEditScreen(onNavigate: _onItemTapped);
       default:
         return const Center(child: Text('Page not found'));
     }
