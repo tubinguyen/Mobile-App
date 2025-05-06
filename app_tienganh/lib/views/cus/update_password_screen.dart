@@ -25,7 +25,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen>{
   final String username = 'Nguyễn Phan Tú Bình';
   final String email = 'nhiyennguyen1905@gmail.com';
   final String password = 'hihihaha';
-    final String address = 'Thành phố Hồ Chí Minh';
+  final String address = 'Thành phố Hồ Chí Minh';
   final String sdt = '0123456789';
   
   //Pop up báo thành công
@@ -78,12 +78,13 @@ Widget build(BuildContext context) {
               },
         ),
 
-    body: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(31, 10, 31, 25),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center, // 🛠 thêm dòng này để canh giữa
-          children: [
+    body: Center (
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(31, 10, 31, 25),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center, 
+            children: [
             //Account
             Account(profileImage: "assets/img/user.jpg", username: username),
 
@@ -105,6 +106,7 @@ Widget build(BuildContext context) {
             //Mật khẩu hiện tại
             PasswordInput(
               label: 'Mật khẩu hiện tại',
+              showForgotPassword: false,
             ),
             const SizedBox(height: 10),
 
@@ -112,6 +114,7 @@ Widget build(BuildContext context) {
             PasswordInput(
               label: 'Mật khẩu mới',        // Đặt nhãn cho trường mật khẩu
               hint: 'Nhập mật khẩu mới',    // Gợi ý người dùng nhập mật khẩu mới
+              showForgotPassword: false,
               enabled: true,                // Trường có thể chỉnh sửa
               isError: false,               // Không có lỗi
 
@@ -124,6 +127,7 @@ Widget build(BuildContext context) {
             PasswordInput(
               label: 'Nhập lại mật khẩu',      // Đặt nhãn cho trường nhập lại mật khẩu
               hint: 'Nhập lại mật khẩu của bạn', // Gợi ý người dùng nhập lại mật khẩu
+              showForgotPassword: false,
               enabled: true,                   // Trường có thể chỉnh sửa
               isError: false,                  // Không có lỗi
             ),
@@ -148,6 +152,7 @@ Widget build(BuildContext context) {
         ),
       ),
     ),
+    )
   );
 }
 }

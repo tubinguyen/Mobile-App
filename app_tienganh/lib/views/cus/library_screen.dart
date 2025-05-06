@@ -26,9 +26,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
     switch (index) {
       case 0: 
         List<Map<String, dynamic>> hocPhanList = [
-          {'id': 1, 'title': 'Toán'},
-          {'id': 2, 'title': 'Lý'},
-          {'id': 3, 'title': 'Ngữ pháp cơ bản'},
+          {'id': 1, 'title': 'Toán', 'createdAt': DateTime(2024,5,4)}, //Lúc code backend nhớ truyền CreatedAt để nhóm học phần theo ngày
+          {'id': 2, 'title': 'Lý','createdAt': DateTime(2024,5,4)},
+          {'id': 3, 'title': 'Ngữ pháp cơ bản', 'createdAt': DateTime(2024,5,1)},
         ];
 
         if (hocPhanList.isEmpty) {
@@ -46,25 +46,59 @@ class _LibraryScreenState extends State<LibraryScreen> {
             ),
           );
         } else {
+          //Nhóm theo ngày
+          Map <String, List<Map>> groupedByDate = {};
+          for (var hocphan in hocPhanList)
+          {
+            final DateTime date = hocphan['createdAt'];
+            final dateKey = "${date.day}/${date.month}/${date.year}";
+            groupedByDate.putIfAbsent(dateKey, () => []).add(hocphan);
+          }
+
+          final dateKeys = groupedByDate.keys.toList();
+
           return ListView.builder(
             padding: EdgeInsets.all(16),
-            itemCount: hocPhanList.length,
+            itemCount: dateKeys.length,
             itemBuilder: (context, index) {
-              final hocPhan = hocPhanList[index];
-              return Column(
-                children: [
-                      LibraryObject(
-                      hocphanID: hocPhan['id'],
-                      title: hocPhan['title'],
-                      subtitle: subtitle,
-                      username: username,
-                      onTap: () {
-                        widget.onNavigate(20); // Điều hướng
-                      },
-                    ),
+              final date = dateKeys[index];
+              final hocPhan = groupedByDate[date]!;
+
+              return Center (
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                      SizedBox(height: 10,),
+                      Text(
+                        "Ngày tạo: $date",
+                        style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Montserrat',
+                        )
+                      ),
+                      ...hocPhan.map((hocPhan)
+                      {
+                        return Column (
+                          children: [
+                            SizedBox(height: 12),
+                            LibraryObject(
+                              hocphanID: hocPhan['id'],
+                              title: hocPhan['title'],
+                              subtitle: subtitle,
+                              username: username,
+                              onTap: () {
+                                widget.onNavigate(20); // Điều hướng
+                              },
+                        ),
+                          ],);
+                      }).toList(),
+
+                      
                   
-                  SizedBox(height: 12),
+                  
                 ],
+              )
               );
             },
           );
@@ -91,7 +125,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
             ),
           );
         } else {
-          return ListView.builder(
+          return Center (
+            child : ListView.builder(
             padding: EdgeInsets.all(16),
             itemCount: ketquaList.length,
             itemBuilder: (context, index) {
@@ -105,6 +140,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 ),
               );
             },
+          )
           );
         }
 
@@ -113,21 +149,23 @@ class _LibraryScreenState extends State<LibraryScreen> {
     }
   }
 
-  @override
+ @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 36),
+      body: Center( // Thêm Center ở đây
         child: Column(
+          mainAxisSize: MainAxisSize.max,
           children: [
-            //Fix
-             CustomNavBar(
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 36),
+              child: CustomNavBar(
                 title: "Thư viện của bạn",
                 leadingIconPath: "assets/img/back.svg",
                 onLeadingPressed: () {
                   widget.onNavigate(0);
                 },
               ),
+            ),
             ContentSwitcher(
               selectedIndex: selectedIndex,
               onNavigate: (index) {
@@ -137,10 +175,15 @@ class _LibraryScreenState extends State<LibraryScreen> {
               },
             ),
             SizedBox(height: 40),
-            Expanded(child: _buildContentForIndex(selectedIndex)),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 36),
+                child: _buildContentForIndex(selectedIndex),
+              ),
+            ),
           ],
         ),
       ),
     );
-  }
+    }
 }
