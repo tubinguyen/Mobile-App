@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 class SlideshowWidget extends StatefulWidget {
-  final List<String> imagePaths; 
+  final List<String> imagePaths;
   final Duration duration;
 
   const SlideshowWidget({
@@ -35,7 +35,7 @@ class SlideshowWidgetState extends State<SlideshowWidget> {
         });
         _pageController.animateToPage(
           _currentPage,
-          duration: const Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 500),
           curve: Curves.easeInOut,
         );
       }
@@ -63,10 +63,7 @@ class SlideshowWidgetState extends State<SlideshowWidget> {
           });
         },
         itemBuilder: (context, index) {
-          return Image.asset(
-            widget.imagePaths[index], 
-            fit: BoxFit.cover,
-          );
+          return Image.asset(widget.imagePaths[index], fit: BoxFit.cover);
         },
       ),
     );

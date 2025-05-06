@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../core/app_colors.dart';
 import 'package:app_tienganh/widgets/large_button.dart';
 
-
 class RecentActivity extends StatelessWidget {
   final String title;
   final String status;
@@ -111,7 +110,7 @@ class RecentActivity extends StatelessWidget {
               const SizedBox(height: 16),
               LargeButton(
                 text: buttonText,
-                onTap: () => onTap, // Sử dụng biến truyền vào
+                onTap: onTap, // Sử dụng biến truyền vào
               ),
             ],
           ),
