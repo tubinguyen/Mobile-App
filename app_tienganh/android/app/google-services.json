@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "106014869880",
+    "project_id": "eddy-c0aa1",
+    "storage_bucket": "eddy-c0aa1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:106014869880:android:736398016f392ab95d208d",
+        "android_client_info": {
+          "package_name": "com.example.app_tienganh"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRgCE48wrhmEfHR3teg88iyTRldM_zH74"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
