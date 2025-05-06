@@ -34,6 +34,11 @@ class InputCreate extends StatelessWidget {
               width: 372,
               child: TextField(
                 controller: controller, //điều khiển textfield
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: AppColors.textPrimary,
+                  fontFamily: 'Montserrat',
+                ),
                 decoration: InputDecoration(
                   enabledBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: AppColors.border, width: 1),

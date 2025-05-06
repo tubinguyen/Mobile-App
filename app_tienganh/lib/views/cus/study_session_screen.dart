@@ -108,6 +108,7 @@ Widget build(BuildContext context) {
                                       onSelected: (title) {
                                         if (title == "Sửa học phần") {
                                           // xử lý sửa học phần
+                                          widget.onNavigate(23);
 
                                         } else if (title == "Xóa học phần") {
                                           // xử lý xóa học phần
