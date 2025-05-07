@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../views/cus/home_screen.dart';
+import '../views/cus/home_screen.dart';//0
 import '../views/cus/library_screen.dart';
 import '../views/cus/login_screen.dart';
 import '../views/cus/forget_password_screen.dart';
@@ -34,7 +34,7 @@ class NavigationPage extends StatefulWidget {
 class _NavigationPageState extends State<NavigationPage> {
   int _selectedIndex = 0;
 
-  final Set<int> _pagesWithHeader = {0, 1, 3, 4, 5, 12,14, 18, 19};
+  final Set<int> _pagesWithHeader = {0, 1, 3, 4, 5, 12,13,14,18, 19};
   final Set<int> _pagesWithBottomNavigationBar = {0, 1, 2, 3, 4};
 
   void _onItemTapped(int index) {

@@ -40,15 +40,13 @@ class _StudySessionPageState extends State<StudySessionPage> {
 @override
 Widget build(BuildContext context) {
   return Scaffold(
-    appBar: AppBar(
-      title: CustomNavBar(
+    appBar: CustomNavBar(
         title: "Học phần của bạn",
         leadingIconPath: "assets/img/back.svg",
         onLeadingPressed: () {
           widget.onNavigate(1);
         },
       ),
-    ),
     body: SafeArea(
       child: SingleChildScrollView(
         child: Padding(

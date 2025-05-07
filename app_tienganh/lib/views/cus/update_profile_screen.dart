@@ -34,23 +34,32 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen>{
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(
-                  'assets/img/Success_Mark.png',
-                  width: 70,
-                  height: 70,
+          content: SizedBox(
+            width: 250,
+            height: 200,
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    'assets/img/Success_Mark.png',
+                    width: 70,
+                    height: 70,
                 ),
-                SizedBox(height: 5,),
-                Text('Cập nhật thông tin thành công',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: 'Montserrat',
-                  color: AppColors.highlightDarkest,
-                  fontWeight: FontWeight.bold
-                ),)
+                SizedBox(height: 5),
+                Text(
+                  'Cập nhật thông tin thành công',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'Montserrat',
+                    color: AppColors.highlightDarkest,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ],
+            ),
+          ),
           ),
           
           actions: [

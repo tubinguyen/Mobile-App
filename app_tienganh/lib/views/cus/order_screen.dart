@@ -67,7 +67,7 @@ class _OrderScreenState extends State<OrderScreen> {
      ),
 
         body: ListView.builder(
-          padding: const EdgeInsets.fromLTRB(21,14,21,0),
+          padding: const EdgeInsets.fromLTRB(10,14,10,0),
           itemCount: orders.length,
           itemBuilder: (context, index) {
             final order = orders[index];
