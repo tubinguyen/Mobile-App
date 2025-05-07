@@ -656,22 +656,23 @@ Widget _buildResultScreen() {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 20),
-          child: Center( // Căn giữa toàn bộ nội dung
-            child: Column(
-              mainAxisSize: MainAxisSize.min, // Đảm bảo nội dung được căn giữa theo chiều dọc
-              crossAxisAlignment: CrossAxisAlignment.center,
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center, // Căn giữa các nút
               children: [
-                
-                LargeButtonSecondary(
-                  text: "Ôn tập",
-                  onTap: () => {widget.onNavigate(16), resetPage()}, //Dieuhuong ve trang on tap
+                Expanded(
+                  child: LargeButtonSecondary(
+                    text: "Ôn tập",
+                    onTap: () => {widget.onNavigate(16), resetPage()}, // Điều hướng về trang ôn tập
+                  ),
                 ),
-                const SizedBox(height: 20),
-                LargeButton(
-                  text: "Làm kiểm tra lại",
-                  onTap: () => {widget.onNavigate(15), resetPage()},
+                const SizedBox(width: 20), // Khoảng cách giữa hai nút
+                Expanded(
+                  child: LargeButton(
+                    text: "Làm kiểm tra lại",
+                    onTap: () => {widget.onNavigate(15), resetPage()}, // Điều hướng về trang làm kiểm tra lại
+                  ),
                 ),
-                const SizedBox(height: 20),
               ],
             ),
           ),

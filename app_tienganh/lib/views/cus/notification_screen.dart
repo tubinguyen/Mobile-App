@@ -1,7 +1,7 @@
+import 'package:app_tienganh/core/app_colors.dart';
 import 'package:app_tienganh/widgets/empty_notification.dart';
 import 'package:app_tienganh/widgets/notification.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
 
 class NotificationScreen extends StatelessWidget {
   final Function(int) onNavigate;
@@ -34,8 +34,17 @@ class NotificationScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Thông báo'),
+        title: const Text(
+          'Thông báo',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Montserrat',
+            color: AppColors.textPrimary, // nếu bạn dùng nền trắng
+          ),
+        ),
         centerTitle: true,
+
         backgroundColor: Colors.transparent,
         elevation: 0, // Loại bỏ đường shadow
       ),

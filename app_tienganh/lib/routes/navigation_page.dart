@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../views/cus/home_screen.dart';//0
+import '../views/cus/home_screen.dart';
 import '../views/cus/library_screen.dart';
 import '../views/cus/login_screen.dart';
 import '../views/cus/forget_password_screen.dart';
@@ -23,6 +23,7 @@ import '../views/cus/update_profile_screen.dart';
 import '../views/cus/update_password_screen.dart';
 import '../views/admin/account_management_screen.dart';
 import '../views/admin/edit_account_screen.dart';
+import '../views/cus/course_edit_screen.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});
@@ -34,7 +35,8 @@ class NavigationPage extends StatefulWidget {
 class _NavigationPageState extends State<NavigationPage> {
   int _selectedIndex = 0;
 
-  final Set<int> _pagesWithHeader = {0, 1, 3, 4, 5, 12,13,14,18, 19};
+
+  final Set<int> _pagesWithHeader = {0, 1, 3, 4, 5, 12, 14, 16, 18, 19};
   final Set<int> _pagesWithBottomNavigationBar = {0, 1, 2, 3, 4};
 
   void _onItemTapped(int index) {
@@ -97,6 +99,8 @@ class _NavigationPageState extends State<NavigationPage> {
           initialAddress: 'Địa chỉ mẫu',
           initialPhone: '0123456789',
         );
+      case 23:
+        return CourseEditScreen(onNavigate: _onItemTapped);
       default:
         return const Center(child: Text('Page not found'));
     }
@@ -105,20 +109,22 @@ class _NavigationPageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _pagesWithHeader.contains(_selectedIndex)
-          ? Header(
-              onHomeTap: () => _onItemTapped(0),
-              onNotificationTap: () => _onItemTapped(5),
-              onAuthTap: () => _onItemTapped(6),
-            )
-          : null,
+      appBar:
+          _pagesWithHeader.contains(_selectedIndex)
+              ? Header(
+                onHomeTap: () => _onItemTapped(0),
+                onNotificationTap: () => _onItemTapped(5),
+                onAuthTap: () => _onItemTapped(6),
+              )
+              : null,
       body: _getPage(_selectedIndex),
-      bottomNavigationBar: _pagesWithBottomNavigationBar.contains(_selectedIndex)
-          ? CustomBottomNavigationBar(
-              selectedIndex: _selectedIndex,
-              onItemTapped: _onItemTapped,
-            )
-          : null,
+      bottomNavigationBar:
+          _pagesWithBottomNavigationBar.contains(_selectedIndex)
+              ? CustomBottomNavigationBar(
+                selectedIndex: _selectedIndex,
+                onItemTapped: _onItemTapped,
+              )
+              : null,
     );
   }
 }
