@@ -12,9 +12,12 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Danh sách đường dẫn hình ảnh cho slideshow
     final List<String> images = [
-      'assets/img/user.jpg',
-      'assets/img/user.jpg',
-      'assets/img/user.jpg',
+      'assets/img/poster1.png',
+      'assets/img/poster2.png',
+      'assets/img/poster3.png',
+      'assets/img/poster4.png',
+      'assets/img/poster5.png',
+      'assets/img/poster6.png',
     ];
 
     return Scaffold(
@@ -49,7 +52,7 @@ class HomeScreen extends StatelessWidget {
                     percentage: 72,
                     onTap: () {
                       //Điều hướng đến trang học phần đó
-                    }, 
+                    },
                   ),
 
                   //Khoảng cách giữa các thành phần
