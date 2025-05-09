@@ -45,6 +45,7 @@ dependencies:
   vm_service: ^14.3.1
   firebase_core: 3.13.0
   cloud_firestore: 5.6.7
+  firebase_auth: ^5.5.3
   
 
 dev_dependencies:

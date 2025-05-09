@@ -116,20 +116,20 @@ Widget build(BuildContext context) { // chữ context viết thường nha
               hint: email,
             ),
 
-            const SizedBox(height: 10),
-            //Address
-            TextInput(
-              label: 'Địa chỉ',
-              hint: address,
-            ),
+            // const SizedBox(height: 10),
+            // //Address
+            // TextInput(
+            //   label: 'Địa chỉ',
+            //   hint: address,
+            // ),
       
-            const SizedBox(height: 16),
+            // const SizedBox(height: 16),
 
-            //Số điện thoại
-            TextInput(
-              label: 'Số điện thoại',
-              hint: sdt,
-            ),
+            // //Số điện thoại
+            // TextInput(
+            //   label: 'Số điện thoại',
+            //   hint: sdt,
+            // ),
       
             const SizedBox(height: 16),
 

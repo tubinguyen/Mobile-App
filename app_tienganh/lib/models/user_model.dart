@@ -1,35 +1,49 @@
 class UserModel {
-  final int idUser;
-  final String name;
+  final String userId;
   final String email;
-  final String password;
-  final String avatarUrl;
+  final String username;
+  final DateTime createdAt;
+  final int orderCount;
+  final String? avatarUrl;
+  final int learningModuleCount;
   final int role;
 
   UserModel({
-    required this.idUser,
-    required this.name,
+    required this.userId,
     required this.email,
-    required this.password,
-    required this.avatarUrl,
-    required this.role,
+    required this.username,
+    required this.createdAt,  
+    this.orderCount = 0,
+    this.avatarUrl,
+    this.learningModuleCount = 0, 
+    this.role = 0,
   });
 
-  factory UserModel.fromMap(Map<String, dynamic> json) => UserModel(
-    idUser: json['id_user'],
-    name: json['name'],
-    email: json['email'],
-    password: json['password'],
-    avatarUrl: json['avatar_url'],
-    role: json['role'],
-  );
+  factory UserModel.fromMap(Map<String, dynamic> map, String docId) {
+    return UserModel(
+      userId: docId,
+      email: map['email'] ?? '',
+      username: map['username'] ?? '',
+      createdAt: map['createdAt'] != null
+          ? DateTime.tryParse(map['createdAt']) ?? DateTime.now()  
+          : DateTime.now(),  
+      orderCount: map['orderCount'] ?? 0,
+      avatarUrl: map['avatarUrl'],
+      learningModuleCount: map['learningModuleCount'] ?? 0, 
+      role: map['role'] ?? 0,
+    );
+  }
 
-  Map<String, dynamic> toMap() => {
-    'id_user': idUser,
-    'name': name,
-    'email': email,
-    'password': password,
-    'avatar_url': avatarUrl,
-    'role': role,
-  };
+  Map<String, dynamic> toMap() {
+    return {
+      'userId': userId,
+      'email': email,
+      'username': username,
+      'createdAt': createdAt.toIso8601String(),  
+      'orderCount': orderCount,
+      'avatarUrl': avatarUrl,
+      'learningModuleCount': learningModuleCount,
+      'role': role,
+    };
+  }
 }

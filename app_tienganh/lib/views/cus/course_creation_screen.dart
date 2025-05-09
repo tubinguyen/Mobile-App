@@ -303,7 +303,7 @@ class _CourseCreationScreenState extends State<CourseCreationScreen> {
               currentScreen = 0; // Đặt lại currentScreen về 0
             }
           } else {
-            switchScreen(2); // Quay lại màn hình "Cài đặt học phần"
+            switchScreen(1); // Quay lại màn hình "Cài đặt học phần"
           }
         },
       ),

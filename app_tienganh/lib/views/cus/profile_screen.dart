@@ -75,11 +75,11 @@ Widget build(BuildContext context) { // chữ context viết thường nha
             //Email
             CustomTextField(label: 'Email', content: email,),
       
-            //Address
-            CustomTextField(label: 'Địa chỉ', content: address,),
+            // //Address
+            // CustomTextField(label: 'Địa chỉ', content: address,),
 
-            //Sdt
-            CustomTextField(label: 'Số điện thoại', content: sdt,),
+            // //Sdt
+            // CustomTextField(label: 'Số điện thoại', content: sdt,),
 
             LargeButton(
               text: 'Cập nhật thông tin', 
