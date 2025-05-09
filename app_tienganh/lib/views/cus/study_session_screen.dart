@@ -30,35 +30,31 @@ class _StudySessionPageState extends State<StudySessionPage> {
 
   final List<String> vocabulary = ['confuse', 'efficient', 'require', 'attend'];
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: CustomNavBar(
-          title: "Học phần của bạn",
-          leadingIconPath: "assets/img/back.svg",
-          onLeadingPressed: () {
-            widget.onNavigate(1);
-          },
-        ),
+
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: CustomNavBar(
+        title: "Học phần của bạn",
+        leadingIconPath: "assets/img/back.svg",
+        onLeadingPressed: () {
+          widget.onNavigate(1);
+        },
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 34, 0, 0),
-            child: Column(
-              children: [
-                ListCard(
-                  vocabularyList:
-                      vocabulary
-                          .map(
-                            (word) => {
-                              'word': word,
-                              'meaning': 'Nghĩa của $word',
-                            },
-                          )
-                          .toList(),
-                ),
+    body: SafeArea(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 34, 0, 0),
+          child: Column(
+            children: [
+              ListCard(
+                vocabularyList: vocabulary
+                    .map((word) => {
+                          'word': word,
+                          'meaning': 'Nghĩa của $word',
+                        })
+                    .toList(),
+              ),
 
                 const SizedBox(height: 10),
 
