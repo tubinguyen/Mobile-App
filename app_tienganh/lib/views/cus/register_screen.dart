@@ -3,6 +3,7 @@ import 'package:app_tienganh/widgets/login_and_register_button.dart';
 import 'package:app_tienganh/widgets/password.dart';
 import 'package:app_tienganh/widgets/text_input.dart';
 import 'package:app_tienganh/core/app_colors.dart';
+import 'package:app_tienganh/services/signup_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   final Function(int) onNavigate;
@@ -13,8 +14,10 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  bool _isLoading = false;
   bool isRegistering = false;
 
+  final AuthService _authService = AuthService();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -26,25 +29,51 @@ class _RegisterScreenState extends State<RegisterScreen> {
     passwordController.clear();
     confirmPasswordController.clear();
   }
+  
+  void _handleRegister() async {
+  final username = usernameController.text.trim();
+  final email = emailController.text.trim();
+  final password = passwordController.text;
+  final confirmPassword = confirmPasswordController.text;
 
-  void _handleRegister() {
-    final username = usernameController.text.trim();
-    final email = emailController.text.trim();
-    final password = passwordController.text;
-    final confirmPassword = confirmPasswordController.text;
+  if (username.isEmpty || email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+    _showSnackBar('Vui lòng điền đầy đủ thông tin.');
+    return;
+  }
 
-    if (username.isEmpty || email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
-      _showSnackBar('Vui lòng điền đầy đủ thông tin.');
-      return;
-    }
+  if (password != confirmPassword) {
+    _showSnackBar('Mật khẩu xác nhận không khớp.');
+    return;
+  }
 
-    if (password != confirmPassword) {
-      _showSnackBar('Mật khẩu xác nhận không khớp.');
-      return;
-    }
+  // setState(() => isRegistering = true);
+  setState(() => _isLoading = true); 
 
+  // if (password.length < 6) {
+  //   _showSnackBar('Mật khẩu phải có ít nhất 6 ký tự.');
+  //   setState(() => _isLoading = false); 
+  //   return;
+  // }
+  // if (username.length < 3) {
+  //   _showSnackBar('Tên đăng nhập phải có ít nhất 3 ký tự.');
+  //   setState(() => _isLoading = false); 
+  //   return;
+  // }
+  
+  String result = await _authService.signUpUser(
+    email: email,
+    password: password,
+    username: username,
+  );
+
+  setState(() => _isLoading = false);
+
+  _showSnackBar(result);
+
+  if (result == "Đăng ký thành công!") {
     showDialog(
       context: context,
+      barrierDismissible: false, 
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Thành công'),
@@ -53,8 +82,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             LoginAndRegisterButton(
               text: 'Đăng nhập',
               onTap: () {
-                Navigator.of(context).pop();
-                _clearControllers();
+                Navigator.of(context).pop(); 
+                _clearControllers(); 
                 widget.onNavigate(6);
               },
               stateLoginOrRegister: AuthButtonState.login,
@@ -64,7 +93,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         );
       },
     );
-  }
+  } 
+}
 
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -137,11 +167,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           showForgotPassword: false,
                         ),
                         const SizedBox(height: 16),
-                        LoginAndRegisterButton(
-                          text: 'Đăng ký tài khoản',
-                          onTap: _handleRegister,
-                          stateLoginOrRegister: AuthButtonState.login,
-                          textColor: AppColors.text,
+                        _isLoading
+                          ? const Center(child: CircularProgressIndicator()) 
+                          : LoginAndRegisterButton(
+                              text: 'Đăng ký tài khoản',
+                              onTap: _handleRegister,
+                              stateLoginOrRegister: AuthButtonState.login,
+                              textColor: AppColors.text,
                         ),
                         const SizedBox(height: 16),
                         Row(
@@ -204,3 +236,4 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 }
+

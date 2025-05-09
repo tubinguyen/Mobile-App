@@ -92,6 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   textColor: AppColors.text,
                 ),
                 const SizedBox(height: 16),
+                
 
                 const Center(child: LineOr()),
                 const SizedBox(height: 16),

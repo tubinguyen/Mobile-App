@@ -34,23 +34,32 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen>{
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(
-                  'assets/img/Success_Mark.png',
-                  width: 70,
-                  height: 70,
+          content: SizedBox(
+            width: 250,
+            height: 200,
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    'assets/img/Success_Mark.png',
+                    width: 70,
+                    height: 70,
                 ),
-                SizedBox(height: 5,),
-                Text('Cập nhật thông tin thành công',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: 'Montserrat',
-                  color: AppColors.highlightDarkest,
-                  fontWeight: FontWeight.bold
-                ),)
+                SizedBox(height: 5),
+                Text(
+                  'Cập nhật thông tin thành công',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'Montserrat',
+                    color: AppColors.highlightDarkest,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ],
+            ),
+          ),
           ),
           
           actions: [
@@ -116,20 +125,20 @@ Widget build(BuildContext context) { // chữ context viết thường nha
               hint: email,
             ),
 
-            const SizedBox(height: 10),
-            //Address
-            TextInput(
-              label: 'Địa chỉ',
-              hint: address,
-            ),
+            // const SizedBox(height: 10),
+            // //Address
+            // TextInput(
+            //   label: 'Địa chỉ',
+            //   hint: address,
+            // ),
       
-            const SizedBox(height: 16),
+            // const SizedBox(height: 16),
 
-            //Số điện thoại
-            TextInput(
-              label: 'Số điện thoại',
-              hint: sdt,
-            ),
+            // //Số điện thoại
+            // TextInput(
+            //   label: 'Số điện thoại',
+            //   hint: sdt,
+            // ),
       
             const SizedBox(height: 16),
 
