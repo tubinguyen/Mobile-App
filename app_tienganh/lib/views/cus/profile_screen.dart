@@ -34,7 +34,7 @@ Widget build(BuildContext context) { // chữ context viết thường nha
       child: Padding(
         padding: const EdgeInsets.fromLTRB(31, 10, 31, 10),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center, // 🛠 thêm dòng này để canh giữa
+          crossAxisAlignment: CrossAxisAlignment.center, // thêm dòng này để canh giữa
           children: [
             //Account
             Account(profileImage: "assets/img/user.jpg", username: username),
