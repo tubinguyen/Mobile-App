@@ -138,7 +138,7 @@ class _CourseCreationScreenState extends State<CourseCreationScreen> {
                 ? "Cài đặt học phần"
                 : currentScreen == 2
                     ? "Ai có thể xem"
-                    : "Cài đặt học sửa",
+                    : "Ai có thể sửa",
 
         // ICON BÊN TRÁI
         leadingIconPath: currentScreen == 0 || currentScreen == 1 ?'assets/img/arrow-prev-svgrepo-com.svg' : '',
@@ -303,7 +303,7 @@ class _CourseCreationScreenState extends State<CourseCreationScreen> {
               currentScreen = 0; // Đặt lại currentScreen về 0
             }
           } else {
-            switchScreen(2); // Quay lại màn hình "Cài đặt học phần"
+            switchScreen(1); // Quay lại màn hình "Cài đặt học phần"
           }
         },
       ),
