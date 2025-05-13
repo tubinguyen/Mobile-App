@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:app_tienganh/widgets/forgot_password.dart';
 import 'package:app_tienganh/widgets/text_input.dart';
-import 'package:app_tienganh/widgets/password.dart';
 import 'package:app_tienganh/widgets/login_and_register_button.dart';
-import 'package:app_tienganh/widgets/otp.dart';
 import 'package:app_tienganh/core/app_colors.dart';
 
 enum ForgotPasswordStep {

@@ -3,7 +3,7 @@ import 'package:app_tienganh/widgets/login_and_register_button.dart';
 import 'package:app_tienganh/widgets/password.dart';
 import 'package:app_tienganh/widgets/text_input.dart';
 import 'package:app_tienganh/core/app_colors.dart';
-import 'package:app_tienganh/services/signup_service.dart';
+import 'package:app_tienganh/services/auth_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   final Function(int) onNavigate;

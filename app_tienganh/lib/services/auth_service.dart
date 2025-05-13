@@ -51,4 +51,7 @@ class AuthService {
       return "Đã có lỗi xảy ra.";
     }
   }
+   Future<void> signOut() async {
+    await _auth.signOut();
+  }
 }
