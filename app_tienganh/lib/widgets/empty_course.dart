@@ -31,14 +31,12 @@ class EmptyCourse extends StatelessWidget {
         children: [
           // Image
           Image.asset(imagePath, width: 100, height: 100, fit: BoxFit.contain),
-
-          SizedBox(height: 16),
-
+          SizedBox(height: 24),
           // Title
           Text(
             title,
             style: TextStyle(
-              fontSize: 17,
+              fontSize: 16,
               fontWeight: FontWeight.bold,
               fontFamily: 'Montserrat',
               color: textColor,

@@ -36,12 +36,15 @@ class _NavigationPageState extends State<NavigationPage> {
   int _selectedIndex = 0;
 
 
-  final Set<int> _pagesWithHeader = {0, 1, 3, 4, 5, 12, 14, 16, 18, 19};
+  final Set<int> _pagesWithHeader = {0, 1, 2, 3, 4, 5, 12, 14, 16, 18, 19, 23};
   final Set<int> _pagesWithBottomNavigationBar = {0, 1, 2, 3, 4};
-
-  void _onItemTapped(int index) {
+  
+  String? _currentModuleId; 
+  
+  void _onItemTapped(int index, {String? moduleId}) {
     setState(() {
       _selectedIndex = index;
+      _currentModuleId = moduleId;
     });
   }
 
@@ -72,7 +75,7 @@ class _NavigationPageState extends State<NavigationPage> {
       case 11:
         return OrderManagement(onNavigate: _onItemTapped);
       case 12:
-        return StudySessionPage(onNavigate: _onItemTapped);
+        return StudySessionPage(moduleId: _currentModuleId ?? '', onNavigate: _onItemTapped);
       case 13:
         return AddProduct(onNavigate: _onItemTapped);
       case 14:
@@ -88,10 +91,8 @@ class _NavigationPageState extends State<NavigationPage> {
       case 19:
         return UpdatePasswordScreen(onNavigate: _onItemTapped);
       case 20:
-        return StudySessionPage(onNavigate: _onItemTapped);
-      case 21:
         return AccountManagement(onNavigate: _onItemTapped);
-      case 22:
+      case 21:
         return EditAccountScreen(
           onNavigate: _onItemTapped,
           initialName: 'Tên mẫu',
@@ -99,8 +100,8 @@ class _NavigationPageState extends State<NavigationPage> {
           initialAddress: 'Địa chỉ mẫu',
           initialPhone: '0123456789',
         );
-      case 23:
-        return CourseEditScreen(onNavigate: _onItemTapped);
+      case 22:
+        return CourseEditScreen(moduleId: _currentModuleId ?? '', onNavigate: _onItemTapped);
       default:
         return const Center(child: Text('Page not found'));
     }
