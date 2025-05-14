@@ -16,7 +16,7 @@ class UserModel {
     this.orderCount = 0,
     this.avatarUrl,
     this.learningModuleCount = 0, 
-    this.role = 0,
+    required this.role ,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map, String docId) {
@@ -30,7 +30,7 @@ class UserModel {
       orderCount: map['orderCount'] ?? 0,
       avatarUrl: map['avatarUrl'],
       learningModuleCount: map['learningModuleCount'] ?? 0, 
-      role: map['role'] ?? 0,
+      role: map['role'] ?? '',
     );
   }
 

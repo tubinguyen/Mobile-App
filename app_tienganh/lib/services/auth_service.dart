@@ -31,6 +31,7 @@ class AuthService {
         userId: userId,
         email: email,
         username: username,
+        role: 1,
         createdAt: DateTime.now(),
       );
 
@@ -58,6 +59,22 @@ class AuthService {
       return "Đăng xuất thành công!"; 
     } catch (e) {
       return "Lỗi: ${e.toString()}";
+    }
+  }
+
+  Future<int?> getCurrentUserRole() async {
+    try {
+      final user = _auth.currentUser;
+      if (user == null) return null;
+
+      final doc = await _firestore.collection('users').doc(user.uid).get();
+      if (doc.exists) {
+        return doc.data()?['role'] as int?;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
     }
   }
 }
