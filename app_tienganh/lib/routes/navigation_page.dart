@@ -24,6 +24,7 @@ import '../views/cus/update_password_screen.dart';
 import '../views/admin/account_management_screen.dart';
 import '../views/admin/edit_account_screen.dart';
 import '../views/cus/course_edit_screen.dart';
+import '../services/auth_service.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});
@@ -115,6 +116,20 @@ class _NavigationPageState extends State<NavigationPage> {
                 onHomeTap: () => _onItemTapped(0),
                 onNotificationTap: () => _onItemTapped(5),
                 onAuthTap: () => _onItemTapped(6),
+                onAccountTap:  () => _onItemTapped(4),
+                onLogoutTap: () async {
+                  String message = await AuthService().signOut();
+                  if (message == "Đăng xuất thành công!") {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(message)),
+                    );
+                    _onItemTapped(0); 
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(message)),
+                    );
+                  }
+                },
               )
               : null,
       body: _getPage(_selectedIndex),
