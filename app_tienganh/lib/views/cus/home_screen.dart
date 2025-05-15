@@ -52,6 +52,7 @@ class HomeScreen extends StatelessWidget {
                     percentage: 72,
                     onTap: () {
                       //Điều hướng đến trang học phần đó
+                      onNavigate(10);
                     },
                   ),
 
