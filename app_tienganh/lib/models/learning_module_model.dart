@@ -1,12 +1,12 @@
-enum ViewStatus {
-  everyone,
-  onlyMe,
-}
+// enum ViewStatus {
+//   everyone,
+//   onlyMe,
+// }
 
-enum EditStatus {
-  everyone,
-  onlyMe,
-}
+// enum EditStatus {
+//   everyone,
+//   onlyMe,
+// }
 
 class VocabularyItem {
   final String word;
@@ -35,10 +35,11 @@ class LearningModuleModel {
   final String? description;
   final List<VocabularyItem> vocabulary;
   final int totalWords; 
-  final ViewStatus viewStatus;
-  final EditStatus editStatus;
+  // final ViewStatus viewStatus;
+  // final EditStatus editStatus;
   final String userId;
   final DateTime createdAt;
+  final DateTime updatedAt;
 
   LearningModuleModel({
     required this.moduleId,
@@ -46,10 +47,11 @@ class LearningModuleModel {
     this.description,
     required this.vocabulary,
     required this.totalWords,
-    required this.viewStatus,
-    required this.editStatus,
+    // required this.viewStatus,
+    // required this.editStatus,
     required this.userId,
     required this.createdAt,
+    required this.updatedAt,
   });
 
  factory LearningModuleModel.fromMap(Map<String, dynamic> map) {
@@ -62,8 +64,8 @@ class LearningModuleModel {
       moduleName: map['moduleName'] as String,
       description: map['description'] as String?,
       vocabulary: vocabularyList,
-      viewStatus: ViewStatus.values.byName(map['viewStatus'] as String),
-      editStatus: EditStatus.values.byName(map['editStatus'] as String),
+      // viewStatus: ViewStatus.values.byName(map['viewStatus'] as String),
+      // editStatus: EditStatus.values.byName(map['editStatus'] as String),
       userId: map['userId'] as String,
       createdAt: map['createdAt'] is String
           ? DateTime.parse(map['createdAt'] as String)
@@ -71,6 +73,11 @@ class LearningModuleModel {
               ? DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int)
               : DateTime.now(),
       totalWords: map['totalWords'] as int? ?? vocabularyList.length, 
+      updatedAt: map['updatedAt'] is String
+          ? DateTime.parse(map['updatedAt'] as String)
+          : map['updatedAt'] is int
+              ? DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int)
+              : DateTime.now(),
     );
   }
 
@@ -81,10 +88,11 @@ class LearningModuleModel {
       'description': description,
       'vocabulary': vocabulary.map((item) => item.toMap()).toList(),
       'totalWords': totalWords,
-      'viewStatus': viewStatus.name,
-      'editStatus': editStatus.name,
+      // 'viewStatus': viewStatus.name,
+      // 'editStatus': editStatus.name,
       'userId': userId,
       'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
     };
   }
 
@@ -94,10 +102,11 @@ class LearningModuleModel {
     String? description,
     List<VocabularyItem>? vocabulary,
     int? totalWords,
-    ViewStatus? viewStatus,
-    EditStatus? editStatus,
+    // ViewStatus? viewStatus,
+    // EditStatus? editStatus,
     String? creatorId,
     DateTime? createdAt,
+    DateTime? updatedAt,
   }) {
     return LearningModuleModel(
       moduleId: moduleId ?? this.moduleId,
@@ -105,10 +114,11 @@ class LearningModuleModel {
       description: description ?? this.description,
       vocabulary: vocabulary ?? this.vocabulary,
       totalWords: totalWords ?? this.totalWords,
-      viewStatus: viewStatus ?? this.viewStatus,
-      editStatus: editStatus ?? this.editStatus,
+      // viewStatus: viewStatus ?? this.viewStatus,
+      // editStatus: editStatus ?? this.editStatus,
       userId: creatorId ?? this.userId,
       createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 }

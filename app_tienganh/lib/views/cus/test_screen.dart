@@ -9,6 +9,9 @@ import 'package:app_tienganh/widgets/number_input_field.dart';
 import 'package:app_tienganh/widgets/toggle.dart';
 import '../../widgets/text_input.dart';
 import 'package:app_tienganh/widgets/result_exam.dart';
+import 'package:app_tienganh/services/learning_module_service.dart';
+import 'package:app_tienganh/models/learning_module_model.dart';
+import 'package:app_tienganh/models/user_model.dart';
 
 
 
@@ -46,15 +49,25 @@ class QuestionResult {
 }
 
 class TestScreen extends StatefulWidget {
-  final Function(int) onNavigate;
+  final String moduleId;
+  final Function(int, {String? moduleId}) onNavigate;
 
-  const TestScreen({super.key, required this.onNavigate});
+  const TestScreen({
+    super.key,
+    required this.moduleId,
+    required this.onNavigate,
+  });
 
   @override
   State<TestScreen> createState() => _TestScreenState();
 }
 
 class _TestScreenState extends State<TestScreen> {
+  final LearningModuleService _learningModuleService = LearningModuleService();
+
+  late Future<LearningModuleModel?> _learningModuleFuture;
+  
+
   int currentScreen = 0; // 0: TestSettingScreen, 1: MultipleChoiceTestScreen, 2: EssayTestScreen 3: ResultScreen
   bool isMultipleChoice = false;
   bool isEssay = true;
@@ -75,6 +88,11 @@ class _TestScreenState extends State<TestScreen> {
   @override
   void initState() {
     super.initState();
+    if (widget.moduleId.isEmpty) {
+      print("Error: moduleId is empty");
+      return;
+    }
+    _learningModuleFuture = _learningModuleService.getLearningModuleById(widget.moduleId);
   }
 
   List<Question> multipleChoiceQuestions = [];
@@ -86,7 +104,7 @@ class _TestScreenState extends State<TestScreen> {
   int current = 1;
 
 
-void generateQuestions() {
+void generateQuestions(List<Vocab> vocabList) {
   final shuffled = List<Vocab>.from(vocabList)..shuffle();
   final selected = shuffled.take(totalQuestions).toList();
   final allMeanings = vocabList.map((v) => v.meaning).toList();
@@ -257,7 +275,7 @@ Widget build(BuildContext context) {
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop(); // Đóng popup
-                      widget.onNavigate(0); // Quay lại trang trước đó
+                      widget.onNavigate(1); // Quay lại trang trước đó
                       resetPage(); // Đặt lại trạng thái
                     },
                     child: const Text(
@@ -293,241 +311,262 @@ Widget build(BuildContext context) {
 Widget _buildTestSettingScreen() {
   final TextEditingController questionCountController = TextEditingController(text: "1");
 
-  return Padding(
-    padding: const EdgeInsets.all(16.0), // Thêm padding xung quanh toàn bộ nội dung
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Title Course", // Tên học phần (sẽ lấy từ database)
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: AppColors.highlightDarkest,
-            fontFamily: 'Montserrat',
-          ),
-        ),
-        const SizedBox(height: 20),
-        Row(
+  return FutureBuilder<LearningModuleModel?>(
+    future: _learningModuleFuture,
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+
+      if (snapshot.hasError || snapshot.data == null) {
+        return const Center(
+          child: Text("Không tìm thấy dữ liệu học phần."),
+        );
+      }
+
+      final learningModule = snapshot.data!;
+final vocabList = learningModule.vocabulary
+          .map((vocab) => Vocab(word: vocab.word, meaning: vocab.meaning))
+          .toList();
+      return Padding(
+        padding: const EdgeInsets.all(16.0), // Thêm padding xung quanh toàn bộ nội dung
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: Text(
-                "Số câu hỏi",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                  fontFamily: 'Montserrat',
+            Text(
+              learningModule.moduleName, // Tên học phần (sẽ lấy từ database)
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: AppColors.highlightDarkest,
+                fontFamily: 'Montserrat',
+              ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    "Số câu hỏi",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                      fontFamily: 'Montserrat',
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(
-              width: 100, // Đặt độ rộng cố định cho NumberInputField
-              child: NumberInputField(
-                min: 1,
-                max: vocabList.length, // Giới hạn số câu hỏi tối đa bằng số từ vựng
-                controller: questionCountController,
-                onChanged: (value) {
-                  setState(() {
-                    totalQuestions = value; // Cập nhật số câu hỏi
-                  });
-                },
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 20),
-        const Line(),
-        const SizedBox(height: 20),
-        Text(
-          "Hình thức câu hỏi",
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-            color: AppColors.highlightDarkest,
-            fontFamily: 'Montserrat',
-          ),
-        ),
-        const SizedBox(height: 20),
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                "Tự luận",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                  fontFamily: 'Montserrat',
+                SizedBox(
+                  width: 100, // Đặt độ rộng cố định cho NumberInputField
+                  child: NumberInputField(
+                    min: 1,
+                    max: learningModule.totalWords, // Giới hạn số câu hỏi tối đa bằng số từ vựng
+                    controller: questionCountController,
+                    onChanged: (value) {
+                      setState(() {
+                        totalQuestions = value; // Cập nhật số câu hỏi
+                      });
+                    },
+                  ),
                 ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            const Line(width: 352),
+            const SizedBox(height: 20),
+            Text(
+              "Hình thức câu hỏi",
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: AppColors.highlightDarkest,
+                fontFamily: 'Montserrat',
               ),
             ),
-            Toggle(
-              isOn: isEssay,
-              onToggle: (value) {
-                setState(() {
-                  isEssay = value;
-                  print("Tự luận: $isEssay");
-                });
-              },
-            ),
-          ],
-        ),
-        const SizedBox(height: 20),
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                "Nhiều lựa chọn",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                  fontFamily: 'Montserrat',
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    "Tự luận",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                      fontFamily: 'Montserrat',
+                    ),
+                  ),
                 ),
-              ),
+                Toggle(
+                  isOn: isEssay,
+                  onToggle: (value) {
+                    setState(() {
+                      isEssay = value;
+                      print("Tự luận: $isEssay");
+                    });
+                  },
+                ),
+              ],
             ),
-            Toggle(
-              isOn: isMultipleChoice,
-              onToggle: (value) {
-                setState(() {
-                  isMultipleChoice = value;
-                  print("Nhiều lựa chọn: $isMultipleChoice");
-                });
-              },
-            ),
-          ],
-        ),  
-        const SizedBox(height: 30),
-        Align(
-          alignment: Alignment.center,
-          child: PremiumButton(
-            text: 'Bắt đầu kiểm tra',
-            onTap: () {
-              if (totalQuestions > vocabList.length || totalQuestions < 1) {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      backgroundColor: Colors.white, // Nền màu trắng
-                      title: Text(
-                        "Lỗi",
-                        style: const TextStyle(
-                          fontFamily: 'Montserrat', // Font Montserrat
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary, // Chữ màu AppColors.textPrimary
-                        ),
-                      ),
-                      content: Text(
-                        "Số câu hỏi không được vượt quá số từ vựng có sẵn.",
-                        style: const TextStyle(
-                          fontFamily: 'Montserrat', // Font Montserrat
-                          color: AppColors.textPrimary, // Chữ màu AppColors.textPrimary
-                        ),
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: const Text(
-                            "OK",
-                            style: TextStyle(
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    "Nhiều lựa chọn",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                      fontFamily: 'Montserrat',
+                    ),
+                  ),
+                ),
+                Toggle(
+                  isOn: isMultipleChoice,
+                  onToggle: (value) {
+                    setState(() {
+                      isMultipleChoice = value;
+                      print("Nhiều lựa chọn: $isMultipleChoice");
+                    });
+                  },
+                ),
+              ],
+            ),  
+            const SizedBox(height: 30),
+            Align(
+              alignment: Alignment.center,
+              child: PremiumButton(
+                text: 'Bắt đầu kiểm tra',
+                onTap: () {
+                  if (totalQuestions > learningModule.totalWords || totalQuestions < 1) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          backgroundColor: AppColors.background, // Nền màu trắng
+                          title: Text(
+                            "Lỗi",
+                            style: const TextStyle(
+                              fontFamily: 'Montserrat', // Font Montserrat
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textPrimary, // Chữ màu AppColors.textPrimary
+                            ),
+                          ),
+                          content: Text(
+                            "Số câu hỏi không được vượt quá số từ vựng có sẵn.",
+                            style: const TextStyle(
                               fontFamily: 'Montserrat', // Font Montserrat
                               color: AppColors.textPrimary, // Chữ màu AppColors.textPrimary
                             ),
                           ),
-                        ),
-                      ],
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: const Text(
+                                "OK",
+                                style: TextStyle(
+                                  fontFamily: 'Montserrat', // Font Montserrat
+                                  color: AppColors.textPrimary, // Chữ màu AppColors.textPrimary
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     );
-                  },
-                );
-              } else if (!isMultipleChoice && !isEssay) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        backgroundColor: Colors.white, // Nền màu trắng
-                        title: Text(
-                          "Lỗi",
-                          style: const TextStyle(
-                            fontFamily: 'Montserrat', // Font Montserrat
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textPrimary, // Chữ màu AppColors.textPrimary
-                          ),
-                        ),
-                        content: Text(
-                          "Bạn phải chọn ít nhất một hình thức câu hỏi.",
-                          style: const TextStyle(
-                            fontFamily: 'Montserrat', // Font Montserrat
-                            color: AppColors.textPrimary, // Chữ màu AppColors.textPrimary
-                          ),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text(
-                              "OK",
-                              style: TextStyle(
+                  } else if (!isMultipleChoice && !isEssay) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            backgroundColor: Colors.white, // Nền màu trắng
+                            title: Text(
+                              "Lỗi",
+                              style: const TextStyle(
+                                fontFamily: 'Montserrat', // Font Montserrat
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.textPrimary, // Chữ màu AppColors.textPrimary
+                              ),
+                            ),
+                            content: Text(
+                              "Bạn phải chọn ít nhất một hình thức câu hỏi.",
+                              style: const TextStyle(
                                 fontFamily: 'Montserrat', // Font Montserrat
                                 color: AppColors.textPrimary, // Chữ màu AppColors.textPrimary
                               ),
                             ),
-                          ),
-                        ],
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: const Text(
+                                  "OK",
+                                  style: TextStyle(
+                                    fontFamily: 'Montserrat', // Font Montserrat
+                                    color: AppColors.textPrimary, // Chữ màu AppColors.textPrimary
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
                       );
-                    },
-                  );
-                } else if (isEssay && isMultipleChoice && totalQuestions == 1) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        backgroundColor: Colors.white, // Nền màu trắng
-                        title: Text(
-                          "Lỗi",
-                          style: const TextStyle(
-                            fontFamily: 'Montserrat', // Font Montserrat
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textPrimary, // Chữ màu AppColors.textPrimary
-                          ),
-                        ),
-                        content: Text(
-                          "Bạn không thể chọn cả hai hình thức câu hỏi.",
-                          style: const TextStyle(
-                            fontFamily: 'Montserrat', // Font Montserrat
-                            color: AppColors.textPrimary, // Chữ màu AppColors.textPrimary
-                          ),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text(
-                              "OK",
-                              style: TextStyle(
+                    } else if (isEssay && isMultipleChoice && totalQuestions == 1) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            backgroundColor: Colors.white, // Nền màu trắng
+                            title: Text(
+                              "Lỗi",
+                              style: const TextStyle(
+                                fontFamily: 'Montserrat', // Font Montserrat
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.textPrimary, // Chữ màu AppColors.textPrimary
+                              ),
+                            ),
+                            content: Text(
+                              "Bạn không thể chọn cả hai hình thức câu hỏi.",
+                              style: const TextStyle(
                                 fontFamily: 'Montserrat', // Font Montserrat
                                 color: AppColors.textPrimary, // Chữ màu AppColors.textPrimary
                               ),
                             ),
-                          ),
-                        ],
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: const Text(
+                                  "OK",
+                                  style: TextStyle(
+                                    fontFamily: 'Montserrat', // Font Montserrat
+                                    color: AppColors.textPrimary, // Chữ màu AppColors.textPrimary
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
                       );
-                    },
-                  );
-                } else {
-                generateQuestions();
-                // Chuyển màn hình đầu tiên dựa vào loại câu hỏi
-                if (isMultipleChoice) {
-                  switchScreen(1);
-                } else {
-                  switchScreen(2);
-                }
-              }
-            },
-            state: ButtonState.premium,
-            textColor: AppColors.textPrimary,
-          ),
+                    } else {
+                    generateQuestions(vocabList);
+                    // Chuyển màn hình đầu tiên dựa vào loại câu hỏi
+                    if (isMultipleChoice) {
+                      switchScreen(1);
+                    } else {
+                      switchScreen(2);
+                    }
+                  }
+                },
+                state: ButtonState.premium,
+                textColor: AppColors.textPrimary,
+              ),
+            ),
+          ],
         ),
-      ],
-    ),
+      );
+    }
   );
 }
 
