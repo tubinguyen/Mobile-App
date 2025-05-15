@@ -98,64 +98,64 @@ class _LoginScreenState extends State<LoginScreen> {
 
   
 
-  void _signInWithGoogle() async {
-    try {
-      // Đăng nhập với Google
-      final GoogleSignIn googleSignIn = GoogleSignIn();
-      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+  // void _signInWithGoogle() async {
+  //   try {
+  //     // Đăng nhập với Google
+  //     final GoogleSignIn googleSignIn = GoogleSignIn();
+  //     final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
-      if (googleUser == null) {
-        // Người dùng hủy đăng nhập
-        _showSnackBar("Đăng nhập Google đã bị hủy.");
-        return;
-      }
+  //     if (googleUser == null) {
+  //       // Người dùng hủy đăng nhập
+  //       _showSnackBar("Đăng nhập Google đã bị hủy.");
+  //       return;
+  //     }
 
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+  //     final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
-      // Tạo credentials cho Firebase
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
+  //     // Tạo credentials cho Firebase
+  //     final AuthCredential credential = GoogleAuthProvider.credential(
+  //       accessToken: googleAuth.accessToken,
+  //       idToken: googleAuth.idToken,
+  //     );
 
-      // Đăng nhập với Firebase bằng credentials
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+  //     // Đăng nhập với Firebase bằng credentials
+  //     UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
 
-      User? user = userCredential.user;
+  //     User? user = userCredential.user;
 
-      if (user != null) {
-        // Kiểm tra dữ liệu người dùng từ Firestore
-        DocumentSnapshot userDoc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .get();
+  //     if (user != null) {
+  //       // Kiểm tra dữ liệu người dùng từ Firestore
+  //       DocumentSnapshot userDoc = await FirebaseFirestore.instance
+  //           .collection('users')
+  //           .doc(user.uid)
+  //           .get();
 
-        if (userDoc.exists) {
-          // Nếu người dùng tồn tại trong Firestore
-          UserModel userModel = UserModel.fromMap(
-            userDoc.data() as Map<String, dynamic>,
-            user.uid,
-          );
+  //       if (userDoc.exists) {
+  //         // Nếu người dùng tồn tại trong Firestore
+  //         UserModel userModel = UserModel.fromMap(
+  //           userDoc.data() as Map<String, dynamic>,
+  //           user.uid,
+  //         );
 
-          _showSnackBar("Đăng nhập thành công");
-          widget.onNavigate(1); // Chuyển đến trang chính
-          resetFields(); // Reset trường nhập liệu
-        } else {
-          // Nếu không tìm thấy người dùng trong Firestore
-          _showSnackBar("Không tìm thấy thông tin người dùng.");
-        }
-      } else {
-        _showSnackBar("Đăng nhập thất bại. Vui lòng thử lại.");
-      }
-    } catch (e) {
-      if (e is FirebaseAuthException) {
-        // Xử lý lỗi Firebase
-        _showSnackBar("Lỗi xác thực Firebase: ${e.message}");
-      } else {
-        _showSnackBar("Đã xảy ra lỗi. Vui lòng thử lại.");
-      }
-    }
-  }
+  //         _showSnackBar("Đăng nhập thành công");
+  //         widget.onNavigate(1); // Chuyển đến trang chính
+  //         resetFields(); // Reset trường nhập liệu
+  //       } else {
+  //         // Nếu không tìm thấy người dùng trong Firestore
+  //         _showSnackBar("Không tìm thấy thông tin người dùng.");
+  //       }
+  //     } else {
+  //       _showSnackBar("Đăng nhập thất bại. Vui lòng thử lại.");
+  //     }
+  //   } catch (e) {
+  //     if (e is FirebaseAuthException) {
+  //       // Xử lý lỗi Firebase
+  //       _showSnackBar("Lỗi xác thực Firebase: ${e.message}");
+  //     } else {
+  //       _showSnackBar("Đã xảy ra lỗi. Vui lòng thử lại.");
+  //     }
+  //   }
+  // }
 
 
   @override
@@ -210,16 +210,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 16),
                 
 
-                const Center(child: LineOr()),
-                const SizedBox(height: 16),
+                // const Center(child: LineOr()),
+                // const SizedBox(height: 16),
 
-                GoogleSignInButton(
-                  onTap: () async{
-                    _signInWithGoogle();
-                    // widget.onNavigate(9);
-                    resetFields();
-                  },
-                ),
+                // GoogleSignInButton(
+                //   onTap: () async{
+                //     _signInWithGoogle();
+                //     // widget.onNavigate(9);
+                //     resetFields();
+                //   },
+                // ),
                 const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
