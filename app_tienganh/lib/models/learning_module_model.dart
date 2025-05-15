@@ -1,12 +1,12 @@
-enum ViewStatus {
-  everyone,
-  onlyMe,
-}
+// enum ViewStatus {
+//   everyone,
+//   onlyMe,
+// }
 
-enum EditStatus {
-  everyone,
-  onlyMe,
-}
+// enum EditStatus {
+//   everyone,
+//   onlyMe,
+// }
 
 class VocabularyItem {
   final String word;
@@ -39,6 +39,7 @@ class LearningModuleModel {
   // final EditStatus editStatus;
   final String userId;
   final DateTime createdAt;
+  final DateTime updatedAt;
 
   LearningModuleModel({
     required this.moduleId,
@@ -50,6 +51,7 @@ class LearningModuleModel {
     // required this.editStatus,
     required this.userId,
     required this.createdAt,
+    required this.updatedAt,
   });
 
  factory LearningModuleModel.fromMap(Map<String, dynamic> map) {
@@ -71,6 +73,11 @@ class LearningModuleModel {
               ? DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int)
               : DateTime.now(),
       totalWords: map['totalWords'] as int? ?? vocabularyList.length, 
+      updatedAt: map['updatedAt'] is String
+          ? DateTime.parse(map['updatedAt'] as String)
+          : map['updatedAt'] is int
+              ? DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int)
+              : DateTime.now(),
     );
   }
 
@@ -85,6 +92,7 @@ class LearningModuleModel {
       // 'editStatus': editStatus.name,
       'userId': userId,
       'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
     };
   }
 
@@ -94,10 +102,11 @@ class LearningModuleModel {
     String? description,
     List<VocabularyItem>? vocabulary,
     int? totalWords,
-    ViewStatus? viewStatus,
-    EditStatus? editStatus,
+    // ViewStatus? viewStatus,
+    // EditStatus? editStatus,
     String? creatorId,
     DateTime? createdAt,
+    DateTime? updatedAt,
   }) {
     return LearningModuleModel(
       moduleId: moduleId ?? this.moduleId,
@@ -109,6 +118,7 @@ class LearningModuleModel {
       // editStatus: editStatus ?? this.editStatus,
       userId: creatorId ?? this.userId,
       createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 }

@@ -61,7 +61,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
               imagePath: 'assets/img/book.png',
               onButtonPressed: () {
                 setState(() {
-                  currentScreen = 3; // Điều hướng đến màn hình tạo học phần
+                  widget.onNavigate(2); 
                 });
               },
               backgroundColor: AppColors.background,
@@ -71,7 +71,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
         }
 
         // Sắp xếp danh sách learningModules theo createdAt tăng dần
-        learningModules.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        learningModules.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
 
         return ListView.builder(
           // padding: EdgeInsets.all(16),
@@ -81,7 +81,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
             // Tính toán thời gian hiển thị
             final now = DateTime.now();
-            final difference = now.difference(module.createdAt);
+            final difference = now.difference(module.updatedAt);
             String date;
             if (difference.inMinutes < 60) {
               date = "${difference.inMinutes} phút trước";
@@ -90,13 +90,13 @@ class _LibraryScreenState extends State<LibraryScreen> {
             } else if (difference.inDays < 30) {
               date = "${difference.inDays} ngày trước";
             } else {
-              date = "${module.createdAt.day}/${module.createdAt.month}/${module.createdAt.year}";
+              date = "${module.updatedAt.day}/${module.updatedAt.month}/${module.updatedAt.year}";
             }
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (index == 0 || learningModules[index - 1].createdAt.day != module.createdAt.day)
+                if (index == 0 || learningModules[index - 1].updatedAt.day != module.updatedAt.day)
                   Padding(
                     padding: const EdgeInsets.only(top: 16, bottom: 8),
                     child: Text(
@@ -124,6 +124,68 @@ class _LibraryScreenState extends State<LibraryScreen> {
             );
           },
         );
+// learningModules.sort((a, b) {
+//   final aDisplayDate = a.updatedAt.isAfter(a.createdAt) ? a.updatedAt : a.createdAt;
+//   final bDisplayDate = b.updatedAt.isAfter(b.createdAt) ? b.updatedAt : b.createdAt;
+//   return bDisplayDate.compareTo(aDisplayDate); // Sắp xếp giảm dần
+// });
+
+// return ListView.builder(
+//       itemCount: learningModules.length,
+//       itemBuilder: (context, index) {
+//         final module = learningModules[index];
+
+//         // Tính toán displayDate
+//         final displayDate = module.updatedAt.isAfter(module.createdAt)
+//             ? module.updatedAt
+//             : module.createdAt;
+
+//         // Tính toán thời gian hiển thị
+//         final now = DateTime.now();
+//         final difference = now.difference(displayDate);
+//         String date;
+//         if (difference.inMinutes < 60) {
+//           date = "${difference.inMinutes} phút trước";
+//         } else if (difference.inHours < 24) {
+//           date = "${difference.inHours} giờ trước";
+//         } else if (difference.inDays < 30) {
+//           date = "${difference.inDays} ngày trước";
+//         } else {
+//           date = "${displayDate.day}/${displayDate.month}/${displayDate.year}";
+//         }
+
+//         return Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             if (index == 0 || learningModules[index - 1].updatedAt.day != module.updatedAt.day)
+//               Padding(
+//                 padding: const EdgeInsets.only(top: 16, bottom: 8),
+//                 child: Text(
+//                   date,
+//                   style: TextStyle(
+//                     fontSize: 12,
+//                     fontWeight: FontWeight.bold,
+//                     fontFamily: 'Montserrat',
+//                   ),
+//                 ),
+//               ),
+//             LibraryObject(
+//               title: module.moduleName,
+//               subtitle: "${module.totalWords} từ vựng",
+//               username: userInfo?.username ?? "Không rõ", // Lấy username từ UserModel
+//               avatarUrl: userInfo?.avatarUrl, // Lấy avatarUrl từ UserModel
+//               onTap: () {
+//                 setState(() {
+//                   widget.onNavigate(12, moduleId: module.moduleId); // Điều hướng đến màn hình chi tiết học phần
+//                 });
+//               },
+//             ),
+//             SizedBox(height: 12),
+//           ],
+//         );
+//       },
+//     );
+        
       },
     );
   }
@@ -183,20 +245,18 @@ class _LibraryScreenState extends State<LibraryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomNavBar(
+        title: "Thư viện của bạn",
+        leadingIconPath: 'assets/img/back.svg',
+        onLeadingPressed: () {
+          resetPage();
+          widget.onNavigate(0); // Điều hướng về màn hình chính
+        },
+      ),
+
       body: Column(
-        mainAxisSize: MainAxisSize.max,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 36),
-            child: CustomNavBar(
-              title: "Thư viện của bạn",
-              leadingIconPath: "assets/img/back.svg",
-              onLeadingPressed: () {
-                resetPage();
-                widget.onNavigate(0); // Điều hướng về màn hình chính
-              },
-            ),
-          ),
+          const SizedBox(height: 16),
           ContentSwitcher(
             selectedIndex: currentScreen,
             onNavigate: (index) {
@@ -205,11 +265,10 @@ class _LibraryScreenState extends State<LibraryScreen> {
               });
             },
           ),
-          SizedBox(height: 20),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 36),
-              child: _buildContentForCurrentScreen(),
+              padding: const EdgeInsets.symmetric(horizontal: 36.0, vertical: 16.0), 
+              child: _buildContentForCurrentScreen(), 
             ),
           ),
         ],

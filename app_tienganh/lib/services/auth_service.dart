@@ -51,4 +51,13 @@ class AuthService {
       return "Đã có lỗi xảy ra.";
     }
   }
+  //Dang xuat
+  Future<String> signOut() async {
+    try {
+      await _auth.signOut();
+      return "Đăng xuất thành công!"; 
+    } catch (e) {
+      return "Lỗi: ${e.toString()}";
+    }
+  }
 }

@@ -74,6 +74,14 @@ void _handeCreateLearningModule() async {
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: AppColors.background,
+            title: Text(
+              "Chưa đăng nhập",
+              style: const TextStyle(
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
+              ),
+            ),
             content: Text(
               "Bạn chưa đăng nhập?",
               style: const TextStyle(
@@ -238,7 +246,7 @@ void _handeCreateLearningModule() async {
         title:  "Tạo học phần",
 
         // ICON BÊN TRÁI
-        leadingIconPath: 'assets/img/arrow-prev-svgrepo-com.svg',
+        leadingIconPath: 'assets/img/back.svg',
         onLeadingPressed: () {
           // Nếu đang ở screen 0 (Course Creation) + hiển thị popup xác nhận
           showDialog(
@@ -385,7 +393,7 @@ void _handeCreateLearningModule() async {
                       });
                     },
                     state: ButtonState.premium,
-                    textColor: Colors.white,
+                    textColor: AppColors.background,
                   ),
                 ),
               ],

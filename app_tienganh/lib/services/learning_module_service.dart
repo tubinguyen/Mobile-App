@@ -36,6 +36,7 @@ class LearningModuleService {
         vocabulary: vocabulary,
         totalWords: vocabulary.length,
         createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
       );
 
       // Lưu thông tin học phần vào Firestore
@@ -162,6 +163,7 @@ class LearningModuleService {
         'description': description ?? '',
         'vocabulary': vocabulary.map((vocab) => vocab.toMap()).toList(),
         'totalWords': vocabulary.length,
+        'updatedAt': DateTime.now(),
       });
     } catch (e) {
       print("Error: $e");

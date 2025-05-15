@@ -6,44 +6,7 @@ import 'package:app_tienganh/widgets/premium_button.dart';
 import '../../widgets/plus_button.dart';
 import 'package:app_tienganh/services/learning_module_service.dart';
 import 'package:app_tienganh/models/learning_module_model.dart';
-import 'package:app_tienganh/models/user_model.dart';
-
-// class Vocab {
-//   final String word;
-//   final String meaning;
-
-//   Vocab({required this.word, required this.meaning});
-// }
-
-// class Course {
-//   final String title;
-//   final String description;
-//   final List<Vocab> vocabList;
-
-
-//   Course({
-//     required this.title,
-//     required this.description,
-//     required this.vocabList,
-//   });
-// }
-
-// List<Vocab> vocabList = [
-//   Vocab(word: 'Apple', meaning: 'Quả táo'),
-//   Vocab(word: 'Dog', meaning: 'Con chó'),
-//   Vocab(word: 'Sun', meaning: 'Mặt trời'),
-//   Vocab(word: 'Book', meaning: 'Cuốn sách'),
-//   Vocab(word: 'Chair', meaning: 'Cái ghế'),
-//   Vocab(word: 'Water', meaning: 'Nước'),
-//   Vocab(word: 'Phone', meaning: 'Điện thoại'),
-//   Vocab(word: 'Tree', meaning: 'Cái cây'),
-// ];
-
-// Course course = Course(
-//   title: 'Học từ vựng tiếng Anh',
-//   description: 'Khóa học này giúp bạn học từ vựng tiếng Anh một cách hiệu quả.',
-//   vocabList: vocabList,
-// );
+// import 'package:app_tienganh/models/user_model.dart';
 
 class CourseEditScreen extends StatefulWidget {
   final String moduleId;
@@ -70,58 +33,6 @@ class _CourseEditScreenState extends State<CourseEditScreen> {
     _loadLearningModule();
   }
 
-  // Future<void> _loadLearningModule() async {
-  //   final learningModule = await _learningModuleService.getLearningModuleById(widget.moduleId);
-
-  //   if (learningModule != null) {
-  //     setState(() {
-  //       titleController.text = learningModule.moduleName;
-  //       descriptionController.text = learningModule.description ?? '';
-  //       learningModule.description != null 
-  //           ? showShortDescription = true
-  //           : showShortDescription = false;
-
-  //       vocabControllers = learningModule.vocabulary.map((vocab) {
-  //         return {
-  //           'vocab': TextEditingController(text: vocab.word),
-  //           'mean': TextEditingController(text: vocab.meaning),
-  //         };
-  //       }).toList();
-
-  //       vocabInputs = vocabControllers.map((controller) {
-  //         return Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             InputCreate(label: 'Từ vựng', controller: controller['vocab']!),
-  //             const SizedBox(height: 10),
-  //             InputCreate(label: 'Giải nghĩa', controller: controller['mean']!),
-  //             const SizedBox(height: 60),
-  //           ],
-  //         );
-  //       }).toList();
-  //     });
-  //   }
-  // }
-
-  // void addVocabInput() {
-  //   final newVocabController = TextEditingController();
-  //   final newMeanController = TextEditingController();
-
-  //   vocabControllers.add({
-  //     'vocab': newVocabController,
-  //     'mean': newMeanController,
-  //   });
-
-  //   setState(() {
-  //     vocabInputs.addAll([
-  //       InputCreate(label: 'Từ vựng', controller: newVocabController),
-  //       const SizedBox(height: 10),
-  //       InputCreate(label: 'Giải nghĩa', controller: newMeanController),
-  //       const SizedBox(height: 60),
-  //     ]);
-  //   });
-  // }
-
   Future<void> _handleUpdateLearningModule() async {
     try {
       final title = titleController.text.trim();
@@ -139,11 +50,86 @@ class _CourseEditScreenState extends State<CourseEditScreen> {
       }).where((item) => item != null).cast<VocabularyItem>().toList();
 
       if (title.isEmpty) {
-        throw Exception("Tiêu đề học phần không được để trống.");
+          showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: AppColors.background,
+              title: const Text(
+                "Lỗi",
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              content: const Text(
+                "Tiêu đề học phần không được để trống.",
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Đóng popup
+                    widget.onNavigate(12, moduleId: widget.moduleId); // Điều hướng đến trang học phần
+                  },
+                  child: const Text(
+                    "OK",
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
       }
 
       if (vocabList.isEmpty) {
-        throw Exception("Học phần phải có ít nhất một cặp từ vựng.");
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: AppColors.background,
+              title: const Text(
+                "Lỗi",
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              content: const Text(
+                "Học phần phải có ít nhất một cặp từ vựng.",
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); 
+                    widget.onNavigate(12, moduleId: widget.moduleId); 
+                  },
+                  child: const Text(
+                    "OK",
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+        
       }
 
       // Gọi hàm cập nhật học phần
@@ -153,7 +139,9 @@ class _CourseEditScreenState extends State<CourseEditScreen> {
         description: description,
         vocabulary: vocabList,
       );
-
+      setState(() {
+        showShortDescription = description != null;
+      });
       // Hiển thị thông báo thành công
       showDialog(
         context: context,
@@ -236,6 +224,7 @@ class _CourseEditScreenState extends State<CourseEditScreen> {
   }
 
 void addVocabInput() async {
+  
   final newVocabController = TextEditingController();
   final newMeanController = TextEditingController();
 
@@ -245,12 +234,17 @@ void addVocabInput() async {
   });
 
   setState(() {
-    vocabInputs.addAll([
-      InputCreate(label: 'Từ vựng', controller: newVocabController),
-      const SizedBox(height: 10),
-      InputCreate(label: 'Giải nghĩa', controller: newMeanController),
-      const SizedBox(height: 60),
-    ]);
+    vocabInputs.add(
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InputCreate(label: 'Từ vựng', controller: newVocabController),
+          const SizedBox(height: 10),
+          InputCreate(label: 'Giải nghĩa', controller: newMeanController),
+          const SizedBox(height: 60),
+        ],
+      ),
+    );
   });
 
   // Cập nhật Firebase ngay khi thêm từ vựng
@@ -283,8 +277,8 @@ Future<void> _loadLearningModule() async {
   if (learningModule != null) {
     setState(() {
       titleController.text = learningModule.moduleName;
-      descriptionController.text = learningModule.description ?? '';
-      showShortDescription = learningModule.description != null;
+      descriptionController.text = learningModule.description ?? ''; // Đặt lại giá trị rỗng nếu description là null
+      showShortDescription = learningModule.description != null; // Chỉ hiển thị InputCreate nếu description không null
 
       vocabControllers = learningModule.vocabulary.map((vocab) {
         return {
@@ -369,46 +363,61 @@ Future<void> _loadLearningModule() async {
         onActionPressed: _handleUpdateLearningModule,
       ),
       body: _buildCourseEditScreen(),
-      floatingActionButton: PlusButton(onPressed: addVocabInput),
+      
+    );
+  }
+Widget _buildCourseEditScreen() {
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              InputCreate(
+                label: 'Tiêu đề học phần',
+                controller: titleController,
+              ),
+              const SizedBox(height: 10),
+
+              // Mô tả
+              if (showShortDescription) ...[
+                InputCreate(
+                  label: 'Mô tả',
+                  controller: descriptionController,
+                ),
+                const SizedBox(height: 10),
+              ] else ...[
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: PremiumButton(
+                    text: '+ Mô tả',
+                    onTap: () {
+                      setState(() {
+                        showShortDescription = true;
+                      });
+                    },
+                    state: ButtonState.premium,
+                    textColor: AppColors.background,
+                  ),
+                ),
+              ],
+
+              const SizedBox(height: 40),
+
+              // Danh sách từ vựng
+              ...vocabInputs,
+            ],
+          ),
+        ),
+      ),
+
+      // Thêm từ vựng và định nghĩa
+      floatingActionButton: PlusButton(
+        onPressed: addVocabInput,
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
-
-  Widget _buildCourseEditScreen() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          InputCreate(label: 'Tiêu đề học phần', controller: titleController),
-          const SizedBox(height: 10),
-          if (!showShortDescription)
-            Align(
-              alignment: Alignment.centerRight,
-              child: PremiumButton(
-                text: '+ Mô tả',
-                onTap: () {
-                  setState(() {
-                    showShortDescription = true;
-                  });
-                },
-                state: ButtonState.premium,
-                textColor: Colors.white,
-              ),
-            )
-          else
-            InputCreate(label: 'Mô tả', controller: descriptionController),
-          const SizedBox(height: 40),
-          ...vocabInputs,
-        ],
-      ),
-    );
-    
-  }
 }
-
-
-
- 
-
 

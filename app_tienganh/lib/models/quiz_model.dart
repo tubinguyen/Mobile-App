@@ -1,5 +1,4 @@
 enum QuestionType {
-  trueFalse,
   multipleChoice,
   freeText,
 }

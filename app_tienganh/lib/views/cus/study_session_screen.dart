@@ -229,7 +229,7 @@ class _StudySessionPageState extends State<StudySessionPage> {
                             icon: Icons.task_sharp,
                             text: 'Kiểm tra',
                             onTap: () {
-                              widget.onNavigate(15);
+                              widget.onNavigate(15, moduleId: learningModule.moduleId);
                             },
                           ),
                           const SizedBox(height: 30),
