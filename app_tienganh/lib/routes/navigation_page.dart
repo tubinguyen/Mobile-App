@@ -24,7 +24,7 @@ import '../views/cus/update_password_screen.dart';
 import '../views/admin/account_management_screen.dart';
 import '../views/admin/edit_account_screen.dart';
 import '../views/cus/course_edit_screen.dart';
-import '../services/auth_service.dart';
+import '../controllers/auth_controller.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});

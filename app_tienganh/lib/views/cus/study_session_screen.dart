@@ -5,7 +5,7 @@ import '../../widgets/list_card.dart';
 import '../../widgets/avatarname.dart';
 import '../../widgets/function_card.dart';
 import '../../widgets/voca.dart';
-import 'package:app_tienganh/services/learning_module_service.dart';
+import 'package:app_tienganh/controllers/learning_module_controller.dart';
 import 'package:app_tienganh/models/learning_module_model.dart';
 import 'package:app_tienganh/models/user_model.dart';
 

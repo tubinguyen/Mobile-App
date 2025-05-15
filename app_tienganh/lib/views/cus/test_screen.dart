@@ -9,7 +9,7 @@ import 'package:app_tienganh/widgets/number_input_field.dart';
 import 'package:app_tienganh/widgets/toggle.dart';
 import '../../widgets/text_input.dart';
 import 'package:app_tienganh/widgets/result_exam.dart';
-import 'package:app_tienganh/services/learning_module_service.dart';
+import 'package:app_tienganh/controllers/learning_module_controller.dart';
 import 'package:app_tienganh/models/learning_module_model.dart';
 import 'package:app_tienganh/models/user_model.dart';
 

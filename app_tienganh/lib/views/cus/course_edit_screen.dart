@@ -4,7 +4,7 @@ import 'package:app_tienganh/widgets/input_create.dart';
 import 'package:app_tienganh/widgets/navbar.dart';
 import 'package:app_tienganh/widgets/premium_button.dart';
 import '../../widgets/plus_button.dart';
-import 'package:app_tienganh/services/learning_module_service.dart';
+import 'package:app_tienganh/controllers/learning_module_controller.dart';
 import 'package:app_tienganh/models/learning_module_model.dart';
 // import 'package:app_tienganh/models/user_model.dart';
 
