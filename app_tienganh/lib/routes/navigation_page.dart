@@ -36,12 +36,25 @@ class NavigationPage extends StatefulWidget {
 class _NavigationPageState extends State<NavigationPage> {
   int _selectedIndex = 0;
 
-
-  final Set<int> _pagesWithHeader = {0, 1, 2, 3, 4, 5, 12, 14, 15, 16, 18, 19, 23};
+  final Set<int> _pagesWithHeader = {
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    12,
+    14,
+    15,
+    16,
+    18,
+    19,
+    23,
+  };
   final Set<int> _pagesWithBottomNavigationBar = {0, 1, 2, 3, 4};
-  
-  String? _currentModuleId; 
-  
+
+  String? _currentModuleId;
+
   void _onItemTapped(int index, {String? moduleId}) {
     setState(() {
       _selectedIndex = index;
@@ -76,13 +89,19 @@ class _NavigationPageState extends State<NavigationPage> {
       case 11:
         return OrderManagement(onNavigate: _onItemTapped);
       case 12:
-        return StudySessionPage(moduleId: _currentModuleId ?? '', onNavigate: _onItemTapped);
+        return StudySessionPage(
+          moduleId: _currentModuleId ?? '',
+          onNavigate: _onItemTapped,
+        );
       case 13:
         return AddProduct(onNavigate: _onItemTapped);
       case 14:
-        return EditProduct(onNavigate: _onItemTapped);
+        return EditProduct(onNavigate: _onItemTapped, productId: '');
       case 15:
-        return TestScreen(moduleId: _currentModuleId ?? '', onNavigate: _onItemTapped);
+        return TestScreen(
+          moduleId: _currentModuleId ?? '',
+          onNavigate: _onItemTapped,
+        );
       case 16:
         return FlashcardScreen(onNavigate: _onItemTapped);
       case 17:
@@ -102,7 +121,10 @@ class _NavigationPageState extends State<NavigationPage> {
           initialPhone: '0123456789',
         );
       case 22:
-        return CourseEditScreen(moduleId: _currentModuleId ?? '', onNavigate: _onItemTapped);
+        return CourseEditScreen(
+          moduleId: _currentModuleId ?? '',
+          onNavigate: _onItemTapped,
+        );
       default:
         return const Center(child: Text('Page not found'));
     }
@@ -117,18 +139,18 @@ class _NavigationPageState extends State<NavigationPage> {
                 onHomeTap: () => _onItemTapped(0),
                 onNotificationTap: () => _onItemTapped(5),
                 onAuthTap: () => _onItemTapped(6),
-                onAccountTap:  () => _onItemTapped(4),
+                onAccountTap: () => _onItemTapped(4),
                 onLogoutTap: () async {
                   String message = await AuthService().signOut();
                   if (message == "Đăng xuất thành công!") {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(message)),
-                    );
-                    _onItemTapped(0); 
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(message)));
+                    _onItemTapped(0);
                   } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(message)),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(message)));
                   }
                 },
               )
