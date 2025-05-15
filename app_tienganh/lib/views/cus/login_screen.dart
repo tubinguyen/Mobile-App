@@ -34,67 +34,69 @@ class _LoginScreenState extends State<LoginScreen> {
       SnackBar(content: Text(message)),
     );
   }
-  void _handleLogin() async {
-    String email = _emailController.text.trim();
-    String password = _passwordController.text;
+void _handleLogin() async {
+  String email = _emailController.text.trim();
+  String password = _passwordController.text;
 
-    if (email.isEmpty || password.isEmpty) {
-      _showSnackBar("Vui lòng nhập đầy đủ email và mật khẩu.");
-      return;
-    }
+  if (email.isEmpty || password.isEmpty) {
+    _showSnackBar("Vui lòng nhập đầy đủ email và mật khẩu.");
+    return;
+  }
 
-    try {
-      // Đăng nhập bằng Firebase
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+  try {
+    // Đăng nhập bằng Firebase
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
 
-      User? user = userCredential.user;
+    User? user = userCredential.user;
 
-      if (user != null) {
-        DocumentSnapshot userDoc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .get();
+    if (user != null) {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
 
-        if (userDoc.exists) {
-          UserModel userModel = UserModel.fromMap(
-            userDoc.data() as Map<String, dynamic>,
-            user.uid,
-          );
+      if (userDoc.exists) {
+        UserModel userModel = UserModel.fromMap(
+          userDoc.data() as Map<String, dynamic>,
+          user.uid,
+        );
 
-          _showSnackBar("Đăng nhập thành công");
-
-          widget.onNavigate(1); // Chuyển đến trang chính
-          resetFields(); // Reset trường nhập liệu
+        // Điều hướng theo role
+        if (userModel.role == 1) {
+          _showSnackBar("Chào Admin");
+          widget.onNavigate(10); 
         } 
         else 
-          {
-            _showSnackBar("Không tìm thấy thông tin người dùng.");
-          }
+        {
+          _showSnackBar("Đăng nhập thành công ");
+          widget.onNavigate(0);
+        }
+        resetFields(); 
       } 
       else 
       {
+          _showSnackBar("Không tìm thấy thông tin người dùng.");
+      }
+    } 
+    else 
+    {
         _showSnackBar("Đăng nhập thất bại. Vui lòng thử lại.");
+    }
+    } 
+    on FirebaseAuthException catch (e) 
+    {
+      if (e.code == 'user-not-found') {
+        _showSnackBar("Email chưa được đăng ký.");
+      } else if (e.code == 'wrong-password') {
+        _showSnackBar("Sai mật khẩu.");
+      } else {
+        _showSnackBar("Lỗi: ${e.message}");
       }
     } catch (e) {
-      // Xử lý lỗi đăng nhập
-  
-      if (e is FirebaseAuthException) {
-        switch (e.code) {
-          case 'invalid-credential':
-            _showSnackBar("Thông tin đăng nhập không hợp lệ.");
-            break;
-          default:
-            _showSnackBar("Đăng nhập thất bại. Vui lòng thử lại.");
-        }
-      } else {
-        _showSnackBar("Đã xảy ra lỗi. Vui lòng thử lại.");
-      }
+      _showSnackBar("Đã xảy ra lỗi. Vui lòng thử lại.");
     }
-  }
+}
 
   
 
