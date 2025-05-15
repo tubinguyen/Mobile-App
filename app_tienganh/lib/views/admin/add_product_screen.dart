@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart'; 
 import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:app_tienganh/core/app_colors.dart';
 import 'package:app_tienganh/widgets/top_app_bar.dart';
-import 'package:app_tienganh/widgets/navbar.dart'; 
+import 'package:app_tienganh/widgets/navbar.dart';
 import 'package:app_tienganh/widgets/text_input.dart';
 import 'package:app_tienganh/widgets/login_and_register_button.dart';
 
@@ -24,6 +26,7 @@ class _AddProductState extends State<AddProduct> {
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
+  // Yêu cầu quyền truy cập ảnh
   Future<void> _requestPermission() async {
     if (await Permission.photos.isGranted) {
       _pickImage();
@@ -39,6 +42,7 @@ class _AddProductState extends State<AddProduct> {
     }
   }
 
+  // Chọn ảnh từ thư viện
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -46,10 +50,78 @@ class _AddProductState extends State<AddProduct> {
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
+        print('helo ba :' + _image.toString());
       });
     }
   }
 
+  // Lưu ảnh vào Firebase Storage và trả về URL
+  Future<String?> _uploadImage() async {
+    try {
+      print('helo ảnh trong upLoad:' + _image.toString());
+      if (_image != null) {
+        final storageRef = FirebaseStorage.instance.ref().child(
+          'product_images/${DateTime.now().millisecondsSinceEpoch}',
+        );
+        final uploadTask = storageRef.putFile(_image!);
+        final snapshot = await uploadTask.whenComplete(() {});
+        final imagePath = await snapshot.ref.getDownloadURL();
+        return "assets/img/starter-toeic.jpg";
+      }
+    } catch (e) {
+      print("Lỗi khi tải ảnh lên Firebase: $e");
+    }
+    return null;
+  }
+
+  // Thêm sản phẩm vào Firestore
+  Future<void> _addProduct() async {
+    final imagePath = await _uploadImage(); // Lấy URL ảnh từ Firebase Storage
+
+    final productData = {
+      'name': _nameController.text,
+      'price': int.parse(_priceController.text),
+      'quantity': int.parse(_quantityController.text),
+      'description': _descriptionController.text,
+      'imagePath': imagePath ?? '', // Nếu không có ảnh thì để trống
+    };
+
+    try {
+      // Thêm sản phẩm vào Firestore
+      await FirebaseFirestore.instance.collection('products').add(productData);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Sản phẩm đã được thêm thành công!',
+            style: TextStyle(
+              color: AppColors.background, // Chỉnh màu chữ
+              fontSize: 16, // Chỉnh kích thước chữ
+            ),
+          ),
+          duration: Duration(seconds: 2),
+          backgroundColor: Colors.green,
+        ),
+      );
+      _resetForm();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Lỗi khi thêm sản phẩm!',
+            style: TextStyle(
+              color: AppColors.background, // Chỉnh màu chữ
+              fontSize: 16, // Chỉnh kích thước chữ
+            ),
+          ),
+          duration: Duration(seconds: 2),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  // Reset form
   void _resetForm() {
     _nameController.clear();
     _priceController.clear();
@@ -83,9 +155,9 @@ class _AddProductState extends State<AddProduct> {
             widget.onNavigate(value);
           },
         ),
-        body: SingleChildScrollView( 
+        body: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center, 
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CustomNavBar(
                 title: "Thêm sản phẩm",
@@ -97,17 +169,21 @@ class _AddProductState extends State<AddProduct> {
               ),
               const SizedBox(height: 20),
               Center(
-                child: _image == null
-                    ? const Text(
-                        "Chưa có ảnh nào được chọn",
-                        style: TextStyle(color: AppColors.highlightDarkest, fontSize: 16),
-                      )
-                    : Image.file(
-                        _image!,
-                        width: 160,
-                        height: 160,
-                        fit: BoxFit.cover,
-                      ),
+                child:
+                    _image == null
+                        ? const Text(
+                          "Chưa có ảnh nào được chọn",
+                          style: TextStyle(
+                            color: AppColors.highlightDarkest,
+                            fontSize: 16,
+                          ),
+                        )
+                        : Image.file(
+                          _image!,
+                          width: 160,
+                          height: 160,
+                          fit: BoxFit.cover,
+                        ),
               ),
               const SizedBox(height: 20),
               GestureDetector(
@@ -119,7 +195,7 @@ class _AddProductState extends State<AddProduct> {
                     fontFamily: 'Montserrat',
                     color: AppColors.highlightDarkest,
                     decoration: TextDecoration.underline,
-                    decorationColor: AppColors.highlightDarkest, 
+                    decorationColor: AppColors.highlightDarkest,
                   ),
                 ),
               ),
@@ -155,14 +231,7 @@ class _AddProductState extends State<AddProduct> {
               LoginAndRegisterButton(
                 text: 'Thêm sản phẩm',
                 onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Thêm sản phẩm thành công!'),
-                      duration: Duration(seconds: 2),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
-                  _resetForm(); // Reset sau khi thêm sản phẩm
+                  _addProduct();
                 },
                 stateLoginOrRegister: AuthButtonState.login,
                 textColor: AppColors.text,
@@ -171,7 +240,7 @@ class _AddProductState extends State<AddProduct> {
               GestureDetector(
                 onTap: () {
                   _resetForm();
-                  widget.onNavigate(10); 
+                  widget.onNavigate(10);
                 },
                 child: const Text(
                   'Quay lại trang trước',
@@ -182,7 +251,7 @@ class _AddProductState extends State<AddProduct> {
                     fontFamily: 'Montserrat',
                   ),
                 ),
-              ),          
+              ),
               const SizedBox(height: 24),
             ],
           ),

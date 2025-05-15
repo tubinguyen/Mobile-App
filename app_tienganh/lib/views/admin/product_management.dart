@@ -1,37 +1,30 @@
+import 'package:app_tienganh/views/admin/edit_product_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:app_tienganh/widgets/top_app_bar.dart';
 import 'package:app_tienganh/widgets/book_inf.dart';
 import 'package:app_tienganh/widgets/login_and_register_button.dart';
 import 'package:app_tienganh/core/app_colors.dart';
 
-class ProductManagement extends StatelessWidget {
+class ProductManagement extends StatefulWidget {
   final Function(int) onNavigate;
 
   const ProductManagement({super.key, required this.onNavigate});
 
-  final List<Map<String, dynamic>> books = const [
-    {
-      'name': "Check your English Vocabulary for TOEIC",
-      'price': 200000,
-      'quantity': 10,
-      'description': "Sách TOEIC Preparation LC + RC Volume 1, 2",
-      'imagePath': 'assets/img/starter-toeic.jpg',
-    },
-    {
-      'name': "600 Essential Words for the TOEIC Test",
-      'price': 180000,
-      'quantity': 15,
-      'description': "Cuốn sách giúp cải thiện từ vựng cho kỳ thi TOEIC",
-      'imagePath': 'assets/img/starter-toeic.jpg',
-    },
-    {
-      'name': "Barron's TOEIC with MP3",
-      'price': 250000,
-      'quantity': 5,
-      'description': "Bộ sách luyện thi TOEIC kèm file nghe MP3",
-      'imagePath': 'assets/img/starter-toeic.jpg',
-    },
-  ];
+  @override
+  _ProductManagementState createState() => _ProductManagementState();
+}
+
+class _ProductManagementState extends State<ProductManagement> {
+  late Stream<QuerySnapshot> _productStream;
+
+  @override
+  void initState() {
+    super.initState();
+    // Khởi tạo stream để lắng nghe dữ liệu từ Firestore
+    _productStream =
+        FirebaseFirestore.instance.collection('products').snapshots();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +32,7 @@ class ProductManagement extends StatelessWidget {
       appBar: CustomAppBar(
         title: "Quản lý sản phẩm",
         onItemTapped: (value) {
-          onNavigate(value);
+          widget.onNavigate(value);
         },
       ),
       body: Padding(
@@ -47,58 +40,117 @@ class ProductManagement extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Tổng số sản phẩm: ${books.length}',
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Montserrat',
-                color: AppColors.highlightDarkest,
-              ),
-            ),
-            const SizedBox(height: 12),
+            StreamBuilder<QuerySnapshot>(
+              stream: _productStream,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-            Expanded(
-              child: ListView.builder(
-                itemCount: books.length + 1,
-                itemBuilder: (context, index) {
-                  if (index < books.length) {
-                    final book = books[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 14.0),
-                      child: BookInf(
-                        name: book['name'],
-                        price: book['price'],
-                        quantity: book['quantity'],
-                        description: book['description'],
-                        imagePath: book['imagePath'],
-                        onDelete: () {
-                          // Xử lý xóa sản phẩm
-                        },
-                        onEdit: () {
-                          onNavigate(14); // Điều hướng tới trang chỉnh sửa
-                        },
-                      ),
-                    );
-                  } else {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 14.0),
-                      child: LoginAndRegisterButton(
-                        text: 'Thêm sản phẩm',
-                        onTap: () {
-                          onNavigate(13); // Điều hướng tới trang thêm sản phẩm
-                        },
-                        stateLoginOrRegister: AuthButtonState.login,
-                        textColor: AppColors.text,
-                      ),
-                    );
-                  }
-                },
-              ),
+                if (snapshot.hasError) {
+                  return Center(child: Text('Lỗi khi tải dữ liệu'));
+                }
+
+                final products = snapshot.data!.docs;
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: products.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index < products.length) {
+                        final product = products[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 14.0),
+                          child: BookInf(
+                            name: product['name'],
+                            price: product['price'],
+                            quantity: product['quantity'],
+                            description: product['description'],
+                            imagePath:
+                                product['imagePath'], // Lấy đường dẫn ảnh từ Firestore
+                            onDelete: () {
+                              // Xử lý xóa sản phẩm
+                              _deleteProduct(product.id);
+                            },
+                            onEdit: () {
+                              // Điều hướng tới trang chỉnh sửa sản phẩm và truyền productId
+                              widget.onNavigate(
+                                14,
+                              ); // Điều hướng đến EditProduct
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => EditProduct(
+                                        onNavigate: widget.onNavigate,
+                                        productId:
+                                            product
+                                                .id, // Truyền productId từ Firestore vào EditProduct
+                                      ),
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      } else {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 14.0),
+                          child: LoginAndRegisterButton(
+                            text: 'Thêm sản phẩm',
+                            onTap: () {
+                              widget.onNavigate(
+                                13,
+                              ); // Điều hướng tới trang thêm sản phẩm
+                            },
+                            stateLoginOrRegister: AuthButtonState.login,
+                            textColor: AppColors.text,
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                );
+              },
             ),
           ],
         ),
       ),
     );
+  }
+
+  // Xóa sản phẩm khỏi Firestore
+  Future<void> _deleteProduct(String productId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('products')
+          .doc(productId)
+          .delete();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Sản phẩm đã được xóa',
+            style: TextStyle(
+              color: AppColors.background, // Chỉnh màu chữ
+              fontSize: 16, // Chỉnh kích thước chữ
+            ),
+          ),
+          duration: Duration(seconds: 2),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Lỗi khi xóa sản phẩm',
+            style: TextStyle(
+              color: AppColors.background, // Chỉnh màu chữ
+              fontSize: 16, // Chỉnh kích thước chữ
+            ),
+          ),
+          duration: Duration(seconds: 2),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }
