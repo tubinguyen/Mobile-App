@@ -1,30 +1,13 @@
+import 'package:app_tienganh/views/cus/store_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:app_tienganh/widgets/book_in_list.dart'; 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:app_tienganh/widgets/book_in_list.dart';
 import '../core/app_colors.dart';
 
 class BookList extends StatelessWidget {
-  final List<BookInList> books = [
-    BookInList(
-      id: '1',
-      title: 'Lập trình Flutter',
-      price: 150000,
-      imageUrl: 'assets/img/user.jpg',
-    ),
-    BookInList(
-      id: '2',
-      title: 'Học Python cơ bản',
-      price: 120000,
-      imageUrl: 'assets/img/user.jpg',
-    ),
-    BookInList(
-      id: '3',
-      title: 'Data Science với Python',
-      price: 180000,
-      imageUrl: 'assets/img/user.jpg',
-    ),
-  ];
+  final Function(int) onNavigate;
 
-  BookList({super.key});
+  BookList({super.key, required this.onNavigate});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +30,7 @@ class BookList extends StatelessWidget {
               Spacer(),
               GestureDetector(
                 onTap: () {
-                  // Hành động khi nhấn vào "Xem thêm"
+                  onNavigate(3);
                 },
                 child: Text(
                   'Xem thêm',
@@ -65,19 +48,44 @@ class BookList extends StatelessWidget {
         const SizedBox(height: 10),
         SizedBox(
           height: 280,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: books.length,
-            itemBuilder: (context, index) {
-              final book = books[index];
-              return Padding(
-                padding: const EdgeInsets.only(left: 1),
-                child: BookInList(
-                  id: book.id,
-                  title: book.title,
-                  price: book.price,
-                  imageUrl: book.imageUrl,
-                ),
+          child: StreamBuilder<QuerySnapshot>(
+            stream:
+                FirebaseFirestore.instance.collection('products').snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                // Hiển thị loading khi đang chờ dữ liệu
+                return Center(child: CircularProgressIndicator());
+              }
+
+              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                // Hiển thị khi không có dữ liệu
+                return Center(child: Text('Không có sản phẩm nào.'));
+              }
+
+              final books = snapshot.data!.docs;
+
+              return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: books.length,
+                itemBuilder: (context, index) {
+                  final doc = books[index];
+                  final data = doc.data() as Map<String, dynamic>;
+
+                  final id = doc.id; // id từ Firestore
+                  final title = data['name'] ?? 'Không có tên';
+                  final price = data['price'] ?? 0;
+                  final imageUrl = data['imagePath'] ?? 'assets/img/user.jpg';
+
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: BookInList(
+                      id: id,
+                      title: title,
+                      price: price,
+                      imageUrl: imageUrl,
+                    ),
+                  );
+                },
               );
             },
           ),

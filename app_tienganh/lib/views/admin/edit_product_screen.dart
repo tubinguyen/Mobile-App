@@ -1,5 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:app_tienganh/controllers/edit_product.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -26,10 +25,12 @@ class EditProduct extends StatefulWidget {
 
 class _EditProductState extends State<EditProduct> {
   File? _image;
+  String? _imagePath; // Lưu URL ảnh từ Firebase hoặc assets
   late TextEditingController _nameController;
   late TextEditingController _priceController;
   late TextEditingController _quantityController;
   late TextEditingController _descriptionController;
+  final EditProductController _controller = EditProductController();
 
   @override
   void initState() {
@@ -42,40 +43,17 @@ class _EditProductState extends State<EditProduct> {
     _initializeData();
   }
 
-  // Lấy dữ liệu sản phẩm từ Firestore và hiển thị lên giao diện
+  // Lấy dữ liệu sản phẩm từ EditProductController
   Future<void> _initializeData() async {
-    try {
-      DocumentSnapshot productSnapshot =
-          await FirebaseFirestore.instance
-              .collection('products')
-              .doc(widget.productId) // Dùng productId từ widget
-              .get();
-
-      if (productSnapshot.exists) {
-        var productData = productSnapshot.data() as Map<String, dynamic>;
-        _nameController.text = productData['name'];
-        _priceController.text = productData['price'].toString();
-        _quantityController.text = productData['quantity'].toString();
-        _descriptionController.text = productData['description'];
-
-        // Kiểm tra nếu có ảnh và loại ảnh
-        if (productData['imagePath'] != null) {
-          String imagePath = productData['imagePath'];
-          if (imagePath.startsWith('http')) {
-            // Nếu imagePath là URL từ Firebase Storage, sử dụng Image.network để hiển thị ảnh
-            setState(() {
-              _image = imagePath as File?; // Lưu URL ảnh từ Firebase Storage
-            });
-          } else if (imagePath.startsWith('assets/')) {
-            // Nếu imagePath là đường dẫn tệp trong assets, sử dụng Image.asset
-            setState(() {
-              _image = imagePath as File?; // Lưu đường dẫn assets
-            });
-          }
-        }
-      }
-    } catch (e) {
-      print('Error fetching product data: $e');
+    final productData = await _controller.getProductData(widget.productId);
+    if (productData != null) {
+      setState(() {
+        _nameController.text = productData['name'] ?? '';
+        _priceController.text = productData['price']?.toString() ?? '';
+        _quantityController.text = productData['quantity']?.toString() ?? '';
+        _descriptionController.text = productData['description'] ?? '';
+        _imagePath = productData['imagePath']; // Lưu URL hoặc đường dẫn assets
+      });
     }
   }
 
@@ -104,47 +82,33 @@ class _EditProductState extends State<EditProduct> {
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
+        _imagePath = null; // Xóa URL cũ khi chọn ảnh mới
       });
     }
   }
 
-  // Lưu ảnh vào Firebase Storage và trả về URL
-  Future<String?> _uploadImage() async {
-    try {
-      if (_image != null) {
-        final storageRef = FirebaseStorage.instance.ref().child(
-          'product_images/${DateTime.now().millisecondsSinceEpoch}',
-        );
-        final uploadTask = storageRef.putFile(_image!);
-        final snapshot = await uploadTask.whenComplete(() {});
-        final imagePath = await snapshot.ref.getDownloadURL();
-        return imagePath;
-      }
-    } catch (e) {
-      print("Lỗi khi tải ảnh lên Firebase: $e");
-    }
-    return null;
-  }
-
-  // Cập nhật sản phẩm trong Firestore
+  // Cập nhật sản phẩm
   Future<void> _updateProduct() async {
-    final imagePath = await _uploadImage(); // Lấy URL ảnh từ Firebase Storage
+    // Tải ảnh lên Firebase Storage nếu có ảnh mới
+    final imagePath =
+        _image != null
+            ? await _controller.uploadImageToMyCloud(_image)
+            : _imagePath; // Giữ URL cũ nếu không chọn ảnh mới
 
     final updatedProductData = {
       'name': _nameController.text,
-      'price': int.parse(_priceController.text),
-      'quantity': int.parse(_quantityController.text),
+      'price': double.tryParse(_priceController.text) ?? 0,
+      'quantity': int.tryParse(_quantityController.text) ?? 0,
       'description': _descriptionController.text,
       'imagePath': imagePath ?? '', // Nếu không có ảnh thì để trống
     };
 
-    try {
-      // Cập nhật sản phẩm vào Firestore
-      await FirebaseFirestore.instance
-          .collection('products')
-          .doc(widget.productId)
-          .update(updatedProductData);
+    final success = await _controller.updateProduct(
+      widget.productId,
+      updatedProductData,
+    );
 
+    if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Cập nhật thông tin thành công!'),
@@ -152,7 +116,7 @@ class _EditProductState extends State<EditProduct> {
           backgroundColor: Colors.green,
         ),
       );
-    } catch (e) {
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Lỗi khi cập nhật sản phẩm!'),
@@ -165,7 +129,6 @@ class _EditProductState extends State<EditProduct> {
 
   @override
   void dispose() {
-    // Giải phóng controller khi không cần nữa
     _nameController.dispose();
     _priceController.dispose();
     _quantityController.dispose();
@@ -221,6 +184,7 @@ class _EditProductState extends State<EditProduct> {
             const SizedBox(height: 12),
             GestureDetector(
               onTap: () {
+                Navigator.pop(context);
                 widget.onNavigate(10);
               },
               child: const Text(
@@ -242,21 +206,45 @@ class _EditProductState extends State<EditProduct> {
   Widget _buildImageSection() {
     return Center(
       child:
-          _image == null
-              ? const Text(
-                "Chưa có ảnh nào được chọn",
-                style: TextStyle(
-                  color: AppColors.highlightDarkest,
-                  fontSize: 16,
-                ),
-              )
-              : ClipRRect(
+          _image != null
+              ? ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.file(
                   _image!,
                   width: 160,
                   height: 160,
                   fit: BoxFit.cover,
+                ),
+              )
+              : _imagePath != null && _imagePath!.isNotEmpty
+              ? ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  _imagePath!,
+                  width: 160,
+                  height: 160,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      width: 160,
+                      height: 160,
+                      color: Colors.grey[300],
+                      child: const Center(
+                        child: Icon(
+                          Icons.broken_image,
+                          size: 48,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              )
+              : const Text(
+                "Chưa có ảnh nào được chọn",
+                style: TextStyle(
+                  color: AppColors.highlightDarkest,
+                  fontSize: 16,
                 ),
               ),
     );
