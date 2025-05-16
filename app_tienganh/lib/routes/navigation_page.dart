@@ -103,7 +103,9 @@ class _NavigationPageState extends State<NavigationPage> {
           onNavigate: _onItemTapped,
         );
       case 16:
-        return FlashcardScreen(onNavigate: _onItemTapped);
+        return FlashcardScreen(
+          moduleId: _currentModuleId ?? '',
+          onNavigate: _onItemTapped);
       case 17:
         return OrderScreen(onNavigate: _onItemTapped);
       case 18:

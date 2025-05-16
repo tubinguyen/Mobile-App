@@ -222,7 +222,7 @@ class _StudySessionPageState extends State<StudySessionPage> {
                             icon: Icons.edit_note,
                             text: 'Thẻ ghi nhớ',
                             onTap: () {
-                              widget.onNavigate(16);
+                              widget.onNavigate(16, moduleId: learningModule.moduleId);
                             },
                           ),
                           FunctionCard(
