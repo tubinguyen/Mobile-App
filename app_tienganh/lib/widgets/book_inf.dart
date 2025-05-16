@@ -30,10 +30,7 @@ class BookInf extends StatelessWidget {
         color: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
-          side: const BorderSide(
-            color: AppColors.borderLight,
-            width: 1,
-          ),
+          side: const BorderSide(color: AppColors.borderLight, width: 1),
         ),
         elevation: 4,
         child: Padding(
@@ -43,8 +40,8 @@ class BookInf extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  imagePath ?? 'assets/img/user.jpg',
+                child: Image.network(
+                  imagePath ?? '',
                   width: 135,
                   height: 171,
                   fit: BoxFit.cover,
@@ -54,7 +51,11 @@ class BookInf extends StatelessWidget {
                       height: 171,
                       color: Colors.grey[300],
                       child: const Center(
-                        child: Icon(Icons.broken_image, size: 48, color: Colors.grey),
+                        child: Icon(
+                          Icons.broken_image,
+                          size: 48,
+                          color: Colors.grey,
+                        ),
                       ),
                     );
                   },
