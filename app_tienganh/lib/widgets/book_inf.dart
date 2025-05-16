@@ -4,7 +4,7 @@ import '../core/app_colors.dart';
 
 class BookInf extends StatelessWidget {
   final String name;
-  final int price;
+  final double price;
   final int quantity;
   final String description;
   final VoidCallback onDelete;

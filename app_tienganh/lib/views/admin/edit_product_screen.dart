@@ -92,12 +92,12 @@ class _EditProductState extends State<EditProduct> {
     // Tải ảnh lên Firebase Storage nếu có ảnh mới
     final imagePath =
         _image != null
-            ? await _controller.uploadImage(_image)
+            ? await _controller.uploadImageToMyCloud(_image)
             : _imagePath; // Giữ URL cũ nếu không chọn ảnh mới
 
     final updatedProductData = {
       'name': _nameController.text,
-      'price': int.tryParse(_priceController.text) ?? 0,
+      'price': double.tryParse(_priceController.text) ?? 0,
       'quantity': int.tryParse(_quantityController.text) ?? 0,
       'description': _descriptionController.text,
       'imagePath': imagePath ?? '', // Nếu không có ảnh thì để trống

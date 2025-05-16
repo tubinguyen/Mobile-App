@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 
+import 'package:http/http.dart' as http;
+
 class EditProductController {
   // Lấy dữ liệu sản phẩm từ Firestore
   Future<Map<String, dynamic>?> getProductData(String productId) async {
@@ -22,22 +24,35 @@ class EditProductController {
     }
   }
 
-  // Lưu ảnh vào Firebase Storage và trả về URL
-  Future<String?> uploadImage(File? image) async {
+  // Upload ảnh lên server riêng, trả về URL ảnh
+  Future<String?> uploadImageToMyCloud(File? imageFile) async {
+    if (imageFile == null) return null;
+
     try {
-      if (image != null) {
-        final storageRef = FirebaseStorage.instance.ref().child(
-          'product_images/${DateTime.now().millisecondsSinceEpoch}',
-        );
-        final uploadTask = storageRef.putFile(image);
-        final snapshot = await uploadTask.whenComplete(() {});
-        final imagePath = await snapshot.ref.getDownloadURL();
-        return imagePath;
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(
+          'http://ec2-13-212-75-127.ap-southeast-1.compute.amazonaws.com:8080/api/s3/upload',
+        ),
+      );
+
+      request.files.add(
+        await http.MultipartFile.fromPath('file', imageFile.path),
+      );
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        // Trả về trực tiếp chuỗi response làm URL
+        var imageUrl = await response.stream.bytesToString();
+        return imageUrl;
+      } else {
+        print('Upload ảnh thất bại với mã: ${response.statusCode}');
+        return null;
       }
     } catch (e) {
-      print("Lỗi khi tải ảnh lên Firebase: $e");
+      print('Lỗi khi upload ảnh lên cloud riêng: $e');
+      return null;
     }
-    return null;
   }
 
   // Cập nhật sản phẩm trong Firestore

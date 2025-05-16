@@ -11,12 +11,12 @@ class BookDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final mockBooks = {
       '0': {
         'title': 'Tactics for TOEIC Listening and Reading Test',
         'price': '180000',
-        'description': 'Sách TOEIC Preparation LC + RC Volume 1, 2 là cuốn sách phù hợp với những bạn ở trình độ cơ bản, có nhu cầu ôn luyện thi để cải thiện kỹ năng Reading và Listening..',
+        'description':
+            'Sách TOEIC Preparation LC + RC Volume 1, 2 là cuốn sách phù hợp với những bạn ở trình độ cơ bản, có nhu cầu ôn luyện thi để cải thiện kỹ năng Reading và Listening..',
         'imageUrl': 'assets/img/booktest.jpg',
       },
       '1': {
@@ -68,70 +68,84 @@ class BookDetailScreen extends StatelessWidget {
           );
         },
       ),
-      body: book != null
-          ? Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Image.asset(
-                    book['imageUrl']!,
-                    width: 412,
-                    height: 315,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return const SizedBox(
-                        height: 200,
-                        child: Center(child: Text('Không tải được ảnh')),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 25),
-                  Text(
-                    book['title']!,
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontFamily: 'Montserrat', color: AppColors.highlightDarkest),  
-                  ),
-                  const SizedBox(height: 15),
-                  Text(book['description']!, style: const TextStyle(fontSize: 13, fontFamily: 'Montserrat', color: AppColors.textPrimary),),
-                  const SizedBox(height: 15),
-                  Text(
-                    'Giá: ${book['price']} đ',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Montserrat',
-                      color: AppColors.red,
+      body:
+          book != null
+              ? Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image.asset(
+                      book['imageUrl']!,
+                      width: 412,
+                      height: 315,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const SizedBox(
+                          height: 200,
+                          child: Center(child: Text('Không tải được ảnh')),
+                        );
+                      },
                     ),
-                  ),
-                  Row(
-                    children: [
-                      const Text(
-                        'Số lượng:',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'Montserrat',
-                          color: AppColors.highlightDarkest,
-                        ),
+                    const SizedBox(height: 25),
+                    Text(
+                      book['title']!,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Montserrat',
+                        color: AppColors.highlightDarkest,
                       ),
-                      const SizedBox(width: 10),
-                      NumberInputField(),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  LoginAndRegisterButton(
-                    text: 'Thêm vào giỏ hàng', 
-                    onTap: (){
-                      
-                    }, 
-                    stateLoginOrRegister: AuthButtonState.login, 
-                    textColor: AppColors.text
-                  ),
-                ],
+                    ),
+                    const SizedBox(height: 15),
+                    Text(
+                      book['description']!,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontFamily: 'Montserrat',
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    Text(
+                      'Giá: ${book['price']} đ',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Montserrat',
+                        color: AppColors.red,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        const Text(
+                          'Số lượng:',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: 'Montserrat',
+                            color: AppColors.highlightDarkest,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        NumberInputField(),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    LoginAndRegisterButton(
+                      text: 'Thêm vào giỏ hàng',
+                      onTap: () {},
+                      stateLoginOrRegister: AuthButtonState.login,
+                      textColor: AppColors.text,
+                    ),
+                  ],
+                ),
+              )
+              : const Center(
+                child: Text(
+                  'Không tìm thấy sách',
+                  style: TextStyle(fontSize: 18),
+                ),
               ),
-            )
-          : const Center(
-              child: Text('Không tìm thấy sách', style: TextStyle(fontSize: 18)),
-            ),
     );
   }
 }

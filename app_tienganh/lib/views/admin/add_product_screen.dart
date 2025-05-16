@@ -78,7 +78,7 @@ class _AddProductState extends State<AddProduct> {
 
     final productData = {
       'name': _nameController.text,
-      'price': int.tryParse(_priceController.text) ?? 0,
+      'price': double.tryParse(_priceController.text) ?? 0,
       'quantity': int.tryParse(_quantityController.text) ?? 0,
       'description': _descriptionController.text,
       'imagePath': imagePath ?? '',
