@@ -1,5 +1,5 @@
+import 'package:app_tienganh/models/book_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
@@ -10,7 +10,7 @@ class EditProductController {
     try {
       DocumentSnapshot productSnapshot =
           await FirebaseFirestore.instance
-              .collection('products')
+              .collection('Books')
               .doc(productId)
               .get();
 
@@ -56,15 +56,12 @@ class EditProductController {
   }
 
   // Cập nhật sản phẩm trong Firestore
-  Future<bool> updateProduct(
-    String productId,
-    Map<String, dynamic> productData,
-  ) async {
+  Future<bool> updateProduct(String productId, Book book) async {
     try {
       await FirebaseFirestore.instance
-          .collection('products')
+          .collection('Books')
           .doc(productId)
-          .update(productData);
+          .update(book.toMap());
       return true;
     } catch (e) {
       print('Error updating product: $e');
