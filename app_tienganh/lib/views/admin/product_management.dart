@@ -24,8 +24,7 @@ class _ProductManagementState extends State<ProductManagement> {
   void initState() {
     super.initState();
     // Khởi tạo stream để lắng nghe dữ liệu từ Firestore
-    _productStream =
-        FirebaseFirestore.instance.collection('products').snapshots();
+    _productStream = FirebaseFirestore.instance.collection('Books').snapshots();
   }
 
   @override
@@ -68,10 +67,11 @@ class _ProductManagementState extends State<ProductManagement> {
                             quantity: product['quantity'],
                             description: product['description'],
                             imagePath:
-                                product['imagePath'], // Lấy đường dẫn ảnh từ Firestore
+                                product['imageUrl'], // Lấy đường dẫn ảnh từ Firestore
                             onDelete: () {
                               // Xử lý xóa sản phẩm
-                              _productController.deleteProduct(product.id);
+
+                              _deleteProduct(product.id);
                             },
                             onEdit: () {
                               Navigator.push(
