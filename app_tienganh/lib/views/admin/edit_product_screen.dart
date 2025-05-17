@@ -1,4 +1,5 @@
 import 'package:app_tienganh/controllers/edit_product.dart';
+import 'package:app_tienganh/models/book_model.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -52,7 +53,7 @@ class _EditProductState extends State<EditProduct> {
         _priceController.text = productData['price']?.toString() ?? '';
         _quantityController.text = productData['quantity']?.toString() ?? '';
         _descriptionController.text = productData['description'] ?? '';
-        _imagePath = productData['imagePath']; // Lưu URL hoặc đường dẫn assets
+        _imagePath = productData['imageUrl']; // Lưu URL hoặc đường dẫn assets
       });
     }
   }
@@ -100,12 +101,13 @@ class _EditProductState extends State<EditProduct> {
       'price': double.tryParse(_priceController.text) ?? 0,
       'quantity': int.tryParse(_quantityController.text) ?? 0,
       'description': _descriptionController.text,
-      'imagePath': imagePath ?? '', // Nếu không có ảnh thì để trống
+      'imageUrl': imagePath ?? '', // Nếu không có ảnh thì để trống
     };
 
+    Book updatedBook = Book.fromMap(updatedProductData, widget.productId);
     final success = await _controller.updateProduct(
       widget.productId,
-      updatedProductData,
+      updatedBook,
     );
 
     if (success) {

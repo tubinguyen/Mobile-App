@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:app_tienganh/models/book_model.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,6 +9,7 @@ import 'package:app_tienganh/widgets/navbar.dart';
 import 'package:app_tienganh/widgets/text_input.dart';
 import 'package:app_tienganh/widgets/login_and_register_button.dart';
 import 'package:app_tienganh/controllers/add_delete_product.dart';
+import 'package:uuid/uuid.dart';
 
 class AddProduct extends StatefulWidget {
   final Function(int) onNavigate;
@@ -73,19 +74,23 @@ class _AddProductState extends State<AddProduct> {
 
     // Upload ảnh lên cloud riêng, lấy URL trả về
     final imagePath = await _productController.uploadImageToMyCloud(_image);
-    // final imagePath =
-    //     "https://app-tieng-anh.s3.ap-southeast-1.amazonaws.com/totNghiepTamThoi.jpg";
 
-    final productData = {
-      'name': _nameController.text,
-      'price': double.tryParse(_priceController.text) ?? 0,
-      'quantity': int.tryParse(_quantityController.text) ?? 0,
-      'description': _descriptionController.text,
-      'imagePath': imagePath ?? '',
-    };
+    // Tạo instance uuid
+    var uuid = Uuid();
+    // Tạo uuid mới (string)
+    String bookId = uuid.v4();
+
+    final book = Book(
+      bookId: bookId,
+      name: _nameController.text,
+      price: double.tryParse(_priceController.text) ?? 0,
+      quantity: int.tryParse(_quantityController.text) ?? 0,
+      description: _descriptionController.text,
+      imageUrl: imagePath ?? '',
+    );
 
     try {
-      await _productController.addProduct(productData);
+      await _productController.addProduct(book);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(

@@ -49,8 +49,7 @@ class BookList extends StatelessWidget {
         SizedBox(
           height: 280,
           child: StreamBuilder<QuerySnapshot>(
-            stream:
-                FirebaseFirestore.instance.collection('products').snapshots(),
+            stream: FirebaseFirestore.instance.collection('Books').snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 // Hiển thị loading khi đang chờ dữ liệu
@@ -74,7 +73,7 @@ class BookList extends StatelessWidget {
                   final id = doc.id; // id từ Firestore
                   final title = data['name'] ?? 'Không có tên';
                   final price = data['price'] ?? 0;
-                  final imageUrl = data['imagePath'] ?? 'assets/img/user.jpg';
+                  final imageUrl = data['imageUrl'] ?? 'assets/img/user.jpg';
 
                   return Padding(
                     padding: const EdgeInsets.only(left: 8),
