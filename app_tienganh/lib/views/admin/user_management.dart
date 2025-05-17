@@ -20,10 +20,29 @@ class _UserManagementState extends State<UserManagement> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: "Quản lý người dùng",
-        onItemTapped: (value) {
-          widget.onNavigate(value);
+       appBar: CustomAppBar(
+        title: "Trang chủ",
+        onItemTapped: (int value) {
+          switch (value) {
+            case 1: 
+              widget.onNavigate(9);
+              break;
+            case 2:
+               widget.onNavigate(10);
+              break;
+            case 3:
+               widget.onNavigate(11);
+              break;
+            case 4:
+              widget.onNavigate(21);
+              break;
+                case 6:
+              widget.onNavigate(6);
+        break;
+            default:
+              // Xử lý khác nếu có
+              break;
+          }
         },
       ),
       body: Padding(
@@ -43,7 +62,7 @@ class _UserManagementState extends State<UserManagement> {
                 }
 
                 final usersData = snapshot.data!.docs;
-                final userCount = usersData.length; // Get user count directly.
+                final userCount = usersData.length;
 
                 return Text(
                   'Tổng số người dùng: $userCount',
@@ -80,7 +99,7 @@ class _UserManagementState extends State<UserManagement> {
 
                       if (userData == null) {
                         return const SizedBox
-                            .shrink(); // Handle potential null data
+                            .shrink(); 
                       }
 
                       return Padding(
@@ -103,7 +122,6 @@ class _UserManagementState extends State<UserManagement> {
                                       Text('Đã xóa người dùng thành công!'),
                                 ),
                               );
-                              // Trigger a rebuild to update the user count.
                               setState(() {});
                             } catch (error) {
                               ScaffoldMessenger.of(context).showSnackBar(
