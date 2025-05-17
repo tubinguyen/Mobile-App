@@ -86,19 +86,17 @@ void _handleLogin() async {
     } 
     on FirebaseAuthException catch (e) 
     {
-      if (e.code == 'user-not-found') {
-        _showSnackBar("Email chưa được đăng ký.");
-      } else if (e.code == 'wrong-password') {
-        _showSnackBar("Sai mật khẩu.");
-      } else {
-        _showSnackBar("Lỗi: ${e.message}");
+      print({e.code});
+      if (e.code == 'invalid-email') {
+        _showSnackBar("Email khong hợp lệ.");
+      } else if (e.code == 'invalid-credential') {
+        _showSnackBar("Đăng nhập thất bại. Vui lòng thử lại.");
       }
     } catch (e) {
       _showSnackBar("Đã xảy ra lỗi. Vui lòng thử lại.");
     }
 }
 
-  
 
   // void _signInWithGoogle() async {
   //   try {
