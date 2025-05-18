@@ -55,14 +55,12 @@ class _NavigationPageState extends State<NavigationPage> {
   final Set<int> _pagesWithBottomNavigationBar = {0, 1, 2, 3, 4};
 
   String? _currentModuleId;
-  // String? _currentQuizId;
   String? _currentQuizResultId;
 
   void _onItemTapped(int index, {String? moduleId, String? quizResultId}) {
     setState(() {
       _selectedIndex = index;
       _currentModuleId = moduleId;
-      // _currentQuizId = quizId;
       _currentQuizResultId = quizResultId;
     });
   }
