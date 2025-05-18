@@ -163,7 +163,7 @@ class LearningModuleController {
         'description': description ?? '',
         'vocabulary': vocabulary.map((vocab) => vocab.toMap()).toList(),
         'totalWords': vocabulary.length,
-        'updatedAt': DateTime.now(),
+        'updatedAt': DateTime.now().toIso8601String(),
       });
     } catch (e) {
       print("Error: $e");
