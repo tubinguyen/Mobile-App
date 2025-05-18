@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import '../core/app_colors.dart';
 
-class Filter extends StatefulWidget {
+class FilterWidget extends StatefulWidget {
   final List<String> options;
   final Function(String) onSelected;
 
-  const Filter({
+  const FilterWidget({
     super.key,
     required this.options,
     required this.onSelected,
@@ -15,7 +15,7 @@ class Filter extends StatefulWidget {
   FilterState createState() => FilterState();
 }
 
-class FilterState extends State<Filter> {
+class FilterState extends State<FilterWidget> {
   String? selectedOption;
   OverlayEntry? _overlayEntry;
   final LayerLink _layerLink = LayerLink();

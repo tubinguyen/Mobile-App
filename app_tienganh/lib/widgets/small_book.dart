@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import '../core/app_colors.dart';
 import '../../widgets/small_button.dart';
 import '../views/cus/details_book_screen.dart';
+
 class BookSmall extends StatelessWidget {
-  final String id; 
+  final String id;
   final String title;
   final double price;
   final String imageUrl;
@@ -19,95 +20,95 @@ class BookSmall extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 165,
-      height: 200,
+      width: 160,
       margin: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: AppColors.highlightLight,
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: AppColors.highlightLight,
+            color: AppColors.highlightLight.withOpacity(0.3),
             blurRadius: 6,
-            spreadRadius: 2,
+            offset: const Offset(0, 3),
           ),
         ],
-        borderRadius: BorderRadius.circular(12),
       ),
       child: Card(
-       color: AppColors.background,
-        elevation: 5,
+        color: AppColors.background,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
+        elevation: 3,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-              child: Image.asset(
-                imageUrl,
-                width: 165,
-                height: 94.67, // Tăng chiều cao lên để hình ảnh rõ hơn
-                fit: BoxFit.fill, // Hoặc thử BoxFit.contain nếu ảnh bị méo
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    width: 165,
-                    height: 94.67,
-                    color: AppColors.highlightLight, // Hiển thị màu xám nếu không load được ảnh
-                    child: Icon(Icons.broken_image, color: AppColors.highlightDarkest50),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 2.0),
-            // Tiêu đề sách
-
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 0, 5.0, 0),
-              child: Text(
-                title,
-                style: const TextStyle(
-                  color: AppColors.highlightDarkest,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Montserrat',
-                  fontSize: 15),
-              ),
-            ),
-      
-            const SizedBox(height: 1.0),
-            // Giá sách
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 0, 8.0, 0),
-              child: Text(
-                '${price.toStringAsFixed(0)} đ',
-                style: const TextStyle(
-                  fontSize: 14, 
-                  fontFamily: 'Montserrat',
-                  color: AppColors.textPrimary,),
-              ),
-            ),
-            const SizedBox(height: 7.2),
-            // Nút "Xem thêm"
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: Align (
-                alignment: Alignment.center,
-                  child: SmallButton(
-                  text: 'Xem thêm',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BookDetailScreen(bookId: id),
-                      ),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              child: AspectRatio(
+                aspectRatio: 3 / 2, // Tỷ lệ khung ảnh 3:2
+                child: Image.network(
+                  imageUrl,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      color: AppColors.highlightLight,
+                      child: const Center(child: CircularProgressIndicator()),
                     );
-                  }
-
+                  },
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: AppColors.highlightLight,
+                      child: const Icon(Icons.broken_image, color: Colors.grey),
+                    );
+                  },
                 ),
-              )
+              ),
             ),
-            const SizedBox(height: 16.0),
-            
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: AppColors.highlightDarkest,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      fontFamily: 'Montserrat',
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${price.toStringAsFixed(0)} đ',
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: AppColors.textPrimary,
+                      fontFamily: 'Montserrat',
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Center(
+                    child: SmallButton(
+                      text: 'Xem thêm',
+                      onTap: () {
+                        // In ra ID để kiểm tra
+                        print('BookSmall: Xem thêm sách có ID: $id');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BookDetailScreen(bookId: id),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              ),
+            ),
           ],
         ),
       ),

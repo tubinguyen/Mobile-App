@@ -38,19 +38,7 @@ class _NavigationPageState extends State<NavigationPage> {
   int _selectedIndex = 0;
 
   final Set<int> _pagesWithHeader = {
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    12,
-    14,
-    15,
-    16,
-    18,
-    19,
-    23,
+    0,1,2,3, 4, 5, 12,14,15,16,18,19,23,
   };
   final Set<int> _pagesWithBottomNavigationBar = {0, 1, 2, 3, 4};
 
