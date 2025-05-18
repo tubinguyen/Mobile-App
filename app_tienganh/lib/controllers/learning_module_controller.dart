@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:app_tienganh/models/learning_module_model.dart';
 import 'package:app_tienganh/models/user_model.dart';
 
-class LearningModuleService {
+class LearningModuleController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 

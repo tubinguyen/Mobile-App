@@ -19,7 +19,7 @@ class CourseEditScreen extends StatefulWidget {
 }
 
 class _CourseEditScreenState extends State<CourseEditScreen> {
-  final LearningModuleService _learningModuleService = LearningModuleService();
+  final LearningModuleController _learningModuleCoLearningModuleController = LearningModuleController();
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -133,7 +133,7 @@ class _CourseEditScreenState extends State<CourseEditScreen> {
       }
 
       // Gọi hàm cập nhật học phần
-      await _learningModuleService.updateLearningModule(
+      await _learningModuleCoLearningModuleController.updateLearningModule(
         moduleId: widget.moduleId,
         moduleName: title,
         description: description,
@@ -260,7 +260,7 @@ void addVocabInput() async {
       return VocabularyItem(word: vocabText, meaning: meanText);
     }).where((item) => item != null).cast<VocabularyItem>().toList();
 
-    await _learningModuleService.updateLearningModule(
+    await _learningModuleCoLearningModuleController.updateLearningModule(
       moduleId: widget.moduleId,
       moduleName: titleController.text.trim(),
       description: descriptionController.text.trim().isEmpty ? null : descriptionController.text.trim(),
@@ -272,7 +272,7 @@ void addVocabInput() async {
 }
 
 Future<void> _loadLearningModule() async {
-  final learningModule = await _learningModuleService.getLearningModuleById(widget.moduleId);
+  final learningModule = await _learningModuleCoLearningModuleController.getLearningModuleById(widget.moduleId);
 
   if (learningModule != null) {
     setState(() {
