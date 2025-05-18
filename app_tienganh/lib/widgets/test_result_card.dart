@@ -5,12 +5,16 @@ import '../core/app_colors.dart';
 class TestResultCard extends StatelessWidget {
   final String title;
   final String subtitle;
+  final DateTime? date;
+  final String moduleId;
   final double progress;
 
   const TestResultCard({
     super.key,
     required this.title,
     required this.subtitle,
+    this.date,
+    required this.moduleId,
     required this.progress,
   });
 
@@ -19,8 +23,9 @@ class TestResultCard extends StatelessWidget {
     return Row(
       children: [
         CircularProgressIndicatorCustom(
+          size: 72,
           progress: progress), // <- dùng widget của bạn
-        SizedBox(width: 16),
+        SizedBox(width: 20),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,15 +33,26 @@ class TestResultCard extends StatelessWidget {
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: AppColors.highlightDarkest,
                   fontFamily: 'Montserrat',
                 ),
               ),
-              SizedBox(height: 8),
+              SizedBox(height: 4),
               Text(
                 subtitle,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: AppColors.textPrimary,
+                  fontFamily: 'Montserrat',
+                ),
+              ),
+              SizedBox(height: 4),
+              Text(
+                date != null
+                    ? "${date!.day}/${date!.month}/${date!.year}"
+                    : "",
                 style: TextStyle(
                   fontSize: 12,
                   color: AppColors.textPrimary,

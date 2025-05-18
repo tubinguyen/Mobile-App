@@ -1,3 +1,4 @@
+import 'package:app_tienganh/views/cus/test_result_screen.dart';
 import 'package:flutter/material.dart';
 import '../views/cus/home_screen.dart';
 import '../views/cus/library_screen.dart';
@@ -54,11 +55,15 @@ class _NavigationPageState extends State<NavigationPage> {
   final Set<int> _pagesWithBottomNavigationBar = {0, 1, 2, 3, 4};
 
   String? _currentModuleId;
+  // String? _currentQuizId;
+  String? _currentQuizResultId;
 
-  void _onItemTapped(int index, {String? moduleId}) {
+  void _onItemTapped(int index, {String? moduleId, String? quizResultId}) {
     setState(() {
       _selectedIndex = index;
       _currentModuleId = moduleId;
+      // _currentQuizId = quizId;
+      _currentQuizResultId = quizResultId;
     });
   }
 
@@ -124,6 +129,12 @@ class _NavigationPageState extends State<NavigationPage> {
         return CourseEditScreen(
           moduleId: _currentModuleId ?? '',
           onNavigate: _onItemTapped,
+        );
+      case 23:
+        return TestResultScreen(
+          onNavigate: _onItemTapped,
+          quizResultId: _currentQuizResultId ?? '',
+          moduleId: _currentModuleId ?? '',
         );
       default:
         return const Center(child: Text('Page not found'));

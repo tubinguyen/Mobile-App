@@ -8,6 +8,7 @@ import '../../widgets/voca.dart';
 import 'package:app_tienganh/controllers/learning_module_controller.dart';
 import 'package:app_tienganh/models/learning_module_model.dart';
 import 'package:app_tienganh/models/user_model.dart';
+import 'package:app_tienganh/controllers/quiz_controller.dart';
 
 class StudySessionPage extends StatefulWidget {
   final String moduleId; 
@@ -24,7 +25,7 @@ class StudySessionPage extends StatefulWidget {
 }
 
 class _StudySessionPageState extends State<StudySessionPage> {
-  final LearningModuleService _getLearningModuleService = LearningModuleService();
+  final LearningModuleController _getLearningModuleController = LearningModuleController();
 
   late Future<LearningModuleModel?> _learningModuleFuture;
   late Future<UserModel?> _userFuture;
@@ -37,9 +38,9 @@ class _StudySessionPageState extends State<StudySessionPage> {
       print("Error: moduleId is empty");
       return;
     }
-    _learningModuleFuture = _getLearningModuleService.getLearningModuleById(widget.moduleId);
-    _userFuture = _getLearningModuleService.getUserInfo();
-    _deleteLearningModule = _getLearningModuleService.deleteLearningModule;
+    _learningModuleFuture = _getLearningModuleController.getLearningModuleById(widget.moduleId);
+    _userFuture = _getLearningModuleController.getUserInfo();
+    _deleteLearningModule = _getLearningModuleController.deleteLearningModule;
   }
 
   @override
@@ -290,7 +291,7 @@ class _StudySessionPageState extends State<StudySessionPage> {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(); // Đóng popup
+              Navigator.of(context).pop(); 
             },
             child: const Text(
               "Hủy",
@@ -301,9 +302,10 @@ class _StudySessionPageState extends State<StudySessionPage> {
             ),
           ),
           TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); // Đóng popup
+            onPressed: () async{
+              Navigator.of(context).pop(); 
               _deleteLearningModule(moduleId); // Thực hiện xóa học phần
+              await QuizController().deleteAllQuizAndResultsByModuleId(moduleId); // Xóa tất cả bài kiểm tra và kết quả liên quan đến học phần
               widget.onNavigate(1); 
             },
             child: const Text(

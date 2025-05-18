@@ -15,7 +15,7 @@ class CircularProgressIndicatorCustom extends StatelessWidget {
     this.size = 84.0,
     this.progressColor = AppColors.green,
     this.backgroundColor = AppColors.red,
-    this.textStyle = const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.highlightDarkest),
+    this.textStyle = const TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.highlightDarkest, fontFamily: 'Montserrat'),
   });
 
   @override
