@@ -7,6 +7,7 @@ class Payment extends StatefulWidget {
   final List<String>? options;
   final String? subtitle;
   final String dropdownIconPath; // Giữ nguyên tên nhưng sẽ dùng cho SVG
+  final Function(String)? onSelected; 
 
   const Payment({
     super.key,
@@ -14,6 +15,7 @@ class Payment extends StatefulWidget {
     this.options,
     this.subtitle,
     this.dropdownIconPath = 'assets/img/ArrowDown.svg', // Đổi đuôi thành .svg
+    this.onSelected, 
   });
 
   @override
@@ -68,6 +70,7 @@ class PaymentState extends State<Payment> {
                               _selectedOption = option;
                               _removeOverlay();
                             });
+                            widget.onSelected?.call(option);
                           },
                         );
                       }).toList() ??

@@ -31,7 +31,7 @@ class AuthService {
         userId: userId,
         email: email,
         username: username,
-        role: 1,
+        role: 0,
         createdAt: DateTime.now(),
       );
 

@@ -25,15 +25,19 @@ class NumberInputFieldState extends State<NumberInputField> {
   late int _value;
   late TextEditingController _controller;
   bool _isExternalController = false;
+  late int _currentValue; // Biến lưu giá trị hiện tại
 
   @override
   void initState() {
     super.initState();
     _value = widget.initialValue;
+    _currentValue =
+        widget.initialValue; // Khởi tạo giá trị hiện tại bằng giá trị ban đầu
 
     // Dùng controller bên ngoài nếu có, ngược lại thì tạo mới
     _isExternalController = widget.controller != null;
-    _controller = widget.controller ?? TextEditingController(text: _value.toString());
+    _controller = widget.controller ??
+        TextEditingController(text: _value.toString());
 
     // Đồng bộ ban đầu
     if (!_isExternalController) {
@@ -45,6 +49,9 @@ class NumberInputFieldState extends State<NumberInputField> {
     if (newValue >= widget.min && newValue <= widget.max) {
       setState(() {
         _value = newValue;
+        _currentValue = newValue; // Cập nhật giá trị hiện tại khi giá trị thay đổi
+        debugPrint(
+            '_currentValue trong _updateValue: $_currentValue');
         _controller.text = _value.toString();
         widget.onChanged?.call(_value);
       });
@@ -89,6 +96,8 @@ class NumberInputFieldState extends State<NumberInputField> {
                 final newValue = int.tryParse(input);
                 if (newValue != null) {
                   _value = newValue;
+                  _currentValue =
+                      newValue; // Cập nhật giá trị hiện tại khi giá trị thay đổi từ TextField
                   widget.onChanged?.call(_value);
                 }
               },
@@ -119,4 +128,7 @@ class NumberInputFieldState extends State<NumberInputField> {
       ),
     );
   }
+  int get currentValue => _currentValue; // Trả về giá trị hiện tại
+
 }
+
