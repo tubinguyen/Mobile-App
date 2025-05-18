@@ -1,11 +1,11 @@
 import 'dart:io';
+import 'package:app_tienganh/models/book_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class ProductController {
   final CollectionReference _productsRef = FirebaseFirestore.instance
-      .collection('products');
+      .collection('Books');
 
   // Upload ảnh lên server riêng, trả về URL ảnh
   Future<String?> uploadImageToMyCloud(File? imageFile) async {
@@ -39,8 +39,8 @@ class ProductController {
   }
 
   // Thêm sản phẩm vào Firestore
-  Future<void> addProduct(Map<String, dynamic> productData) async {
-    await _productsRef.add(productData);
+  Future<void> addProduct(Book book) async {
+    await _productsRef.add(book.toMap());
   }
 
   // Xóa sản phẩm theo productId
