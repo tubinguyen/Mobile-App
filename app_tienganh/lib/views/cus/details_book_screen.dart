@@ -1,58 +1,26 @@
-import 'package:app_tienganh/core/app_colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:app_tienganh/views/cus/cart_screen.dart';
 import 'package:app_tienganh/widgets/navbar.dart';
 import 'package:app_tienganh/widgets/login_and_register_button.dart';
 import 'package:app_tienganh/widgets/number_input_field.dart';
+import 'package:app_tienganh/controllers/cart_controller.dart';
+import 'package:app_tienganh/core/app_colors.dart';
 
-class BookDetailScreen extends StatelessWidget {
+class BookDetailScreen extends StatefulWidget {
   final String bookId;
   const BookDetailScreen({super.key, required this.bookId});
 
   @override
+  _BookDetailScreenState createState() => _BookDetailScreenState();
+}
+
+class _BookDetailScreenState extends State<BookDetailScreen> {
+  final CartController _cartController = CartController();
+  final GlobalKey<NumberInputFieldState> _numberInputFieldKey = GlobalKey<NumberInputFieldState>(); // Add a GlobalKey
+
+  @override
   Widget build(BuildContext context) {
-
-    final mockBooks = {
-      '0': {
-        'title': 'Tactics for TOEIC Listening and Reading Test',
-        'price': '180000',
-        'description': 'Sách TOEIC Preparation LC + RC Volume 1, 2 là cuốn sách phù hợp với những bạn ở trình độ cơ bản, có nhu cầu ôn luyện thi để cải thiện kỹ năng Reading và Listening..',
-        'imageUrl': 'assets/img/booktest.jpg',
-      },
-      '1': {
-        'title': 'Tactics for TOEIC - Volume 2',
-        'price': '180000',
-        'description': 'Nâng cao kỹ năng Listening và Reading TOEIC.',
-        'imageUrl': 'assets/img/book.png',
-      },
-      '2': {
-        'title': '600 Essential Words for the TOEIC',
-        'price': '150000',
-        'description': 'Từ vựng TOEIC căn bản dành cho người học.',
-        'imageUrl': 'assets/img/book.png',
-      },
-      '3': {
-        'title': 'Economy TOEIC Test LC1000',
-        'price': '200000',
-        'description': 'Thực hành nghe TOEIC với 10 đề sát đề thi thật.',
-        'imageUrl': 'assets/img/book.png',
-      },
-      '4': {
-        'title': 'TOEIC Analyst',
-        'price': '170000',
-        'description': 'Tài liệu phân tích cấu trúc bài thi TOEIC.',
-        'imageUrl': 'assets/img/book.png',
-      },
-      '5': {
-        'title': 'Hackers TOEIC',
-        'price': '190000',
-        'description': 'Phù hợp cho người muốn đạt 800+ điểm TOEIC.',
-        'imageUrl': 'assets/img/book.png',
-      },
-    };
-
-    final book = mockBooks[bookId];
-
     return Scaffold(
       appBar: CustomNavBar(
         title: 'Chi tiết sách',
@@ -68,14 +36,34 @@ class BookDetailScreen extends StatelessWidget {
           );
         },
       ),
-      body: book != null
-          ? Padding(
-              padding: const EdgeInsets.all(16.0),
+      body: FutureBuilder<DocumentSnapshot>(
+        future: FirebaseFirestore.instance.collection('Books').doc(widget.bookId).get(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(child: Text('Đã xảy ra lỗi: ${snapshot.error}'));
+          }
+
+          if (!snapshot.hasData || !snapshot.data!.exists) {
+            return const Center(child: Text('Không tìm thấy sách'));
+          }
+
+          final bookData = snapshot.data!.data() as Map<String, dynamic>;
+          final String bookName = bookData['name'] ?? '';
+          final String imageUrl = bookData['imageUrl'] ?? '';
+          final double price = bookData['price'] ?? 0.0;
+
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.asset(
-                    book['imageUrl']!,
+                  Image.network(
+                    imageUrl,
                     width: 412,
                     height: 315,
                     fit: BoxFit.cover,
@@ -88,14 +76,27 @@ class BookDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 25),
                   Text(
-                    book['title']!,
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontFamily: 'Montserrat', color: AppColors.highlightDarkest),  
+                    bookName,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Montserrat',
+                      color: AppColors.highlightDarkest,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    bookData['description'] ?? 'Không có mô tả',
+                    textAlign: TextAlign.justify,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontFamily: 'Montserrat',
+                      color: AppColors.textPrimary,
+                    ),
                   ),
                   const SizedBox(height: 15),
-                  Text(book['description']!, style: const TextStyle(fontSize: 13, fontFamily: 'Montserrat', color: AppColors.textPrimary),),
-                  const SizedBox(height: 15),
                   Text(
-                    'Giá: ${book['price']} đ',
+                    'Giá: ${price is int ? price : (price as double).toStringAsFixed(0)} đ',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -103,6 +104,7 @@ class BookDetailScreen extends StatelessWidget {
                       color: AppColors.red,
                     ),
                   ),
+                  const SizedBox(height: 15),
                   Row(
                     children: [
                       const Text(
@@ -110,28 +112,50 @@ class BookDetailScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16,
                           fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold,
                           color: AppColors.highlightDarkest,
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      NumberInputField(),
+                      const SizedBox(width: 20),
+                      SizedBox(
+                        width: 120,
+                        child: NumberInputField(
+                          key: _numberInputFieldKey, 
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 15),
                   LoginAndRegisterButton(
-                    text: 'Thêm vào giỏ hàng', 
-                    onTap: (){
-                      
-                    }, 
-                    stateLoginOrRegister: AuthButtonState.login, 
-                    textColor: AppColors.text
+                    text: 'Thêm vào giỏ hàng',
+                    onTap: () {
+                      int quantity = _numberInputFieldKey.currentState?.currentValue ?? 1;
+                      debugPrint('Quantity: $quantity');
+                      if (quantity > 0) {
+                        _cartController.addToCart(
+                          widget.bookId,
+                          bookName,
+                          imageUrl,
+                          quantity,
+                          price,
+                          context,
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Vui lòng nhập số lượng lớn hơn 0')),
+                        );
+                      }
+                    },
+                    stateLoginOrRegister: AuthButtonState.login,
+                    textColor: AppColors.text,
                   ),
                 ],
               ),
-            )
-          : const Center(
-              child: Text('Không tìm thấy sách', style: TextStyle(fontSize: 18)),
             ),
+          );
+        },
+      ),
     );
   }
 }
+

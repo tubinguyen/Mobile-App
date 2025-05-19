@@ -1,95 +1,103 @@
 import 'package:flutter/material.dart';
+import '../../models/user_model.dart';
+import '../../controllers/profile_controller.dart';
 import '../../widgets/account.dart';
 import '../../widgets/yourorder.dart';
 import '../../widgets/text_info.dart';
 import '../../widgets/large_button.dart';
 
 class ProfileScreen extends StatefulWidget {
-
   final Function(int) onNavigate;
-  final int? userId;
-  const ProfileScreen(
-    {super.key,
+
+  const ProfileScreen({
+    super.key,
     required this.onNavigate,
-    this.userId,
-    });
-
-   @override
-    State<ProfileScreen> createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen>{
-  int selectedIndex = 4;
-
-  final String username = 'Nguyễn Phan Tú Bình';
-  final String email = 'nhiyennguyen1905@gmail.com';
-  final String password = 'hihihaha';
-  final String address = 'Thành phố Hồ Chí Minh';
-  final String sdt = '0123456789';
+  });
 
   @override
-Widget build(BuildContext context) { // chữ context viết thường nha
-  return Center(
-    child: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(31, 10, 31, 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center, // thêm dòng này để canh giữa
-          children: [
-            //Account
-            Account(profileImage: "assets/img/user.jpg", username: username),
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
 
-            const SizedBox(height: 35),
+class _ProfileScreenState extends State<ProfileScreen> {
+  UserModel? user;
+  bool isLoading = true;
 
-            YourOrder(
-              text: 'Đơn hàng của bạn',
-              onTap: () {
-                widget.onNavigate(17);
-              },
-            ),
+  @override
+  void initState() {
+    super.initState();
+    _fetchUser();
+  }
 
-            const SizedBox(height: 29),
+  Future<void> _fetchUser() async {
+    final controller = LoadProfileController();
+    final result = await controller.getUserInfo();
 
-            Text(
-              'Thông tin người dùng',
-                style: TextStyle(
-                fontFamily: 'Montserrat',
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue,
+    setState(() {
+      user = result;
+      isLoading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (user == null) {
+      return const Center(child: Text("Không tìm thấy thông tin người dùng."));
+    }
+
+    return Center(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(31, 10, 31, 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Account(
+                profileImage: user!.avatarUrl ?? "assets/img/user.jpg",
+                username: user!.username,
               ),
-              textAlign: TextAlign.center,
-            ),
 
-            const SizedBox(height: 20),
+              const SizedBox(height: 35),
 
-            //Tên
-            // TextInput(
-            //   label: 'Tên',
-            //   hint: username,
-            //   enabled: false,
-            // ),
+              YourOrder(
+                text: 'Đơn hàng của bạn',
+                onTap: () {
+                  widget.onNavigate(17);
+                },
+              ),
 
-            CustomTextField(label: 'Tên', content: username,),
+              const SizedBox(height: 29),
 
-            //Email
-            CustomTextField(label: 'Email', content: email,),
-      
-            // //Address
-            // CustomTextField(label: 'Địa chỉ', content: address,),
+              const Text(
+                'Thông tin người dùng',
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                ),
+                textAlign: TextAlign.center,
+              ),
 
-            // //Sdt
-            // CustomTextField(label: 'Số điện thoại', content: sdt,),
+              const SizedBox(height: 20),
 
-            LargeButton(
-              text: 'Cập nhật thông tin', 
-              onTap: () {
-                widget.onNavigate(18);
-              } )
-          ],
+              CustomTextField(label: 'Tên', content: user!.username),
+              CustomTextField(label: 'Email', content: user!.email),
+              
+
+              LargeButton(
+                text: 'Cập nhật thông tin',
+                onTap: () {
+                  widget.onNavigate(18);
+                },
+              ),
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 }

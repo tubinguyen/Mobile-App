@@ -86,7 +86,7 @@ void _handleLogin() async {
     } 
     on FirebaseAuthException catch (e) 
     {
-      print({e.code});
+      // print({e.code});
       if (e.code == 'invalid-email') {
         _showSnackBar("Email khong hợp lệ.");
       } else if (e.code == 'invalid-credential') {

@@ -8,26 +8,29 @@ import '../../widgets/test_result_card.dart';
 import 'package:app_tienganh/controllers/learning_module_controller.dart';
 import 'package:app_tienganh/models/learning_module_model.dart';
 import 'package:app_tienganh/models/user_model.dart';
+import 'package:app_tienganh/models/quiz_result_model.dart';
+import 'package:app_tienganh/controllers/quiz_controller.dart';
 
 class LibraryScreen extends StatefulWidget {
-  final Function(int, {String? moduleId}) onNavigate; // Thêm moduleId làm tham số tùy chọn
-
-  const LibraryScreen({super.key, required this.onNavigate});
+  final Function(int, {String? moduleId, String? quizResultId}) onNavigate; // Thêm moduleId làm tham số tùy chọn
+  final int? currentScreen;
+  const LibraryScreen({super.key, required this.onNavigate, this.currentScreen});
 
   @override
   State<LibraryScreen> createState() => _LibraryScreenState();
 }
 
 class _LibraryScreenState extends State<LibraryScreen> {
+  // lấy currentScreen từ widget
   int currentScreen = 0; // Quản lý màn hình hiện tại bằng currentScreen
+  final LearningModuleController _getLearningModuleController = LearningModuleController();
+  List<LearningModuleModel> _learningModules = [];
 
   Widget _buildCourseScreen() {
-    final LearningModuleService _getLearningModuleService = LearningModuleService();
-
     return FutureBuilder(
       future: Future.wait([
-        _getLearningModuleService.getUserInfo(),
-        _getLearningModuleService.getLearningModules(),
+        _getLearningModuleController.getUserInfo(),
+        _getLearningModuleController.getLearningModules(),
       ]),
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -51,6 +54,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
         final userInfo = snapshot.data?[0] as UserModel?;
         final learningModules = snapshot.data?[1] as List<LearningModuleModel>;
+
+        _learningModules = learningModules;
 
         if (learningModules.isEmpty) {
           return Center(
@@ -124,111 +129,79 @@ class _LibraryScreenState extends State<LibraryScreen> {
             );
           },
         );
-// learningModules.sort((a, b) {
-//   final aDisplayDate = a.updatedAt.isAfter(a.createdAt) ? a.updatedAt : a.createdAt;
-//   final bDisplayDate = b.updatedAt.isAfter(b.createdAt) ? b.updatedAt : b.createdAt;
-//   return bDisplayDate.compareTo(aDisplayDate); // Sắp xếp giảm dần
-// });
-
-// return ListView.builder(
-//       itemCount: learningModules.length,
-//       itemBuilder: (context, index) {
-//         final module = learningModules[index];
-
-//         // Tính toán displayDate
-//         final displayDate = module.updatedAt.isAfter(module.createdAt)
-//             ? module.updatedAt
-//             : module.createdAt;
-
-//         // Tính toán thời gian hiển thị
-//         final now = DateTime.now();
-//         final difference = now.difference(displayDate);
-//         String date;
-//         if (difference.inMinutes < 60) {
-//           date = "${difference.inMinutes} phút trước";
-//         } else if (difference.inHours < 24) {
-//           date = "${difference.inHours} giờ trước";
-//         } else if (difference.inDays < 30) {
-//           date = "${difference.inDays} ngày trước";
-//         } else {
-//           date = "${displayDate.day}/${displayDate.month}/${displayDate.year}";
-//         }
-
-//         return Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             if (index == 0 || learningModules[index - 1].updatedAt.day != module.updatedAt.day)
-//               Padding(
-//                 padding: const EdgeInsets.only(top: 16, bottom: 8),
-//                 child: Text(
-//                   date,
-//                   style: TextStyle(
-//                     fontSize: 12,
-//                     fontWeight: FontWeight.bold,
-//                     fontFamily: 'Montserrat',
-//                   ),
-//                 ),
-//               ),
-//             LibraryObject(
-//               title: module.moduleName,
-//               subtitle: "${module.totalWords} từ vựng",
-//               username: userInfo?.username ?? "Không rõ", // Lấy username từ UserModel
-//               avatarUrl: userInfo?.avatarUrl, // Lấy avatarUrl từ UserModel
-//               onTap: () {
-//                 setState(() {
-//                   widget.onNavigate(12, moduleId: module.moduleId); // Điều hướng đến màn hình chi tiết học phần
-//                 });
-//               },
-//             ),
-//             SizedBox(height: 12),
-//           ],
-//         );
-//       },
-//     );
-        
       },
     );
   }
 
   Widget _buildTestResultScreen() {
-    List<Map<String, dynamic>> ketquaList = [
-      {'title': 'Kiểm tra từ vựng', 'subtitle': 'Ngữ pháp cơ bản', 'progress': 0.75},
-      {'title': 'Kiểm tra ngữ pháp', 'subtitle': 'Ngữ pháp nâng cao', 'progress': 0.50},
-    ];
-
-    if (ketquaList.isEmpty) {
-      return Center(
-        child: EmptyCourse(
-          title: 'Bạn chưa có bài kiểm tra nào',
-          subtitle: 'Tìm và làm các bài kiểm tra thử dựa trên những gì bạn đang học',
-          buttonText: 'Tìm kiếm bài kiểm tra',
-          imagePath: 'assets/img/file_check_bold.png',
-          onButtonPressed: () {
-            setState(() {
-              currentScreen = 3; // Điều hướng đến màn hình tìm kiếm bài kiểm tra
-            });
-          },
-          backgroundColor: AppColors.background,
-          textColor: AppColors.textPrimary,
-        ),
-      );
-    } else {
-      return ListView.builder(
-        padding: EdgeInsets.all(16),
-        itemCount: ketquaList.length,
-        itemBuilder: (context, index) {
-          final ketqua = ketquaList[index];
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 30),
-            child: TestResultCard(
-              title: ketqua['title'],
-              subtitle: ketqua['subtitle'],
-              progress: ketqua['progress'],
+    return FutureBuilder<List<QuizResultModel>>(
+      future: QuizController().getQuizResultsOfCurrentUser(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(
+            child: EmptyCourse(
+              title: 'Bạn chưa có bài kiểm tra nào',
+              subtitle: 'Tìm và làm các bài kiểm tra thử dựa trên những gì bạn đang học',
+              buttonText: 'Tìm kiếm bài kiểm tra',
+              imagePath: 'assets/img/file_check_bold.png',
+              onButtonPressed: () {
+                setState(() {
+                  currentScreen = 0;
+                });
+              },
+              backgroundColor: AppColors.background,
+              textColor: AppColors.textPrimary,
             ),
           );
-        },
-      );
-    }
+        }
+        final ketquaList = snapshot.data!;
+        // Sắp xếp danh sách ketquaList theo endTime giảm dần
+        ketquaList.sort((a, b) => b.endTime.compareTo(a.endTime));
+        
+        return ListView.builder(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
+          itemCount: ketquaList.length,
+          itemBuilder: (context, index) {
+            final ketqua = ketquaList[index];
+            // Tìm moduleName theo moduleId
+            final module = _learningModules.firstWhere(
+              (m) => m.moduleId == ketqua.moduleId,
+              orElse: () => LearningModuleModel(
+                moduleId: ketqua.moduleId,
+                moduleName: 'Không rõ',
+                vocabulary: [],
+                totalWords: 0,
+                userId: '',
+                createdAt: DateTime.now(),
+                updatedAt: DateTime.now(),
+              ),
+            );
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: GestureDetector(
+                onTap: () {
+                  widget.onNavigate(
+                    23,
+                    quizResultId: ketqua.quizResultId,
+                    moduleId: ketqua.moduleId,
+                  );
+                },
+                child: TestResultCard(
+                  title: "Kiểm tra ${module.moduleName}", 
+                  subtitle: "Số câu đúng: ${ketqua.correctAnswersCount}/${ketqua.questionResults.length}",
+                  date: ketqua.endTime,
+                  progress: ketqua.completionPercentage / 100,
+                  moduleId: ketqua.moduleId,
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   Widget _buildContentForCurrentScreen() {

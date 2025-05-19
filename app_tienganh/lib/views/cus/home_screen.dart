@@ -60,7 +60,7 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 20),
 
                   // Danh sách sách
-                  BookList(),
+                  BookList(onNavigate: onNavigate),
                 ],
               ),
             ),

@@ -1,7 +1,7 @@
 class OrderModel {
   final String orderId;
-  final String userId; // Khóa ngoại tham chiếu đến bảng users
-  final List<OrderItem> products; // Danh sách sản phẩm trong đơn hàng
+  final String userId; 
+  final List<OrderItem> products; 
   final String receiverName;
   final String receiverEmail;
   final String receiverPhone;
@@ -9,6 +9,7 @@ class OrderModel {
   final double totalAmount;
   final String paymentMethod;
   final DateTime createdAt;
+  final String paymentStatus;
   final String status;
 
   OrderModel({
@@ -23,6 +24,7 @@ class OrderModel {
     required this.paymentMethod,
     required this.createdAt,
     this.status = "Đang giao hàng",
+    this.paymentStatus = "Chưa thanh toán",
   });
 
   factory OrderModel.fromMap(Map<String, dynamic> map, String orderId) {
@@ -47,6 +49,7 @@ class OrderModel {
         ? DateTime.tryParse(map['createdAt']) ?? DateTime.now()  
         : DateTime.now(),  
       status: map['status'] ?? 'pending',
+      paymentStatus: map['paymentStatus'] ?? 'Chưa thanh toán',
     );
   }
 
@@ -66,6 +69,7 @@ class OrderModel {
       'paymentMethod': paymentMethod,
       'createdAt': createdAt.toIso8601String(),
       'status': status,
+      'paymentStatus': paymentStatus,
     };
   }
 
@@ -81,6 +85,7 @@ class OrderModel {
     String? paymentMethod,
     DateTime? createdAt,
     String? status,
+    String? paymentStatus,
   }) {
     return OrderModel(
       orderId: orderId ?? this.orderId,
@@ -94,17 +99,18 @@ class OrderModel {
       paymentMethod: paymentMethod ?? this.paymentMethod,
       createdAt: createdAt ?? this.createdAt,
       status: status ?? this.status,
+      paymentStatus: paymentStatus ?? this.paymentStatus,
     );
   }
 }
 
-// Model để đại diện cho một sản phẩm trong đơn hàng
 class OrderItem {
   final String productId;
   final int quantity;
   final double price;
-  final String? productName; 
+  final String? productName;
   final String? productImage;
+  final String? cartId; 
 
   OrderItem({
     required this.productId,
@@ -112,6 +118,7 @@ class OrderItem {
     required this.price,
     this.productName,
     this.productImage,
+    this.cartId, 
   });
 
   factory OrderItem.fromMap(Map<String, dynamic> map) {
@@ -121,6 +128,7 @@ class OrderItem {
       price: map['price'] ?? 0.0,
       productName: map['productName'],
       productImage: map['productImage'],
+      cartId: map['cartId'], 
     );
   }
 
@@ -131,6 +139,7 @@ class OrderItem {
       'price': price,
       'productName': productName,
       'productImage': productImage,
+      'cartId': cartId,
     };
   }
 
@@ -140,6 +149,7 @@ class OrderItem {
     double? price,
     String? productName,
     String? productImage,
+    String? cartId, 
   }) {
     return OrderItem(
       productId: productId ?? this.productId,
@@ -147,6 +157,7 @@ class OrderItem {
       price: price ?? this.price,
       productName: productName ?? this.productName,
       productImage: productImage ?? this.productImage,
+      cartId: cartId ?? this.cartId, 
     );
   }
 }

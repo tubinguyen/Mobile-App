@@ -5,6 +5,7 @@ import 'package:app_tienganh/widgets/top_app_bar.dart';
 import 'package:app_tienganh/widgets/book_inf.dart';
 import 'package:app_tienganh/widgets/login_and_register_button.dart';
 import 'package:app_tienganh/core/app_colors.dart';
+import 'package:app_tienganh/Controllers/add_delete_product.dart';
 
 class ProductManagement extends StatefulWidget {
   final Function(int) onNavigate;
@@ -18,12 +19,12 @@ class ProductManagement extends StatefulWidget {
 class _ProductManagementState extends State<ProductManagement> {
   late Stream<QuerySnapshot> _productStream;
 
+  final ProductController _productController = ProductController();
   @override
   void initState() {
     super.initState();
     // Khởi tạo stream để lắng nghe dữ liệu từ Firestore
-    _productStream =
-        FirebaseFirestore.instance.collection('products').snapshots();
+    _productStream = FirebaseFirestore.instance.collection('Books').snapshots();
   }
 
   @override
@@ -66,16 +67,13 @@ class _ProductManagementState extends State<ProductManagement> {
                             quantity: product['quantity'],
                             description: product['description'],
                             imagePath:
-                                product['imagePath'], // Lấy đường dẫn ảnh từ Firestore
+                                product['imageUrl'], // Lấy đường dẫn ảnh từ Firestore
                             onDelete: () {
                               // Xử lý xóa sản phẩm
+
                               _deleteProduct(product.id);
                             },
                             onEdit: () {
-                              // Điều hướng tới trang chỉnh sửa sản phẩm và truyền productId
-                              widget.onNavigate(
-                                14,
-                              ); // Điều hướng đến EditProduct
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -120,18 +118,12 @@ class _ProductManagementState extends State<ProductManagement> {
   // Xóa sản phẩm khỏi Firestore
   Future<void> _deleteProduct(String productId) async {
     try {
-      await FirebaseFirestore.instance
-          .collection('products')
-          .doc(productId)
-          .delete();
+      await _productController.deleteProduct(productId);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
             'Sản phẩm đã được xóa',
-            style: TextStyle(
-              color: AppColors.background, // Chỉnh màu chữ
-              fontSize: 16, // Chỉnh kích thước chữ
-            ),
+            style: TextStyle(color: AppColors.background, fontSize: 16),
           ),
           duration: Duration(seconds: 2),
           backgroundColor: Colors.green,
@@ -139,13 +131,10 @@ class _ProductManagementState extends State<ProductManagement> {
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(
-            'Lỗi khi xóa sản phẩm',
-            style: TextStyle(
-              color: AppColors.background, // Chỉnh màu chữ
-              fontSize: 16, // Chỉnh kích thước chữ
-            ),
+            'Lỗi khi xóa sản phẩm: $e', // Hiển thị chi tiết lỗi
+            style: TextStyle(color: AppColors.background, fontSize: 16),
           ),
           duration: Duration(seconds: 2),
           backgroundColor: Colors.red,

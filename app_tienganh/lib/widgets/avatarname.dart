@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../core/app_colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 class AvatarName extends StatelessWidget {
   final String? avatarUrl; // Đường dẫn hình ảnh jpg/png

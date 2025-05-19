@@ -17,14 +17,6 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  // final String date = '19/5/2024';
-  // final bool isReceived = true;
-  // final String imageName = 'assets/img/booktest.jpg';
-  // final String title = 'IELTS Vocabulary' ;
-  // final double price = 100000 ;
-  // final int quantity = 2;
-
-   // Tạo danh sách đơn hàng
   final List<Map<String, dynamic>> orders = [
     {
       'date': '19/5/2024',

@@ -18,7 +18,7 @@ class CourseCreationScreen extends StatefulWidget {
 
 class _CourseCreationScreenState extends State<CourseCreationScreen> {
   
-  final LearningModuleService _createLearningModuleService = LearningModuleService();
+  final LearningModuleController _createLearningModuleController = LearningModuleController();
 
   //Cài đặt các biến và phương thức của "COURSE CREATION"
   List<Widget> vocabInputs = [];
@@ -62,7 +62,7 @@ void _handeCreateLearningModule() async {
     }
 
     // Gọi hàm tạo học phần và nhận moduleId
-    final result = await _createLearningModuleService.createLearningModule(
+    final result = await _createLearningModuleController.createLearningModule(
       moduleName: title,
       description: description.isEmpty ? null : description,
       vocabulary: vocabList,

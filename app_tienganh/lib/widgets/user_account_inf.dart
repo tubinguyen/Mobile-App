@@ -4,7 +4,7 @@ import '../core/app_colors.dart';
 
 class UserInfoCard extends StatelessWidget {
   final String name;
-  final String accountType;
+  final String email;
   final int orderCount;
   final int courseCount;
   final VoidCallback onDelete;
@@ -12,7 +12,7 @@ class UserInfoCard extends StatelessWidget {
   const UserInfoCard({
     super.key,
     required this.name,
-    required this.accountType,
+    required this.email,
     required this.orderCount,
     required this.courseCount,
     required this.onDelete,
@@ -62,7 +62,7 @@ class UserInfoCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'Tài khoản: $accountType',
+                      'Email: $email',
                       style: const TextStyle(fontSize: 10, fontFamily: 'Montserrat',fontWeight: FontWeight.normal,),
                     ),
                     Text(

@@ -1,11 +1,25 @@
 import 'package:flutter/material.dart';
 import '../core/app_colors.dart';
+import 'package:app_tienganh/controllers/auth_controller.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Function(int)? onItemTapped;
 
-  const CustomAppBar({super.key, required this.title, this.onItemTapped});
+  static const int manageUsers = 1;
+  static const int manageProducts = 2;
+  static const int manageOrders = 3;
+  static const int account = 4;
+  static const int logout = 5;
+  static const int accountScreen = 6;
+
+  final AuthService _auth = AuthService();
+
+  CustomAppBar({
+    super.key,
+    required this.title,
+    this.onItemTapped,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +37,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       leading: IconButton(
         icon: const Icon(Icons.menu, color: AppColors.text),
+        tooltip: 'Mở menu',
         onPressed: () => _showMenu(context),
       ),
       actions: [
@@ -31,25 +46,28 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: AppColors.background,
           position: PopupMenuPosition.under,
           onSelected: (value) {
-            if (value == 1) {
+            if (value == account) {
               _manageAccount();
-            } else if (value == 2) {
+            } else if (value == logout) {
               _showLogoutDialog(context);
             }
           },
           itemBuilder: (context) => [
             const PopupMenuItem<int>(
-              value: 1,
+              value: account,
               child: Text(
                 "Tài khoản",
                 style: TextStyle(fontFamily: 'Montserrat'),
               ),
             ),
             const PopupMenuItem<int>(
-              value: 2,
+              value: logout,
               child: Text(
                 "Đăng xuất",
-                style: TextStyle(fontFamily: 'Montserrat', color: AppColors.red),
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  color: AppColors.red,
+                ),
               ),
             ),
           ],
@@ -64,21 +82,21 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       position: const RelativeRect.fromLTRB(10, 70, 100, 0),
       items: [
         const PopupMenuItem<int>(
-          value: 9,
+          value: manageUsers,
           child: Text(
             "Quản lý người dùng",
             style: TextStyle(fontFamily: 'Montserrat', fontSize: 14),
           ),
         ),
         const PopupMenuItem<int>(
-          value: 10,
+          value: manageProducts,
           child: Text(
             "Quản lý sản phẩm",
             style: TextStyle(fontFamily: 'Montserrat', fontSize: 14),
           ),
         ),
         const PopupMenuItem<int>(
-          value: 11,
+          value: manageOrders,
           child: Text(
             "Quản lý đơn hàng",
             style: TextStyle(fontFamily: 'Montserrat', fontSize: 14),
@@ -88,15 +106,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       color: AppColors.background,
     );
 
-    if (context.mounted && value != null && onItemTapped != null) {
-      onItemTapped!(value);
+    if (context.mounted && value != null) {
+      onItemTapped?.call(value);
     }
   }
 
   void _manageAccount() {
-    if (onItemTapped != null) {
-       onItemTapped!(21); 
-    }
+    onItemTapped?.call(accountScreen);
   }
 
   void _showLogoutDialog(BuildContext context) {
@@ -122,34 +138,51 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             onPressed: () => Navigator.pop(context),
             child: const Text(
               "Hủy",
-              style: TextStyle(color: AppColors.red, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: AppColors.red,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              if (onItemTapped != null) {
-                onItemTapped!(6); 
-              }
+              logoutUser(context);
             },
             child: const Text(
               "Đăng xuất",
-              style: TextStyle(color: AppColors.highlightDarkest, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: AppColors.highlightDarkest,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],
       ),
     );
   }
+
+  Future<void> logoutUser(BuildContext context) async {
+    String result = await _auth.signOut();
+
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(result)),
+      );
+
+      if (result == "Đăng xuất thành công!") {
+        if (onItemTapped != null) {
+          onItemTapped!(6); 
+        }
+      } else {
+        // Nếu có lỗi xảy ra, hiển thị thông báo lỗi
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(result)),
+        );
+      }
+    }
+  }
+
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
-
-
-//Cach su dung
-//appBar: CustomAppBar(
-      //   title: "Tạo Học Phần",
-      //   onItemTapped: (value) {
-      //     onNavigate(value);
-      //   },
-      // ),
