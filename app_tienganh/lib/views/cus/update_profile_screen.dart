@@ -1,4 +1,5 @@
 import 'package:app_tienganh/core/app_colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/account.dart';
@@ -7,7 +8,7 @@ import '../../widgets/large_button.dart';
 import '../../widgets/navbar.dart';
 import '../../controllers/profile_controller.dart';
 import 'package:app_tienganh/models/user_model.dart';
-
+import 'package:app_tienganh/firebase_options.dart';
 class UpdateProfileScreen extends StatefulWidget {
 
   final Function(int) onNavigate;
@@ -101,6 +102,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen>{
 Future<void> _updateProfile() async {
   final username = _usernameController.text.trim();
   final email = _emailController.text.trim();
+  final currentUser = FirebaseAuth.instance.currentUser;
 
   if (username.isEmpty || email.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -112,18 +114,27 @@ Future<void> _updateProfile() async {
     return;
   }
 
+    final userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser?.uid)
+        .get();
+
+    final data = userDoc.data();
+
+    final orderCount = data?['orderCount'] ?? 0;
+    final learningModuleCount = data?['learningModuleCount'] ?? 0;
   setState(() {
     _isLoading = true;
   });
 
   try {
     final user = UserModel(
-      userId: '', // Không cần userId vì controller lấy từ FirebaseAuth
+      userId: currentUser?.uid ?? '',
       username: username,
       email: email,
       createdAt: DateTime.now(),
-      orderCount: 0,
-      learningModuleCount: 0,
+      orderCount: orderCount,
+      learningModuleCount: learningModuleCount,
       role: 0,
       avatarUrl: null,
     );
