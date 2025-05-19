@@ -2,10 +2,14 @@ import 'package:app_tienganh/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+// import 'package:app_tienganh/widgets/line_or.dart';
+// import 'package:app_tienganh/widgets/google_button.dart';
 import 'package:app_tienganh/widgets/login_and_register_button.dart';
 import 'package:app_tienganh/widgets/password.dart';
 import 'package:app_tienganh/widgets/text_input.dart';
 import 'package:app_tienganh/core/app_colors.dart';
+// import 'package:app_tienganh/models/user_model.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
   final Function(int) onNavigate;
@@ -82,7 +86,7 @@ void _handleLogin() async {
     } 
     on FirebaseAuthException catch (e) 
     {
-      print({e.code});
+      // print({e.code});
       if (e.code == 'invalid-email') {
         _showSnackBar("Email khong hợp lệ.");
       } else if (e.code == 'invalid-credential') {
