@@ -26,7 +26,6 @@ class ShoppingCartItem extends StatelessWidget {
 
     return Container(
       width: 335,
-      height: 100,
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Stack(
         children: [

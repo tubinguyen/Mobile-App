@@ -7,7 +7,7 @@ import 'package:app_tienganh/core/app_colors.dart';
 import 'package:app_tienganh/controllers/order_controller.dart';
 import 'package:app_tienganh/controllers/cart_controller.dart';
 import 'package:app_tienganh/models/order_model.dart';
-
+import 'package:firebase_auth/firebase_auth.dart'; 
 class PaymentScreen extends StatefulWidget {
   final double totalPrice;
 
@@ -27,6 +27,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   final OrderController _orderController = OrderController();
   final CartController _cartController = CartController();
+  final FirebaseAuth _auth = FirebaseAuth.instance; 
 
   void _submitOrder() async {
     if (_emailController.text.isEmpty ||
@@ -95,7 +96,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         ),
       );
     }
-}
+  }
 
   @override
   void dispose() {
@@ -177,3 +178,4 @@ class _PaymentScreenState extends State<PaymentScreen> {
     );
   }
 }
+

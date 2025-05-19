@@ -20,20 +20,18 @@ class ShoppingCartItemFinal extends StatelessWidget {
     double totalPrice = price * quantity;
 
     return Container(
-      width: 335,
+
       height: 100,
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
         children: [
-          // Image Section
-          Image.asset(
+          Image.network(
             imageName,
             width: 90,
             height: 100,
           ),
           const SizedBox(width: 10),
 
-          // Title & Info Section
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,7 +51,7 @@ class ShoppingCartItemFinal extends StatelessWidget {
                 ),
 
                 Padding (
-                  padding: const EdgeInsets.only(left: 4.0),
+                  padding: const EdgeInsets.only(left: 1.0),
                   child: Text(
                   '${price.toStringAsFixed(0)} VND',
                   style: TextStyle(
