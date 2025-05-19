@@ -5,9 +5,22 @@ import 'package:app_tienganh/widgets/filter.dart';
 import 'package:app_tienganh/widgets/small_book.dart';
 import 'package:app_tienganh/models/book_model.dart';
 
-class StoreScreen extends StatelessWidget {
+class StoreScreen extends StatefulWidget {
   final Function(int) onNavigate;
   const StoreScreen({super.key, required this.onNavigate});
+
+  @override
+  State<StoreScreen> createState() => _StoreScreenState();
+}
+
+class _StoreScreenState extends State<StoreScreen> {
+  String? _selectedFilter;
+
+  void resetPage() {
+    setState(() {
+      _selectedFilter = null;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +29,24 @@ class StoreScreen extends StatelessWidget {
     final double spacing = 16;
     final double contentWidth = bookWidth * 2 + spacing;
 
-    final Stream<QuerySnapshot<Map<String, dynamic>>> _productStream =
+    Stream<QuerySnapshot<Map<String, dynamic>>> _productStream =
         FirebaseFirestore.instance.collection('Books').snapshots();
+        
+    if (_selectedFilter == 'asc') {
+      _productStream = FirebaseFirestore.instance
+          .collection('Books')
+          .orderBy('price', descending: false)
+          .snapshots();
+    } else if (_selectedFilter == 'desc') {
+      _productStream = FirebaseFirestore.instance
+          .collection('Books')
+          .orderBy('price', descending: true)
+          .snapshots();
+    } else {
+      _productStream = FirebaseFirestore.instance
+          .collection('Books')
+          .snapshots();
+    }
 
     return Container(
       padding: const EdgeInsets.only(right: 16.0),
@@ -38,9 +67,17 @@ class StoreScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     FilterWidget(
-                      options: ['Lọc theo Ngày', 'Lọc theo Tháng', 'Lọc theo Năm'],
+                      options: ['Giá tăng dần', 'Giá giảm dần'],
                       onSelected: (value) {
-                        debugPrint('Đã chọn: $value');
+                        setState(() {
+                          if (value == 'Giá tăng dần') {
+                            _selectedFilter = 'asc';
+                          } else if (value == 'Giá giảm dần') {
+                            _selectedFilter = 'desc';
+                          } else {
+                            _selectedFilter = null;
+                          }
+                        });
                       },
                     ),
                   ],
