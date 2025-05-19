@@ -35,8 +35,27 @@ class OrderManagement extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         title: "Quản lý đơn hàng",
-        onItemTapped: (value) {
-          onNavigate(value);
+        onItemTapped: (int value) {
+          switch (value) {
+            case 1: 
+              onNavigate(9);
+              break;
+            case 2:
+              onNavigate(10);
+              break;
+            case 3:
+              onNavigate(11);
+              break;
+            case 4:
+             onNavigate(21);
+              break;
+                case 6:
+             onNavigate(6);
+        break;
+            default:
+              // Xử lý khác nếu có
+              break;
+          }
         },
       ),
       body: SingleChildScrollView(

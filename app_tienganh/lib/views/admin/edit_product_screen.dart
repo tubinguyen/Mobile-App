@@ -142,8 +142,29 @@ class _EditProductState extends State<EditProduct> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: "Quản lý sản phẩm",
-        onItemTapped: widget.onNavigate,
+        title: "Cap nhật sản phẩm",
+        onItemTapped: (int value) {
+          switch (value) {
+            case 1: 
+              widget.onNavigate(9);
+              break;
+            case 2:
+               widget.onNavigate(10);
+              break;
+            case 3:
+               widget.onNavigate(11);
+              break;
+            case 4:
+              widget.onNavigate(21);
+              break;
+                case 6:
+              widget.onNavigate(6);
+        break;
+            default:
+              // Xử lý khác nếu có
+              break;
+          }
+        },
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

@@ -32,8 +32,27 @@ class _ProductManagementState extends State<ProductManagement> {
     return Scaffold(
       appBar: CustomAppBar(
         title: "Quản lý sản phẩm",
-        onItemTapped: (value) {
-          widget.onNavigate(value);
+        onItemTapped: (int value) {
+          switch (value) {
+            case 1: 
+              widget.onNavigate(9);
+              break;
+            case 2:
+               widget.onNavigate(10);
+              break;
+            case 3:
+               widget.onNavigate(11);
+              break;
+            case 4:
+              widget.onNavigate(21);
+              break;
+                case 6:
+              widget.onNavigate(6);
+        break;
+            default:
+              // Xử lý khác nếu có
+              break;
+          }
         },
       ),
       body: Padding(
