@@ -7,6 +7,8 @@ class TextInput extends StatefulWidget {
   final bool enabled;
   final bool isError;
   final TextEditingController? controller;
+  final int? maxLines; // Thêm tham số maxLines tùy chọn
+  final TextInputType? keyboardType; // Thêm tham số keyboardType tùy chọn
 
   const TextInput({
     super.key,
@@ -15,6 +17,8 @@ class TextInput extends StatefulWidget {
     this.enabled = true,
     this.isError = false,
     this.controller,
+    this.maxLines = 1, // Mặc định 1 dòng
+    this.keyboardType = TextInputType.text, // Mặc định kiểu text
   });
 
   @override
@@ -61,11 +65,13 @@ class TextInputState extends State<TextInput> {
       children: [
         SizedBox(
           width: 349.0716247558594,
-          height: 56,
+          height: widget.maxLines == 1 ? 56 : null,
           child: TextField(
             focusNode: _focusNode,
             controller: widget.controller,
             enabled: widget.enabled,
+            maxLines: widget.maxLines, // Sử dụng maxLines truyền vào
+            keyboardType: widget.keyboardType,
             style: TextStyle(
               color:
                   widget.enabled
@@ -76,7 +82,11 @@ class TextInputState extends State<TextInput> {
             ),
             decoration: InputDecoration(
               labelText: widget.label,
-              labelStyle: TextStyle(color: _getLabelColor(), fontSize: 14, fontFamily: 'Montserrat'),  
+              labelStyle: TextStyle(
+                color: _getLabelColor(),
+                fontSize: 14,
+                fontFamily: 'Montserrat',
+              ),
               hintText: widget.hint,
               hintStyle: TextStyle(
                 color: widget.enabled ? AppColors.border : Colors.grey.shade400,

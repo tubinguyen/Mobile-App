@@ -51,6 +51,10 @@ dependencies:
   uuid: ^3.0.7
   provider: ^6.1.1
   intl: ^0.18.1
+  qr_flutter: ^4.0.0
+  webview_flutter: ^4.0.0
+  convert: ^3.1.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -9,8 +9,11 @@ class RecentActivity extends StatelessWidget {
   final String className;
   final String note;
   final String buttonText;
-  final int percentage;
+  final double percentage;
   final VoidCallback onTap;
+
+  final bool softWrap;
+  final TextOverflow? overflow;
 
   const RecentActivity({
     super.key,
@@ -20,7 +23,9 @@ class RecentActivity extends StatelessWidget {
     required this.note,
     required this.buttonText,
     required this.percentage,
-    required this.onTap, // Biến truyền vào để điều hướng
+    required this.onTap,
+    this.softWrap = false,
+    this.overflow,
   });
 
   @override
@@ -70,48 +75,48 @@ class RecentActivity extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        status,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.textPrimary,
-                          fontFamily: 'Montserrat',
+                  Expanded(
+                    // Để tránh overflow ngang
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          status,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.textPrimary,
+                            fontFamily: 'Montserrat',
+                          ),
+                          softWrap: softWrap,
                         ),
-                        softWrap: true,
-                      ),
-                      Text(
-                        className,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
-                          fontFamily: 'Montserrat',
+                        Text(
+                          className,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textPrimary,
+                            fontFamily: 'Montserrat',
+                          ),
+                          softWrap: softWrap,
                         ),
-                        softWrap: true,
-                      ),
-                      Text(
-                        note,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textPrimary,
-                          fontFamily: 'Montserrat',
+                        Text(
+                          note,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.textPrimary,
+                            fontFamily: 'Montserrat',
+                          ),
+                          softWrap: softWrap,
                         ),
-                        softWrap: true,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
               const SizedBox(height: 16),
-              LargeButton(
-                text: buttonText,
-                onTap: onTap, // Sử dụng biến truyền vào
-              ),
+              LargeButton(text: buttonText, onTap: onTap),
             ],
           ),
         ),
@@ -119,6 +124,3 @@ class RecentActivity extends StatelessWidget {
     );
   }
 }
-
-//cách gọi
-// RecentActivity(title: "title", status: "status", className: "className", note: "note", buttonText: "buttonText", percentage: 90, onTap: () {onNavigate(1);},),

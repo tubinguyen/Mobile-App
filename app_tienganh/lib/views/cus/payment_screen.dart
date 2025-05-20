@@ -1,3 +1,4 @@
+import 'package:app_tienganh/controllers/payment_VNPAY_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:app_tienganh/widgets/text_input.dart';
 import 'package:app_tienganh/widgets/navbar.dart';
@@ -7,7 +8,8 @@ import 'package:app_tienganh/core/app_colors.dart';
 import 'package:app_tienganh/controllers/order_controller.dart';
 import 'package:app_tienganh/controllers/cart_controller.dart';
 import 'package:app_tienganh/models/order_model.dart';
-import 'package:firebase_auth/firebase_auth.dart'; 
+import 'package:firebase_auth/firebase_auth.dart';
+
 class PaymentScreen extends StatefulWidget {
   final double totalPrice;
 
@@ -27,9 +29,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   final OrderController _orderController = OrderController();
   final CartController _cartController = CartController();
-  final FirebaseAuth _auth = FirebaseAuth.instance; 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void _submitOrder() async {
+    // Kiểm tra thông tin đầu vào
     if (_emailController.text.isEmpty ||
         _nameController.text.isEmpty ||
         _phoneController.text.isEmpty ||
@@ -56,38 +59,77 @@ class _PaymentScreenState extends State<PaymentScreen> {
     }
 
     try {
-      List<OrderItem> orderItems = cart.cartItems.map((item) {
-        return OrderItem(
-          productId: item.bookId,
-          quantity: item.quantity,
-          price: item.price,
-          productName: item.bookName,
-          productImage: item.imageUrl,
-          cartId: null,
+      List<OrderItem> orderItems =
+          cart.cartItems.map((item) {
+            return OrderItem(
+              productId: item.bookId,
+              quantity: item.quantity,
+              price: item.price,
+              productName: item.bookName,
+              productImage: item.imageUrl,
+              cartId: null,
+            );
+          }).toList();
+
+      if (_selectedPaymentMethod == 'Thanh toán qua VNPay') {
+        // Tạo orderId duy nhất (dựa trên thời gian)
+        String orderId = DateTime.now().millisecondsSinceEpoch.toString();
+        // Chuyển đến màn hình VNPay
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder:
+                (context) => VNPayScreen(
+                  totalPrice: widget.totalPrice,
+                  orderId: orderId,
+                  onPaymentSuccess: () async {
+                    await _orderController.createOrder(
+                      receiverName: _nameController.text,
+                      receiverEmail: _emailController.text,
+                      receiverPhone: _phoneController.text,
+                      deliveryAddress: _addressController.text,
+                      totalAmount: widget.totalPrice,
+                      paymentMethod: "Thanh toán qua VNPay",
+                      cartItems: orderItems,
+                    );
+                    await _cartController.deleteCart();
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SuccessScreen(),
+                      ),
+                    );
+                  },
+                  onPaymentFailed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Thanh toán thất bại!"),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  },
+                ),
+          ),
         );
-      }).toList();
+      } else {
+        // Thanh toán khi nhận hàng
+        await _orderController.createOrder(
+          receiverName: _nameController.text,
+          receiverEmail: _emailController.text,
+          receiverPhone: _phoneController.text,
+          deliveryAddress: _addressController.text,
+          totalAmount: widget.totalPrice,
+          paymentMethod: _selectedPaymentMethod,
+          cartItems: orderItems,
+        );
+        await _cartController.deleteCart();
 
-      await _orderController.createOrder(
-        receiverName: _nameController.text,
-        receiverEmail: _emailController.text,
-        receiverPhone: _phoneController.text,
-        deliveryAddress: _addressController.text,
-        totalAmount: widget.totalPrice,
-        paymentMethod: _selectedPaymentMethod,
-        cartItems: orderItems,
-      );
-      await _cartController.deleteCart();
-      Navigator.pop(context);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Thanh toán thành công! Cảm ơn bạn đã mua hàng.'),
-          duration: Duration(seconds: 2),
-          backgroundColor: Colors.green,
-        ),
-      );
-
-      Navigator.pop(context);
+        // Chuyển đến màn hình thành công
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const SuccessScreen()),
+        );
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -179,3 +221,43 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 }
 
+// Màn hình thanh toán thành công
+class SuccessScreen extends StatelessWidget {
+  const SuccessScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CustomNavBar(
+        title: 'Thanh toán thành công',
+        leadingIconPath: "assets/img/back.svg",
+        onLeadingPressed: () => Navigator.pop(context),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.check_circle, color: Colors.green, size: 100),
+            const SizedBox(height: 20),
+            const Text(
+              'Thanh toán thành công!',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'Cảm ơn bạn đã mua hàng.',
+              style: TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.popUntil(context, (route) => route.isFirst);
+              },
+              child: const Text('Quay lại trang chủ'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

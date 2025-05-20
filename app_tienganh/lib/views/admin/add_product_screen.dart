@@ -143,30 +143,30 @@ class _AddProductState extends State<AddProduct> {
         return true;
       },
       child: Scaffold(
-      appBar: CustomAppBar(
-        title: "Thêm sản phẩm",
-        onItemTapped: (int value) {
-          switch (value) {
-            case 1: 
-              widget.onNavigate(9);
-              break;
-            case 2:
-               widget.onNavigate(10);
-              break;
-            case 3:
-               widget.onNavigate(11);
-              break;
-            case 4:
-              widget.onNavigate(21);
-              break;
-                case 6:
-              widget.onNavigate(6);
-        break;
-            default:
-              // Xử lý khác nếu có
-              break;
-          }
-        },
+        appBar: CustomAppBar(
+          title: "Thêm sản phẩm",
+          onItemTapped: (int value) {
+            switch (value) {
+              case 1:
+                widget.onNavigate(9);
+                break;
+              case 2:
+                widget.onNavigate(10);
+                break;
+              case 3:
+                widget.onNavigate(11);
+                break;
+              case 4:
+                widget.onNavigate(21);
+                break;
+              case 6:
+                widget.onNavigate(6);
+                break;
+              default:
+                // Xử lý khác nếu có
+                break;
+            }
+          },
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -240,6 +240,8 @@ class _AddProductState extends State<AddProduct> {
                   label: 'Mô tả sản phẩm',
                   hint: 'Nhập mô tả sản phẩm',
                   controller: _descriptionController,
+                  maxLines: null, // Cho phép nhập nhiều dòng
+                  keyboardType: TextInputType.multiline,
                   enabled: true,
                 ),
                 const SizedBox(height: 24),
