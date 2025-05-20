@@ -5,14 +5,14 @@ enum ButtonState { success, failure, premium }
 
 class PremiumButton extends StatelessWidget {
   final String text;
-  final VoidCallback onTap;
+  final VoidCallback? onTap; 
   final ButtonState state;
   final Color textColor;
 
   const PremiumButton({
     super.key,
     required this.text,
-    required this.onTap,
+    required this.onTap, 
     required this.state,
     required this.textColor,
   });
@@ -30,21 +30,23 @@ class PremiumButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color backgroundColor = onTap == null ? Colors.grey : getBackgroundColor();
+
     return SizedBox(
       height: 26,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: getBackgroundColor(),
+          backgroundColor: backgroundColor, 
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          minimumSize: const Size(0, 26), 
+          minimumSize: const Size(0, 26),
         ),
-        onPressed: onTap,
+        onPressed: onTap, 
         child: Text(
           text,
-          style: TextStyle( 
+          style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.bold,
             color: textColor,

@@ -6,7 +6,7 @@ import 'package:app_tienganh/views/admin/order_detail_screen.dart';
 import 'package:app_tienganh/controllers/order_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class OrderDetail extends StatelessWidget {
+class OrderDetail extends StatefulWidget {
   final String orderId;
   final String date;
   final bool isReceived;
@@ -29,14 +29,29 @@ class OrderDetail extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    final orderController = OrderController();
+  State<OrderDetail> createState() => _OrderDetailState();
+}
 
+class _OrderDetailState extends State<OrderDetail> {
+  late OrderController _orderController;
+
+  @override
+  void initState() {
+    super.initState();
+    _orderController = OrderController();
+  }
+  Future<void> _refreshOrderData() async {
+    setState(() {
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
-      future: FirebaseFirestore.instance.collection('Orders').doc(orderId).get(),
+      future: FirebaseFirestore.instance.collection('Orders').doc(widget.orderId).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text(''); 
+          return const Center(child: CircularProgressIndicator()); 
         }
         if (snapshot.hasError) {
           return Text('Lỗi: ${snapshot.error}');
@@ -46,10 +61,12 @@ class OrderDetail extends StatelessWidget {
         }
 
         final orderData = snapshot.data!.data() as Map<String, dynamic>;
-        final String status = orderData['status'] ??
-            'Chưa giao hàng';
+        final String status = orderData['status'] ?? 'Chưa giao hàng';
         final double totalPrice = (orderData['totalAmount'] ?? 0).toDouble();
-        
+        final bool canMarkDeliveredForAdmin = status != 'Đã giao hàng' && status != 'Đã nhận hàng';
+        final bool canMarkReceivedForUser = status == 'Đã giao hàng';
+
+
         return SizedBox(
           height: 283,
           child: Card(
@@ -59,9 +76,9 @@ class OrderDetail extends StatelessWidget {
               side: BorderSide(color: AppColors.blueLightest, width: 1),
             ),
             elevation: 4,
-            margin: EdgeInsets.all(10.0),
+            margin: const EdgeInsets.all(10.0),
             child: Padding(
-              padding: EdgeInsets.fromLTRB(10.0, 10, 10, 5),
+              padding: const EdgeInsets.fromLTRB(10.0, 10, 10, 5),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -71,8 +88,8 @@ class OrderDetail extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 17.0),
                         child: Text(
-                          date,
-                          style: TextStyle(
+                          widget.date,
+                          style: const TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 14,
                             color: AppColors.textPrimary,
@@ -83,7 +100,7 @@ class OrderDetail extends StatelessWidget {
                         padding: const EdgeInsets.only(right: 15.0),
                         child: Text(
                           status,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 14,
                             color: AppColors.textPrimary,
@@ -92,21 +109,21 @@ class OrderDetail extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 19),
+                  const SizedBox(height: 19),
                   ShoppingCartItemFinal(
-                    imageName: imageName,
-                    price: price,
-                    title: title,
-                    quantity: quantity,
+                    imageName: widget.imageName,
+                    price: widget.price,
+                    title: widget.title,
+                    quantity: widget.quantity,
                   ),
-                  Divider(
+                  const Divider(
                       height: 24, thickness: 1, color: AppColors.blueLightest),
                   Padding(
                     padding: const EdgeInsets.only(left: 16.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           "TỔNG: ",
                           style: TextStyle(
                             fontFamily: 'Montserrat',
@@ -118,7 +135,7 @@ class OrderDetail extends StatelessWidget {
                         Expanded(
                           child: Text(
                             "${totalPrice.toStringAsFixed(0)} VND",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
@@ -130,12 +147,12 @@ class OrderDetail extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 9),
+                  const SizedBox(height: 9),
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Align(
                       alignment: Alignment.bottomRight,
-                      child: isAdmin
+                      child: widget.isAdmin
                           ? Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
@@ -146,7 +163,7 @@ class OrderDetail extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => OrderDetailScreen(
-                                          orderId: orderId, 
+                                          orderId: widget.orderId,
                                         ),
                                       ),
                                     );
@@ -154,15 +171,18 @@ class OrderDetail extends StatelessWidget {
                                   state: ButtonState.premium,
                                   textColor: AppColors.background,
                                 ),
-                                SizedBox(width: 8),
+                                const SizedBox(width: 8),
                                 PremiumButton(
                                   text: 'Đã giao hàng',
-                                  onTap: () {
-                                    orderController.updateOrderStatus(
-                                        context,
-                                        orderId,
-                                        'Đã giao hàng');
-                                  },
+                                  onTap: canMarkDeliveredForAdmin
+                                      ? () async {
+                                          await _orderController.updateOrderStatus(
+                                              context,
+                                              widget.orderId,
+                                              'Đã giao hàng');
+                                          _refreshOrderData(); 
+                                        }
+                                      : null, 
                                   state: ButtonState.success,
                                   textColor: AppColors.background,
                                 ),
@@ -178,23 +198,26 @@ class OrderDetail extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => OrderDetailScreen(
-                                          orderId: orderId, 
-                                      ),
+                                          orderId: widget.orderId,
+                                        ),
                                       ),
                                     );
                                   },
                                   state: ButtonState.premium,
                                   textColor: AppColors.background,
                                 ),
-                                SizedBox(width: 8),
+                                const SizedBox(width: 8),
                                 PremiumButton(
                                   text: 'Đã nhận hàng',
-                                  onTap: () {
-                                    orderController.updateOrderStatus(
-                                        context,
-                                        orderId,
-                                        'Đã nhận hàng');
-                                  },
+                                  onTap: canMarkReceivedForUser
+                                      ? () async {
+                                          await _orderController.updateOrderStatus(
+                                              context,
+                                              widget.orderId,
+                                              'Đã nhận hàng');
+                                          _refreshOrderData(); 
+                                        }
+                                      : null, 
                                   state: ButtonState.success,
                                   textColor: AppColors.background,
                                 ),
@@ -211,4 +234,3 @@ class OrderDetail extends StatelessWidget {
     );
   }
 }
-
