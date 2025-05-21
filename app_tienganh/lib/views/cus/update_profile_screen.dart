@@ -9,6 +9,7 @@ import '../../widgets/navbar.dart';
 import '../../controllers/profile_controller.dart';
 import 'package:app_tienganh/models/user_model.dart';
 import 'package:app_tienganh/firebase_options.dart';
+
 class UpdateProfileScreen extends StatefulWidget {
 
   final Function(int) onNavigate;
@@ -206,21 +207,6 @@ Widget build(BuildContext context) { // chữ context viết thường nha
               label: 'Email',
               controller: _emailController,
             ),
-
-            // const SizedBox(height: 10),
-            // //Address
-            // TextInput(
-            //   label: 'Địa chỉ',
-            //   hint: address,
-            // ),
-      
-            // const SizedBox(height: 16),
-
-            // //Số điện thoại
-            // TextInput(
-            //   label: 'Số điện thoại',
-            //   hint: sdt,
-            // ),
       
             const SizedBox(height: 16),
 

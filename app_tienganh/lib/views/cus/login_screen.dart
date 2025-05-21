@@ -8,6 +8,9 @@ import 'package:app_tienganh/widgets/login_and_register_button.dart';
 import 'package:app_tienganh/widgets/password.dart';
 import 'package:app_tienganh/widgets/text_input.dart';
 import 'package:app_tienganh/core/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 // import 'package:app_tienganh/models/user_model.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 
@@ -34,6 +37,12 @@ class _LoginScreenState extends State<LoginScreen> {
       SnackBar(content: Text(message)),
     );
   }
+
+  void saveUserRole(String role) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userRole', role);
+  }
+
 void _handleLogin() async {
   String email = _emailController.text.trim();
   String password = _passwordController.text;
@@ -44,7 +53,6 @@ void _handleLogin() async {
   }
 
   try {
-    // Đăng nhập bằng Firebase
     UserCredential userCredential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
 
@@ -62,40 +70,35 @@ void _handleLogin() async {
           user.uid,
         );
 
+        // // Lưu role vào SharedPreferences
+        saveUserRole(userModel.role.toString());
+
         // Điều hướng theo role
         if (userModel.role == 1) {
           _showSnackBar("Chào Admin");
-          widget.onNavigate(10); 
-        } 
-        else 
-        {
+          widget.onNavigate(10);
+        } else {
           _showSnackBar("Đăng nhập thành công ");
           widget.onNavigate(0);
         }
-        resetFields(); 
-      } 
-      else 
-      {
-          _showSnackBar("Không tìm thấy thông tin người dùng.");
+        resetFields();
+      } else {
+        _showSnackBar("Không tìm thấy thông tin người dùng.");
       }
-    } 
-    else 
-    {
-        _showSnackBar("Đăng nhập thất bại. Vui lòng thử lại.");
+    } else {
+      _showSnackBar("Đăng nhập thất bại. Vui lòng thử lại.");
     }
-    } 
-    on FirebaseAuthException catch (e) 
-    {
-      // print({e.code});
-      if (e.code == 'invalid-email') {
-        _showSnackBar("Email khong hợp lệ.");
-      } else if (e.code == 'invalid-credential') {
-        _showSnackBar("Đăng nhập thất bại. Vui lòng thử lại.");
-      }
-    } catch (e) {
-      _showSnackBar("Đã xảy ra lỗi. Vui lòng thử lại.");
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'invalid-email') {
+      _showSnackBar("Email không hợp lệ.");
+    } else if (e.code == 'invalid-credential') {
+      _showSnackBar("Đăng nhập thất bại. Vui lòng thử lại.");
     }
+  } catch (e) {
+    _showSnackBar("Đã xảy ra lỗi. Vui lòng thử lại.");
+  }
 }
+
 
 
   // void _signInWithGoogle() async {
