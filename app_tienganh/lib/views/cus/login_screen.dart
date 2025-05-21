@@ -41,6 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void saveUserRole(String role) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('userRole', role);
+    print(prefs.getString('userRole'));
   }
 
 void _handleLogin() async {

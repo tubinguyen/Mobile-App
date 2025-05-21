@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:app_tienganh/models/user_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -56,8 +57,15 @@ class AuthService {
   //Dang xuat
   Future<String> signOut() async {
     try {
-      await _auth.signOut();
+      
+
+      // xóa role trong SharedPreferences
+       SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove('userRole');
+       print("userRole sau khi xóa: ${prefs.getString('userRole')}"); // Sẽ in ra: null
+       await _auth.signOut();
       return "Đăng xuất thành công!"; 
+      
     } catch (e) {
       return "Lỗi: ${e.toString()}";
     }

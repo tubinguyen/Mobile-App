@@ -42,7 +42,7 @@ class _NavigationPageState extends State<NavigationPage> {
   int _selectedIndex = 0;
 
   final Set<int> _pagesWithHeader = {
-    0,1,2,3,4,5,12,14,15,16,18,19,23,
+    0, 1, 2, 3, 4, 5, 12, 14, 15, 16, 18, 19, 23,
   };
   final Set<int> _pagesWithBottomNavigationBar = {0, 1, 2, 3, 4};
 
@@ -52,6 +52,7 @@ class _NavigationPageState extends State<NavigationPage> {
   @override
   void initState() {
     super.initState();
+     _selectedIndex = 0; // mặc định là user thường
     _loadUserRoleAndNavigate();
   }
 
@@ -60,7 +61,6 @@ class _NavigationPageState extends State<NavigationPage> {
     String? role = prefs.getString('user_role');
 
     if (role == null) {
-      // Lấy role từ Firestore nếu chưa lưu trong SharedPreferences
       final user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
@@ -68,7 +68,7 @@ class _NavigationPageState extends State<NavigationPage> {
           role = doc.get('role').toString();
           await prefs.setString('user_role', role);
         } else {
-          role = '0'; // mặc định khách hàng
+          role = '0';
         }
       } else {
         role = '0';
@@ -76,8 +76,9 @@ class _NavigationPageState extends State<NavigationPage> {
     }
 
     setState(() {
-      _selectedIndex = (role == '1') ? 9 : 0; 
-     
+      _selectedIndex = (role == '1') ? 9 : 0;
+      print("Current user role: $role");
+      print("Selected index: $_selectedIndex");
     });
   }
 
@@ -168,7 +169,6 @@ class _NavigationPageState extends State<NavigationPage> {
 
   @override
   Widget build(BuildContext context) {
-  
     return Scaffold(
       appBar: _pagesWithHeader.contains(_selectedIndex)
           ? Header(
@@ -179,10 +179,8 @@ class _NavigationPageState extends State<NavigationPage> {
               onLogoutTap: () async {
                 String message = await AuthService().signOut();
                 if (message == "Đăng xuất thành công!") {
-                  // Xóa role trong SharedPreferences khi logout
                   final prefs = await SharedPreferences.getInstance();
                   await prefs.remove('user_role');
-
                   ScaffoldMessenger.of(context)
                       .showSnackBar(SnackBar(content: Text(message)));
                   _onItemTapped(0);
