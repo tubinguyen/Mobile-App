@@ -1,37 +1,41 @@
-import 'package:app_tienganh/core/app_colors.dart';
-import 'package:app_tienganh/widgets/empty_notification.dart';
-import 'package:app_tienganh/widgets/notification.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:app_tienganh/models/notification_model.dart';
+import 'package:app_tienganh/controllers/notification_controller.dart';
+import 'package:app_tienganh/widgets/empty_notification.dart';
+import 'package:app_tienganh/widgets/notification.dart' as widgets;
+import 'package:app_tienganh/core/app_colors.dart';
 
 class NotificationScreen extends StatelessWidget {
   final Function(int) onNavigate;
+  final String userId;
 
-  const NotificationScreen({super.key, required this.onNavigate});
+  NotificationScreen({
+    super.key,
+    required this.onNavigate,
+    required this.userId,
+  }) {
+    print('NotificationScreen: Khởi tạo với userId: $userId');
+    if (userId.isEmpty) {
+      print('Cảnh báo: userId rỗng, thử lấy từ FirebaseAuth');
+      final authUserId = FirebaseAuth.instance.currentUser?.uid;
+      if (authUserId == null) {
+        print('Lỗi: Người dùng chưa đăng nhập');
+      } else {
+        print('Lấy userId từ FirebaseAuth: $authUserId');
+      }
+    }
+  }
+
+  final NotificationController _notificationController =
+      NotificationController();
 
   @override
   Widget build(BuildContext context) {
-    // Danh sách thông báo - bạn có thể lấy từ API hoặc state management
-    final List<Map<String, String>> notifications = [
-      {
-        'mainText': 'Cùng trở lại học "vocab toeic week 1".',
-        'subText': 'Tiếp tục nào!',
-        'timeAgo': '9m',
-        'svgPath': 'assets/img/Frame107.svg',
-      },
-      {
-        'mainText': 'Cùng trở lại học "vocab toeic week 1".',
-        'subText': 'Tiếp tục nào!',
-        'timeAgo': '9m',
-        'svgPath': 'assets/img/Frame107.svg',
-      },
-      {
-        'mainText': 'Cùng trở lại học "vocab toeic week 1".',
-        'subText': 'Tiếp tục nào!',
-        'timeAgo': '9m',
-        'svgPath': 'assets/img/Frame107.svg',
-      },
-    ];
-
+    final effectiveUserId =
+        userId.isNotEmpty
+            ? userId
+            : FirebaseAuth.instance.currentUser?.uid ?? '';
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -40,30 +44,40 @@ class NotificationScreen extends StatelessWidget {
             fontSize: 20,
             fontWeight: FontWeight.bold,
             fontFamily: 'Montserrat',
-            color: AppColors.textPrimary, // nếu bạn dùng nền trắng
+            color: AppColors.textPrimary,
           ),
         ),
         centerTitle: true,
-
         backgroundColor: Colors.transparent,
-        elevation: 0, // Loại bỏ đường shadow
+        elevation: 0,
       ),
-      body:
-          notifications.isEmpty
-              ? Center(
-                child: EmptyNotificationWidget(),
-              ) // Chỉ empty nằm chính giữa
-              : ListView.builder(
-                itemCount: notifications.length,
-                itemBuilder: (context, index) {
-                  return NotificationCard(
-                    mainText: notifications[index]['mainText']!,
-                    subText: notifications[index]['subText']!,
-                    timeAgo: notifications[index]['timeAgo']!,
-                    svgPath: notifications[index]['svgPath']!,
-                  );
-                },
-              ),
+      body: StreamBuilder<List<AppNotification>>(
+        stream: _notificationController.getNotificationsStream(effectiveUserId),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return const Center(child: Text('Lỗi khi tải thông báo'));
+          }
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: EmptyNotificationWidget());
+          }
+          final notifications = snapshot.data!;
+          return ListView.builder(
+            itemCount: notifications.length,
+            itemBuilder: (context, index) {
+              final notification = notifications[index];
+              return widgets.NotificationCard(
+                mainText: notification.mainText,
+                subText: notification.subText,
+                timeAgo: notification.timeAgoString,
+                svgPath: notification.svgPath,
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

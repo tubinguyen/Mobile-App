@@ -38,7 +38,19 @@ class _NavigationPageState extends State<NavigationPage> {
   int _selectedIndex = 0;
 
   final Set<int> _pagesWithHeader = {
-    0,1,2,3, 4, 5, 12,14,15,16,18,19,23,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    12,
+    14,
+    15,
+    16,
+    18,
+    19,
+    23,
   };
   final Set<int> _pagesWithBottomNavigationBar = {0, 1, 2, 3, 4};
 
@@ -66,7 +78,7 @@ class _NavigationPageState extends State<NavigationPage> {
       case 4:
         return ProfileScreen(onNavigate: _onItemTapped);
       case 5:
-        return NotificationScreen(onNavigate: _onItemTapped);
+        return NotificationScreen(onNavigate: _onItemTapped, userId: '');
       case 6:
         return LoginScreen(onNavigate: _onItemTapped);
       case 7:
@@ -96,7 +108,8 @@ class _NavigationPageState extends State<NavigationPage> {
       case 16:
         return FlashcardScreen(
           moduleId: _currentModuleId ?? '',
-          onNavigate: _onItemTapped);
+          onNavigate: _onItemTapped,
+        );
       case 17:
         return OrderScreen(onNavigate: _onItemTapped);
       case 18:

@@ -40,7 +40,6 @@ class QuizController {
     }
   }
 
-
   //Lưu kết quả quiz với quizId
   Future<String> saveQuizResult({
     required String quizId,
@@ -61,18 +60,21 @@ class QuizController {
       QuizResultModel quizResultModel = QuizResultModel(
         quizResultId: quizResultId,
         quizId: quizId,
-        moduleId: moduleId, 
+        moduleId: moduleId,
         userId: _auth.currentUser!.uid,
         startTime: startTime,
         endTime: endTime,
-        correctAnswersCount: correctAnswersCount, 
+        correctAnswersCount: correctAnswersCount,
         incorrectAnswersCount: incorrectAnswersCount,
         completionPercentage: completionPercentage,
         questionResults: questionResults,
       );
 
       // Lưu thông tin kết quả quiz vào Firestore
-      await _firestore.collection('quiz_results').doc(quizResultId).set(quizResultModel.toMap());
+      await _firestore
+          .collection('quiz_results')
+          .doc(quizResultId)
+          .set(quizResultModel.toMap());
 
       return quizResultId;
     } catch (e) {
@@ -82,15 +84,17 @@ class QuizController {
   }
 
   //Lấy danh sách kết quả quiz từ Firestore theo quizResultId
-  Future<QuizResultModel?> getQuizResultByQuizResultId(String quizResultId) async {
-    final doc = await FirebaseFirestore.instance
-        .collection('quiz_results')
-        .doc(quizResultId)
-        .get();
+  Future<QuizResultModel?> getQuizResultByQuizResultId(
+    String quizResultId,
+  ) async {
+    final doc =
+        await FirebaseFirestore.instance
+            .collection('quiz_results')
+            .doc(quizResultId)
+            .get();
     if (!doc.exists) return null;
     return QuizResultModel.fromMap(doc.data()!);
   }
-
 
   //Xóa quiz theo quizId
   Future<void> deleteQuiz(String quizId) async {
@@ -101,35 +105,38 @@ class QuizController {
     }
   }
 
-
   // QuizController
   Future<List<QuizResultModel>> getQuizResultsOfCurrentUser() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return [];
-    final snapshot = await FirebaseFirestore.instance
-        .collection('quiz_results')
-        .where('userId', isEqualTo: user.uid) // hoặc trường bạn lưu user
-        .get();
-    return snapshot.docs.map((doc) => QuizResultModel.fromMap(doc.data())).toList();
+    final snapshot =
+        await FirebaseFirestore.instance
+            .collection('quiz_results')
+            .where('userId', isEqualTo: user.uid) // hoặc trường bạn lưu user
+            .get();
+    return snapshot.docs
+        .map((doc) => QuizResultModel.fromMap(doc.data()))
+        .toList();
   }
-
 
   // Xóa tất cả quiz và quiz_result của một moduleId
   Future<void> deleteAllQuizAndResultsByModuleId(String moduleId) async {
     // Xóa tất cả quiz của moduleId này
-    final quizSnapshot = await _firestore
-        .collection('quizzes')
-        .where('moduleId', isEqualTo: moduleId)
-        .get();
+    final quizSnapshot =
+        await _firestore
+            .collection('quizzes')
+            .where('moduleId', isEqualTo: moduleId)
+            .get();
     for (var doc in quizSnapshot.docs) {
       await _firestore.collection('quizzes').doc(doc.id).delete();
     }
 
     // Xóa tất cả quiz_result của moduleId này
-    final quizResultSnapshot = await _firestore
-        .collection('quiz_results')
-        .where('moduleId', isEqualTo: moduleId)
-        .get();
+    final quizResultSnapshot =
+        await _firestore
+            .collection('quiz_results')
+            .where('moduleId', isEqualTo: moduleId)
+            .get();
     for (var doc in quizResultSnapshot.docs) {
       await _firestore.collection('quiz_results').doc(doc.id).delete();
     }
