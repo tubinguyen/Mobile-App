@@ -67,7 +67,7 @@ class TestResultScreen extends StatelessWidget {
                               Expanded(
                                 child: LargeButtonSecondary(
                                   text: "Ôn tập",
-                                  onTap: () => onNavigate(16),
+                                  onTap: () => onNavigate(16, moduleId: result.moduleId),
                                 ),
                               ),
                               const SizedBox(width: 20),
