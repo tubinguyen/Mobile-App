@@ -27,6 +27,10 @@ import '../views/admin/edit_account_screen.dart';
 import '../views/cus/course_edit_screen.dart';
 import '../controllers/auth_controller.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});
 
@@ -38,24 +42,45 @@ class _NavigationPageState extends State<NavigationPage> {
   int _selectedIndex = 0;
 
   final Set<int> _pagesWithHeader = {
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    12,
-    14,
-    15,
-    16,
-    18,
-    19,
-    23,
+    0, 1, 2, 3, 4, 5, 12, 14, 15, 16, 18, 19, 23,
   };
   final Set<int> _pagesWithBottomNavigationBar = {0, 1, 2, 3, 4};
 
   String? _currentModuleId;
   String? _currentQuizResultId;
+
+  @override
+  void initState() {
+    super.initState();
+     _selectedIndex = 0; // mặc định là user thường
+    _loadUserRoleAndNavigate();
+  }
+
+  Future<void> _loadUserRoleAndNavigate() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? role = prefs.getString('user_role');
+
+    if (role == null) {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+        if (doc.exists && doc.data()!.containsKey('role')) {
+          role = doc.get('role').toString();
+          await prefs.setString('user_role', role);
+        } else {
+          role = '0';
+        }
+      } else {
+        role = '0';
+      }
+    }
+
+    setState(() {
+      _selectedIndex = (role == '1') ? 9 : 0;
+      print("Current user role: $role");
+      print("Selected index: $_selectedIndex");
+    });
+  }
 
   void _onItemTapped(int index, {String? moduleId, String? quizResultId}) {
     setState(() {
@@ -145,36 +170,34 @@ class _NavigationPageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          _pagesWithHeader.contains(_selectedIndex)
-              ? Header(
-                onHomeTap: () => _onItemTapped(0),
-                onNotificationTap: () => _onItemTapped(5),
-                onAuthTap: () => _onItemTapped(6),
-                onAccountTap: () => _onItemTapped(4),
-                onLogoutTap: () async {
-                  String message = await AuthService().signOut();
-                  if (message == "Đăng xuất thành công!") {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(message)));
-                    _onItemTapped(0);
-                  } else {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(message)));
-                  }
-                },
-              )
-              : null,
+      appBar: _pagesWithHeader.contains(_selectedIndex)
+          ? Header(
+              onHomeTap: () => _onItemTapped(0),
+              onNotificationTap: () => _onItemTapped(5),
+              onAuthTap: () => _onItemTapped(6),
+              onAccountTap: () => _onItemTapped(4),
+              onLogoutTap: () async {
+                String message = await AuthService().signOut();
+                if (message == "Đăng xuất thành công!") {
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.remove('user_role');
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(message)));
+                  _onItemTapped(0);
+                } else {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(message)));
+                }
+              },
+            )
+          : null,
       body: _getPage(_selectedIndex),
-      bottomNavigationBar:
-          _pagesWithBottomNavigationBar.contains(_selectedIndex)
-              ? CustomBottomNavigationBar(
-                selectedIndex: _selectedIndex,
-                onItemTapped: _onItemTapped,
-              )
-              : null,
+      bottomNavigationBar: _pagesWithBottomNavigationBar.contains(_selectedIndex)
+          ? CustomBottomNavigationBar(
+              selectedIndex: _selectedIndex,
+              onItemTapped: _onItemTapped,
+            )
+          : null,
     );
   }
 }
