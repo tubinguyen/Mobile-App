@@ -144,18 +144,15 @@ class _EditProductState extends State<EditProduct> {
       appBar: CustomAppBar(
         title: "Cập hật sản phẩm",
         onItemTapped: (int value) {
-          switch (value) {
-            case 1:
+           switch (value) {
+            case 1: 
               widget.onNavigate(9);
               break;
             case 2:
-              widget.onNavigate(10);
+               widget.onNavigate(10);
               break;
             case 3:
-              widget.onNavigate(11);
-              break;
-            case 4:
-              widget.onNavigate(21);
+               widget.onNavigate(11);
               break;
             case 6:
               widget.onNavigate(6);
