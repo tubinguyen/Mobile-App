@@ -142,7 +142,7 @@ class _EditProductState extends State<EditProduct> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: "Cap nhật sản phẩm",
+        title: "Cập hật sản phẩm",
         onItemTapped: (int value) {
           switch (value) {
             case 1:
