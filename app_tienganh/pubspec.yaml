@@ -52,6 +52,9 @@ dependencies:
   provider: ^6.1.1
   intl: ^0.18.1
   shared_preferences: ^2.2.2
+  qr_flutter: ^4.0.0
+  webview_flutter: ^4.0.0
+  convert: ^3.1.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

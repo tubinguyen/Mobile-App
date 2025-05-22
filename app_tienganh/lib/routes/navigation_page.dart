@@ -103,7 +103,7 @@ class _NavigationPageState extends State<NavigationPage> {
       case 4:
         return ProfileScreen(onNavigate: _onItemTapped);
       case 5:
-        return NotificationScreen(onNavigate: _onItemTapped);
+        return NotificationScreen(onNavigate: _onItemTapped, userId: '');
       case 6:
         return LoginScreen(onNavigate: _onItemTapped);
       case 7:

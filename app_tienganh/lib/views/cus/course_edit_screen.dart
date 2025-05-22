@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:app_tienganh/core/app_colors.dart';
 import 'package:app_tienganh/widgets/input_create.dart';
@@ -5,21 +6,28 @@ import 'package:app_tienganh/widgets/navbar.dart';
 import 'package:app_tienganh/widgets/premium_button.dart';
 import '../../widgets/plus_button.dart';
 import 'package:app_tienganh/controllers/learning_module_controller.dart';
+import 'package:app_tienganh/controllers/notification_controller.dart';
 import 'package:app_tienganh/models/learning_module_model.dart';
-// import 'package:app_tienganh/models/user_model.dart';
 
 class CourseEditScreen extends StatefulWidget {
   final String moduleId;
   final Function(int, {String? moduleId}) onNavigate;
 
-  const CourseEditScreen({super.key, required this.moduleId, required this.onNavigate});
+  const CourseEditScreen({
+    super.key,
+    required this.moduleId,
+    required this.onNavigate,
+  });
 
   @override
   State<CourseEditScreen> createState() => _CourseEditScreenState();
 }
 
 class _CourseEditScreenState extends State<CourseEditScreen> {
-  final LearningModuleController _learningModuleCoLearningModuleController = LearningModuleController();
+  final LearningModuleController _learningModuleController =
+      LearningModuleController();
+  final NotificationController _notificationController =
+      NotificationController();
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -36,21 +44,29 @@ class _CourseEditScreenState extends State<CourseEditScreen> {
   Future<void> _handleUpdateLearningModule() async {
     try {
       final title = titleController.text.trim();
-      final description = descriptionController.text.trim().isEmpty ? null : descriptionController.text.trim();
+      final description =
+          descriptionController.text.trim().isEmpty
+              ? null
+              : descriptionController.text.trim();
 
-      final vocabList = vocabControllers.map((item) {
-        final vocabText = item['vocab']?.text.trim() ?? '';
-        final meanText = item['mean']?.text.trim() ?? '';
+      final vocabList =
+          vocabControllers
+              .map((item) {
+                final vocabText = item['vocab']?.text.trim() ?? '';
+                final meanText = item['mean']?.text.trim() ?? '';
 
-        if (vocabText.isEmpty || meanText.isEmpty) {
-          return null; // Bỏ qua cặp từ trống
-        }
+                if (vocabText.isEmpty || meanText.isEmpty) {
+                  return null;
+                }
 
-        return VocabularyItem(word: vocabText, meaning: meanText);
-      }).where((item) => item != null).cast<VocabularyItem>().toList();
+                return VocabularyItem(word: vocabText, meaning: meanText);
+              })
+              .where((item) => item != null)
+              .cast<VocabularyItem>()
+              .toList();
 
       if (title.isEmpty) {
-          showDialog(
+        showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
@@ -73,8 +89,8 @@ class _CourseEditScreenState extends State<CourseEditScreen> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop(); // Đóng popup
-                    widget.onNavigate(12, moduleId: widget.moduleId); // Điều hướng đến trang học phần
+                    Navigator.of(context).pop();
+                    widget.onNavigate(12, moduleId: widget.moduleId);
                   },
                   child: const Text(
                     "OK",
@@ -88,6 +104,7 @@ class _CourseEditScreenState extends State<CourseEditScreen> {
             );
           },
         );
+        // return;
       }
 
       if (vocabList.isEmpty) {
@@ -114,8 +131,8 @@ class _CourseEditScreenState extends State<CourseEditScreen> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop(); 
-                    widget.onNavigate(12, moduleId: widget.moduleId); 
+                    Navigator.of(context).pop();
+                    widget.onNavigate(12, moduleId: widget.moduleId);
                   },
                   child: const Text(
                     "OK",
@@ -129,19 +146,28 @@ class _CourseEditScreenState extends State<CourseEditScreen> {
             );
           },
         );
-        
+        return;
       }
 
-      // Gọi hàm cập nhật học phần
-      await _learningModuleCoLearningModuleController.updateLearningModule(
+      // Cập nhật học phần
+      await _learningModuleController.updateLearningModule(
         moduleId: widget.moduleId,
         moduleName: title,
         description: description,
         vocabulary: vocabList,
       );
+
+      // Tạo thông báo khi học phần được chỉnh sửa thành công
+      await _notificationController.createModuleEditNotification(
+        userId: FirebaseAuth.instance.currentUser!.uid,
+        moduleId: widget.moduleId,
+        moduleName: title,
+      );
+
       setState(() {
         showShortDescription = description != null;
       });
+
       // Hiển thị thông báo thành công
       showDialog(
         context: context,
@@ -166,8 +192,8 @@ class _CourseEditScreenState extends State<CourseEditScreen> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop(); // Đóng popup
-                  widget.onNavigate(12, moduleId: widget.moduleId); // Điều hướng đến trang học phần
+                  Navigator.of(context).pop();
+                  widget.onNavigate(12, moduleId: widget.moduleId);
                 },
                 child: const Text(
                   "Xem học phần",
@@ -206,7 +232,7 @@ class _CourseEditScreenState extends State<CourseEditScreen> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop(); // Đóng popup
+                  Navigator.of(context).pop();
                 },
                 child: const Text(
                   "OK",
@@ -223,84 +249,101 @@ class _CourseEditScreenState extends State<CourseEditScreen> {
     }
   }
 
-void addVocabInput() async {
-  
-  final newVocabController = TextEditingController();
-  final newMeanController = TextEditingController();
+  void addVocabInput() async {
+    final newVocabController = TextEditingController();
+    final newMeanController = TextEditingController();
 
-  vocabControllers.add({
-    'vocab': newVocabController,
-    'mean': newMeanController,
-  });
+    vocabControllers.add({
+      'vocab': newVocabController,
+      'mean': newMeanController,
+    });
 
-  setState(() {
-    vocabInputs.add(
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          InputCreate(label: 'Từ vựng', controller: newVocabController),
-          const SizedBox(height: 10),
-          InputCreate(label: 'Giải nghĩa', controller: newMeanController),
-          const SizedBox(height: 60),
-        ],
-      ),
-    );
-  });
-
-  // Cập nhật Firebase ngay khi thêm từ vựng
-  try {
-    final vocabList = vocabControllers.map((item) {
-      final vocabText = item['vocab']?.text.trim() ?? '';
-      final meanText = item['mean']?.text.trim() ?? '';
-
-      if (vocabText.isEmpty || meanText.isEmpty) {
-        return null; // Bỏ qua cặp từ trống
-      }
-
-      return VocabularyItem(word: vocabText, meaning: meanText);
-    }).where((item) => item != null).cast<VocabularyItem>().toList();
-
-    await _learningModuleCoLearningModuleController.updateLearningModule(
-      moduleId: widget.moduleId,
-      moduleName: titleController.text.trim(),
-      description: descriptionController.text.trim().isEmpty ? null : descriptionController.text.trim(),
-      vocabulary: vocabList,
-    );
-  } catch (e) {
-    print("Error updating vocabulary: $e");
-  }
-}
-
-Future<void> _loadLearningModule() async {
-  final learningModule = await _learningModuleCoLearningModuleController.getLearningModuleById(widget.moduleId);
-
-  if (learningModule != null) {
     setState(() {
-      titleController.text = learningModule.moduleName;
-      descriptionController.text = learningModule.description ?? ''; // Đặt lại giá trị rỗng nếu description là null
-      showShortDescription = learningModule.description != null; // Chỉ hiển thị InputCreate nếu description không null
-
-      vocabControllers = learningModule.vocabulary.map((vocab) {
-        return {
-          'vocab': TextEditingController(text: vocab.word),
-          'mean': TextEditingController(text: vocab.meaning),
-        };
-      }).toList();
-
-      vocabInputs = vocabControllers.map((controller) {
-        return Column(
+      vocabInputs.add(
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            InputCreate(label: 'Từ vựng', controller: controller['vocab']!),
+            InputCreate(label: 'Từ vựng', controller: newVocabController),
             const SizedBox(height: 10),
-            InputCreate(label: 'Giải nghĩa', controller: controller['mean']!),
+            InputCreate(label: 'Giải nghĩa', controller: newMeanController),
             const SizedBox(height: 60),
           ],
-        );
-      }).toList();
+        ),
+      );
     });
+
+    // Cập nhật Firebase ngay khi thêm từ vựng
+    try {
+      final vocabList =
+          vocabControllers
+              .map((item) {
+                final vocabText = item['vocab']?.text.trim() ?? '';
+                final meanText = item['mean']?.text.trim() ?? '';
+
+                if (vocabText.isEmpty || meanText.isEmpty) {
+                  return null;
+                }
+
+                return VocabularyItem(word: vocabText, meaning: meanText);
+              })
+              .where((item) => item != null)
+              .cast<VocabularyItem>()
+              .toList();
+
+      await _learningModuleController.updateLearningModule(
+        moduleId: widget.moduleId,
+        moduleName: titleController.text.trim(),
+        description:
+            descriptionController.text.trim().isEmpty
+                ? null
+                : descriptionController.text.trim(),
+        vocabulary: vocabList,
+      );
+    } catch (e) {
+      print("Error updating vocabulary: $e");
+    }
   }
-}
+
+  Future<void> _loadLearningModule() async {
+    final learningModule = await _learningModuleController
+        .getLearningModuleById(widget.moduleId);
+
+    if (learningModule != null) {
+      setState(() {
+        titleController.text = learningModule.moduleName;
+        descriptionController.text = learningModule.description ?? '';
+        showShortDescription = learningModule.description != null;
+
+        vocabControllers =
+            learningModule.vocabulary.map((vocab) {
+              return {
+                'vocab': TextEditingController(text: vocab.word),
+                'mean': TextEditingController(text: vocab.meaning),
+              };
+            }).toList();
+
+        vocabInputs =
+            vocabControllers.map((controller) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InputCreate(
+                    label: 'Từ vựng',
+                    controller: controller['vocab']!,
+                  ),
+                  const SizedBox(height: 10),
+                  InputCreate(
+                    label: 'Giải nghĩa',
+                    controller: controller['mean']!,
+                  ),
+                  const SizedBox(height: 60),
+                ],
+              );
+            }).toList();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -331,7 +374,7 @@ Future<void> _loadLearningModule() async {
                 actions: [
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).pop(); // Đóng popup
+                      Navigator.of(context).pop();
                     },
                     child: const Text(
                       "Không",
@@ -343,8 +386,8 @@ Future<void> _loadLearningModule() async {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).pop(); // Đóng popup
-                      widget.onNavigate(12, moduleId: widget.moduleId); // Quay lại trang học phần
+                      Navigator.of(context).pop();
+                      widget.onNavigate(12, moduleId: widget.moduleId);
                     },
                     child: const Text(
                       "Có",
@@ -363,10 +406,10 @@ Future<void> _loadLearningModule() async {
         onActionPressed: _handleUpdateLearningModule,
       ),
       body: _buildCourseEditScreen(),
-      
     );
   }
-Widget _buildCourseEditScreen() {
+
+  Widget _buildCourseEditScreen() {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -379,13 +422,8 @@ Widget _buildCourseEditScreen() {
                 controller: titleController,
               ),
               const SizedBox(height: 10),
-
-              // Mô tả
               if (showShortDescription) ...[
-                InputCreate(
-                  label: 'Mô tả',
-                  controller: descriptionController,
-                ),
+                InputCreate(label: 'Mô tả', controller: descriptionController),
                 const SizedBox(height: 10),
               ] else ...[
                 Align(
@@ -402,22 +440,14 @@ Widget _buildCourseEditScreen() {
                   ),
                 ),
               ],
-
               const SizedBox(height: 40),
-
-              // Danh sách từ vựng
               ...vocabInputs,
             ],
           ),
         ),
       ),
-
-      // Thêm từ vựng và định nghĩa
-      floatingActionButton: PlusButton(
-        onPressed: addVocabInput,
-      ),
+      floatingActionButton: PlusButton(onPressed: addVocabInput),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
-

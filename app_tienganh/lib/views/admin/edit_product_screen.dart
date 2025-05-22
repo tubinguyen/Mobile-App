@@ -142,24 +142,24 @@ class _EditProductState extends State<EditProduct> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: "Cap nhật sản phẩm",
+        title: "Cập hật sản phẩm",
         onItemTapped: (int value) {
           switch (value) {
-            case 1: 
+            case 1:
               widget.onNavigate(9);
               break;
             case 2:
-               widget.onNavigate(10);
+              widget.onNavigate(10);
               break;
             case 3:
-               widget.onNavigate(11);
+              widget.onNavigate(11);
               break;
             case 4:
               widget.onNavigate(21);
               break;
-                case 6:
+            case 6:
               widget.onNavigate(6);
-        break;
+              break;
             default:
               // Xử lý khác nếu có
               break;
@@ -200,6 +200,8 @@ class _EditProductState extends State<EditProduct> {
               label: 'Mô tả sản phẩm',
               hint: 'Nhập mô tả sản phẩm',
               controller: _descriptionController,
+              maxLines: null, // Cho phép nhập nhiều dòng
+              keyboardType: TextInputType.multiline,
               enabled: true,
             ),
             const SizedBox(height: 24),

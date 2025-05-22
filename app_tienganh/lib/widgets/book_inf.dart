@@ -16,7 +16,7 @@ class BookInf extends StatelessWidget {
     required this.name,
     required this.price,
     required this.quantity,
-    required this.description,
+    this.description = '',
     required this.onDelete,
     required this.onEdit,
     this.imagePath,
@@ -93,14 +93,14 @@ class BookInf extends StatelessWidget {
                         fontWeight: FontWeight.normal,
                       ),
                     ),
-                    Text(
-                      'Mô tả sản phẩm: $description',
-                      style: const TextStyle(
-                        fontSize: 10,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
+                    // Text(
+                    //   'Mô tả sản phẩm: $description',
+                    //   style: const TextStyle(
+                    //     fontSize: 10,
+                    //     fontFamily: 'Montserrat',
+                    //     fontWeight: FontWeight.normal,
+                    //   ),
+                    // ),
                     const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

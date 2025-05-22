@@ -9,6 +9,8 @@ class NotificationCard extends StatelessWidget {
   final String timeAgo;
   final String svgPath;
   final EdgeInsets? margin; // Optional margin parameter
+  final bool softWrap;
+  final TextOverflow? overflow;
 
   const NotificationCard({
     super.key,
@@ -17,6 +19,8 @@ class NotificationCard extends StatelessWidget {
     required this.timeAgo,
     required this.svgPath,
     this.margin, // Make margin optional
+    this.softWrap = false,
+    this.overflow,
   });
 
   @override
@@ -52,8 +56,8 @@ class NotificationCard extends StatelessWidget {
                       fontSize: 12,
                       fontFamily: 'Montserrat',
                     ),
-                    overflow:
-                        TextOverflow.ellipsis, // Add text overflow handling
+                    softWrap: true, // Add text overflow handling
+                    overflow: TextOverflow.visible,
                   ),
                   SizedBox(height: 4),
                   Text(
