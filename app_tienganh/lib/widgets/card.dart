@@ -1,16 +1,24 @@
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:app_tienganh/core/app_colors.dart';
 
 class VocabularyCard extends StatelessWidget {
   final String word;
   final String meaning;
+  final FlutterTts _flutterTts = FlutterTts(); // Initialize FlutterTts
 
-  const VocabularyCard({
-    super.key,
-    required this.word,
-    required this.meaning,
-  });
+  VocabularyCard({super.key, required this.word, required this.meaning}) {
+    // Configure TTS settings
+    _flutterTts.setLanguage("en-US");
+    _flutterTts.setPitch(1.0);
+    _flutterTts.setSpeechRate(0.5);
+  }
+
+  // Function to speak the text
+  Future<void> _speak(String text) async {
+    await _flutterTts.speak(text);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +47,8 @@ class VocabularyCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: isBack ? AppColors.highlightDarkest : AppColors.textPrimary,
+                color:
+                    isBack ? AppColors.highlightDarkest : AppColors.textPrimary,
                 fontFamily: 'Montserrat',
               ),
             ),
@@ -49,10 +58,11 @@ class VocabularyCard extends StatelessWidget {
               top: 10,
               right: 10,
               child: IconButton(
-                icon: const Icon(Icons.volume_up, color: AppColors.highlightDarkest),
-                onPressed: () {
-                  // TODO: Play pronunciation
-                },
+                icon: const Icon(
+                  Icons.volume_up,
+                  color: AppColors.highlightDarkest,
+                ),
+                onPressed: () => _speak(word), // Play pronunciation of the word
               ),
             ),
         ],
