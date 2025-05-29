@@ -55,6 +55,12 @@ class _NavigationPageState extends State<NavigationPage> {
 
   Future<void> _loadUserRoleAndNavigate() async {
     final prefs = await SharedPreferences.getInstance();
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      await prefs.remove('user_role');
+    }
+
     String? role = prefs.getString('user_role');
 
     if (role == null) {
