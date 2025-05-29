@@ -16,15 +16,16 @@ class OrderController {
     required double totalAmount,
     required String paymentMethod,
     required List<OrderItem> cartItems,
+    String? orderId,
   }) async {
     final user = _auth.currentUser;
     if (user == null) throw Exception("Người dùng chưa đăng nhập");
 
-    final orderId = const Uuid().v4();
+    final actualOrderId = orderId ?? const Uuid().v4();
     final userDocRef = _firestore.collection('users').doc(user.uid);
     try {
       final order = OrderModel(
-        orderId: orderId,
+        orderId: actualOrderId,
         userId: user.uid,
         products: cartItems,
         receiverName: receiverName,
@@ -36,34 +37,40 @@ class OrderController {
         createdAt: DateTime.now(),
       );
 
-    await _firestore.collection('Orders').doc(orderId).set(order.toMap());
+      await _firestore
+          .collection('Orders')
+          .doc(actualOrderId)
+          .set(order.toMap());
 
-    await _firestore.runTransaction((transaction) async {
-      final snapshot = await transaction.get(userDocRef);
+      await _firestore.runTransaction((transaction) async {
+        final snapshot = await transaction.get(userDocRef);
 
-      if (snapshot.exists) {
-        final currentCount = snapshot.data()?['orderCount'] ?? 0;
-        transaction.update(userDocRef, {'orderCount': currentCount + 1});
-      } else {
-        transaction.set(userDocRef, {'orderCount': 1});
-      }
-    });
-
-  } catch (error) {
-    print('Lỗi khi tạo đơn hàng: $error');
-    rethrow;
+        if (snapshot.exists) {
+          final currentCount = snapshot.data()?['orderCount'] ?? 0;
+          transaction.update(userDocRef, {'orderCount': currentCount + 1});
+        } else {
+          transaction.set(userDocRef, {'orderCount': 1});
+        }
+      });
+    } catch (error) {
+      print('Lỗi khi tạo đơn hàng: $error');
+      rethrow;
+    }
   }
- }
 
-    Future<void> updateOrderStatus(
-      BuildContext context, String orderId, String newStatus) async {
+  Future<void> updateOrderStatus(
+    BuildContext context,
+    String orderId,
+    String newStatus,
+  ) async {
     try {
-      await FirebaseFirestore.instance
-          .collection('Orders') 
-          .doc(orderId)
-          .update({'status': newStatus});
+      await FirebaseFirestore.instance.collection('Orders').doc(orderId).update(
+        {'status': newStatus},
+      );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Đã cập nhật trạng thái đơn hàng thành "$newStatus"')),
+        SnackBar(
+          content: Text('Đã cập nhật trạng thái đơn hàng thành "$newStatus"'),
+        ),
       );
     } catch (e) {
       print('Lỗi cập nhật trạng thái đơn hàng: $e');
@@ -73,6 +80,14 @@ class OrderController {
     }
   }
 
-  
+  Future<void> updatePaymentStatus(String orderId, String newStatus) async {
+    try {
+      await FirebaseFirestore.instance.collection('Orders').doc(orderId).update(
+        {'paymentStatus': newStatus},
+      );
+    } catch (e) {
+      print('Lỗi cập nhật trạng thái thanh toán: $e');
+      rethrow;
+    }
+  }
 }
-
