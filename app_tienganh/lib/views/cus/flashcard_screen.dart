@@ -128,7 +128,7 @@ class ReviewScreenState extends State<FlashcardScreen> {
                 note: "$totalCards/$totalCards từ vựng",
                 buttonText: "Kiểm tra cũng cố",
                 percentage: 100,
-                onTap: () => widget.onNavigate(15),
+                onTap: () => widget.onNavigate(15, moduleId: widget.moduleId),
               ),
             ),
           ],
