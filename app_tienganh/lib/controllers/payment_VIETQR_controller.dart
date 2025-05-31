@@ -103,7 +103,7 @@ class _VietQRScreenState extends State<VietqQRScreen> {
     required int quantity,
   }) async {
     const String apiUrl =
-        'https://72ca-113-23-111-114.ngrok-free.app/api/payment/create-payment-link';
+        'http://13.212.35.60:8084/api/payment/create-payment-link';
 
     final requestBody = {'name': name, 'price': price, 'quantity': quantity};
 
@@ -130,7 +130,7 @@ class _VietQRScreenState extends State<VietqQRScreen> {
     if (_paymentId == null) return;
 
     const String apiUrl =
-        'https://72ca-113-23-111-114.ngrok-free.app/api/payment/payment-information';
+        'http://13.212.35.60:8084/api/payment/payment-information';
 
     try {
       final response = await http.get(
