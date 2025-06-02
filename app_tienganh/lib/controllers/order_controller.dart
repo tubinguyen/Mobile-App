@@ -59,26 +59,37 @@ class OrderController {
   }
 
   Future<void> updateOrderStatus(
-    BuildContext context,
-    String orderId,
-    String newStatus,
-  ) async {
-    try {
-      await FirebaseFirestore.instance.collection('Orders').doc(orderId).update(
-        {'status': newStatus},
-      );
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Đã cập nhật trạng thái đơn hàng thành "$newStatus"'),
-        ),
-      );
-    } catch (e) {
-      print('Lỗi cập nhật trạng thái đơn hàng: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Đã xảy ra lỗi khi cập nhật trạng thái')),
-      );
+  BuildContext context,
+  String orderId,
+  String newStatus,
+) async {
+  try {
+    final batch = FirebaseFirestore.instance.batch();
+    final orderRef = FirebaseFirestore.instance.collection('Orders').doc(orderId);
+
+    // Cập nhật trạng thái đơn hàng
+    batch.update(orderRef, {'status': newStatus});
+
+    // Nếu trạng thái đơn hàng là "Đã nhận hàng", thì cập nhật thêm trạng thái thanh toán
+    if (newStatus == 'Đã nhận hàng') {
+      batch.update(orderRef, {'paymentStatus': 'Thanh toán thành công'});
     }
+
+    // Thực hiện cập nhật
+    await batch.commit();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Đã cập nhật trạng thái đơn hàng thành "$newStatus"'),
+      ),
+    );
+  } catch (e) {
+    print('Lỗi cập nhật trạng thái đơn hàng: $e');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Đã xảy ra lỗi khi cập nhật trạng thái')),
+    );
   }
+}
 
   Future<void> updatePaymentStatus(String orderId, String newStatus) async {
     try {
