@@ -31,9 +31,7 @@ class EditProductController {
     try {
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse(
-          'http://ec2-13-212-75-127.ap-southeast-1.compute.amazonaws.com:8080/api/s3/upload',
-        ),
+        Uri.parse('http://13.212.35.60:8080/api/s3/upload'),
       );
 
       request.files.add(
