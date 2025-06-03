@@ -9,7 +9,6 @@ import 'package:app_tienganh/widgets/password.dart';
 import 'package:app_tienganh/widgets/text_input.dart';
 import 'package:app_tienganh/core/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // import 'package:app_tienganh/models/user_model.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
