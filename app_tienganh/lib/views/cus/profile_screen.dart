@@ -55,8 +55,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Account(
-                profileImage: user!.avatarUrl ?? "assets/img/user.jpg",
+             Account(
+               profileImage: user!.avatarUrl != null && user!.avatarUrl!.isNotEmpty
+              ? NetworkImage(user!.avatarUrl!)
+              : AssetImage("assets/img/user.jpg") as ImageProvider,
                 username: user!.username,
               ),
 

@@ -9,7 +9,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   static const int manageUsers = 1;
   static const int manageProducts = 2;
   static const int manageOrders = 3;
-  static const int account = 4;
   static const int logout = 5;
   static const int accountScreen = 6;
 
@@ -46,20 +45,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: AppColors.background,
           position: PopupMenuPosition.under,
           onSelected: (value) {
-            if (value == account) {
-              _manageAccount();
-            } else if (value == logout) {
+           if (value == logout) {
               _showLogoutDialog(context);
             }
           },
           itemBuilder: (context) => [
-            const PopupMenuItem<int>(
-              value: account,
-              child: Text(
-                "Tài khoản",
-                style: TextStyle(fontFamily: 'Montserrat'),
-              ),
-            ),
             const PopupMenuItem<int>(
               value: logout,
               child: Text(

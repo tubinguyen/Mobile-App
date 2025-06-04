@@ -40,8 +40,10 @@ class _OrderDetailState extends State<OrderDetail> {
     super.initState();
     _orderController = OrderController();
   }
+
   Future<void> _refreshOrderData() async {
     setState(() {
+
     });
   }
 
@@ -51,7 +53,7 @@ class _OrderDetailState extends State<OrderDetail> {
       future: FirebaseFirestore.instance.collection('Orders').doc(widget.orderId).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator()); 
+          return const Center(child: CircularProgressIndicator());
         }
         if (snapshot.hasError) {
           return Text('Lỗi: ${snapshot.error}');
@@ -61,11 +63,12 @@ class _OrderDetailState extends State<OrderDetail> {
         }
 
         final orderData = snapshot.data!.data() as Map<String, dynamic>;
-        final String status = orderData['status'] ?? 'Chưa giao hàng';
+        final String status = orderData['status'] ?? 'Chờ xác nhận'; 
+        final String paymentStatus = orderData['paymentStatus'] ?? 'Chưa thanh toán';
         final double totalPrice = (orderData['totalAmount'] ?? 0).toDouble();
-        final bool canMarkDeliveredForAdmin = status != 'Đã giao hàng' && status != 'Đã nhận hàng';
-        final bool canMarkReceivedForUser = status == 'Đã giao hàng';
-
+        final bool canAdminConfirmOrder = status == 'Chờ xác nhận';
+        final bool canAdminMarkDelivered = status == 'Đã xác nhận' || status == 'Chờ giao hàng'; 
+        final bool canUserMarkReceived = status == 'Đã giao hàng';
 
         return SizedBox(
           height: 283,
@@ -157,7 +160,7 @@ class _OrderDetailState extends State<OrderDetail> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 PremiumButton(
-                                  text: 'Xem chi tiết',
+                                  text: 'Chi tiết',
                                   onTap: () {
                                     Navigator.push(
                                       context,
@@ -172,17 +175,34 @@ class _OrderDetailState extends State<OrderDetail> {
                                   textColor: AppColors.background,
                                 ),
                                 const SizedBox(width: 8),
+
                                 PremiumButton(
-                                  text: 'Đã giao hàng',
-                                  onTap: canMarkDeliveredForAdmin
+                                  text: 'Xác nhận đơn hàng',
+                                  onTap: canAdminConfirmOrder
                                       ? () async {
                                           await _orderController.updateOrderStatus(
                                               context,
                                               widget.orderId,
-                                              'Đã giao hàng');
-                                          _refreshOrderData(); 
+                                              'Đã xác nhận'); 
+                                          _refreshOrderData();
                                         }
-                                      : null, 
+                                      : null,
+                                  state: ButtonState.premium, 
+                                  textColor: AppColors.background,
+                                ),
+                                const SizedBox(width: 8),
+
+                                PremiumButton(
+                                  text: 'Đã giao',
+                                  onTap: canAdminMarkDelivered
+                                      ? () async {
+                                          await _orderController.updateOrderStatus(
+                                              context,
+                                              widget.orderId,
+                                              'Đã giao');
+                                          _refreshOrderData();
+                                        }
+                                      : null,
                                   state: ButtonState.success,
                                   textColor: AppColors.background,
                                 ),
@@ -209,15 +229,15 @@ class _OrderDetailState extends State<OrderDetail> {
                                 const SizedBox(width: 8),
                                 PremiumButton(
                                   text: 'Đã nhận hàng',
-                                  onTap: canMarkReceivedForUser
+                                  onTap: canUserMarkReceived
                                       ? () async {
                                           await _orderController.updateOrderStatus(
                                               context,
                                               widget.orderId,
                                               'Đã nhận hàng');
-                                          _refreshOrderData(); 
+                                          _refreshOrderData();
                                         }
-                                      : null, 
+                                      : null,
                                   state: ButtonState.success,
                                   textColor: AppColors.background,
                                 ),

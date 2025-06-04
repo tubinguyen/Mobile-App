@@ -23,7 +23,7 @@ class _UserManagementState extends State<UserManagement> {
        appBar: CustomAppBar(
         title: "Trang chủ",
         onItemTapped: (int value) {
-          switch (value) {
+           switch (value) {
             case 1: 
               widget.onNavigate(9);
               break;
@@ -33,12 +33,9 @@ class _UserManagementState extends State<UserManagement> {
             case 3:
                widget.onNavigate(11);
               break;
-            case 4:
-              widget.onNavigate(21);
-              break;
-                case 6:
+            case 6:
               widget.onNavigate(6);
-        break;
+              break;
             default:
               // Xử lý khác nếu có
               break;

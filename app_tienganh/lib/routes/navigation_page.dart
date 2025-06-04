@@ -22,11 +22,8 @@ import '../views/cus/flashcard_screen.dart';
 import '../views/cus/order_screen.dart';
 import '../views/cus/update_profile_screen.dart';
 import '../views/cus/update_password_screen.dart';
-import '../views/admin/account_management_screen.dart';
-import '../views/admin/edit_account_screen.dart';
 import '../views/cus/course_edit_screen.dart';
 import '../controllers/auth_controller.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -58,6 +55,12 @@ class _NavigationPageState extends State<NavigationPage> {
 
   Future<void> _loadUserRoleAndNavigate() async {
     final prefs = await SharedPreferences.getInstance();
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      await prefs.remove('user_role');
+    }
+
     String? role = prefs.getString('user_role');
 
     if (role == null) {
@@ -141,16 +144,6 @@ class _NavigationPageState extends State<NavigationPage> {
         return UpdateProfileScreen(onNavigate: _onItemTapped);
       case 19:
         return UpdatePasswordScreen(onNavigate: _onItemTapped);
-      case 20:
-        return AccountManagement(onNavigate: _onItemTapped);
-      case 21:
-        return EditAccountScreen(
-          onNavigate: _onItemTapped,
-          initialName: 'Tên mẫu',
-          initialEmail: 'email@example.com',
-          initialAddress: 'Địa chỉ mẫu',
-          initialPhone: '0123456789',
-        );
       case 22:
         return CourseEditScreen(
           moduleId: _currentModuleId ?? '',

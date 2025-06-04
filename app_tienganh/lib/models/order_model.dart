@@ -23,7 +23,7 @@ class OrderModel {
     required this.totalAmount,
     required this.paymentMethod,
     required this.createdAt,
-    this.status = "Đang giao hàng",
+    this.status = "Chờ xác nhận",
     this.paymentStatus = "Chưa thanh toán",
   });
 

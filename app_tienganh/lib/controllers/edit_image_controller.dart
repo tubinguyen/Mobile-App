@@ -1,25 +1,19 @@
-import 'package:app_tienganh/models/book_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
-
 import 'package:http/http.dart' as http;
 
-class EditProductController {
-  // Lấy dữ liệu sản phẩm từ Firestore
-  Future<Map<String, dynamic>?> getProductData(String productId) async {
+class EditProfileController {
+  Future<Map<String, dynamic>?> getUserProfile(String userId) async {
     try {
-      DocumentSnapshot productSnapshot =
-          await FirebaseFirestore.instance
-              .collection('Books')
-              .doc(productId)
-              .get();
+      DocumentSnapshot userSnapshot =
+          await FirebaseFirestore.instance.collection('Users').doc(userId).get();
 
-      if (productSnapshot.exists) {
-        return productSnapshot.data() as Map<String, dynamic>;
+      if (userSnapshot.exists) {
+        return userSnapshot.data() as Map<String, dynamic>;
       }
       return null;
     } catch (e) {
-      print('Error fetching product data: $e');
+      print('Lỗi khi lấy dữ liệu người dùng: $e');
       return null;
     }
   }
@@ -34,13 +28,10 @@ class EditProductController {
         Uri.parse('http://13.212.35.60:8080/api/s3/upload'),
       );
 
-      request.files.add(
-        await http.MultipartFile.fromPath('file', imageFile.path),
-      );
+      request.files.add(await http.MultipartFile.fromPath('file', imageFile.path));
       var response = await request.send();
 
       if (response.statusCode == 200) {
-        // Trả về trực tiếp chuỗi response làm URL
         var imageUrl = await response.stream.bytesToString();
         return imageUrl;
       } else {
@@ -53,16 +44,15 @@ class EditProductController {
     }
   }
 
-  // Cập nhật sản phẩm trong Firestore
-  Future<bool> updateProduct(String productId, Book book) async {
+  // Cập nhật URL ảnh trong Firestore
+  Future<bool> updateImage(String userId, String imageUrl) async {
     try {
-      await FirebaseFirestore.instance
-          .collection('Books')
-          .doc(productId)
-          .update(book.toMap());
+      await FirebaseFirestore.instance.collection('Users').doc(userId).update({
+        'imageUrl': imageUrl,
+      });
       return true;
     } catch (e) {
-      print('Error updating product: $e');
+      print('Lỗi khi cập nhật ảnh đại diện: $e');
       return false;
     }
   }
