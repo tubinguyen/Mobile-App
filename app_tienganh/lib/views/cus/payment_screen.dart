@@ -129,7 +129,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         context,
         MaterialPageRoute(
           builder:
-              (context) => const StatusScreen(title: 'Thanh toán thành công'),
+              (context) => const StatusScreen(title: 'Đặt hàng thành công'),
         ),
       );
     }

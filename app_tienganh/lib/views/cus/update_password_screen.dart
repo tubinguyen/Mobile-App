@@ -145,10 +145,12 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Account(
-                        profileImage: user?.avatarUrl ?? "assets/img/user.jpg",
-                        username: user?.username ?? "Tên người dùng",
-                      ),
+                     Account(
+               profileImage: user!.avatarUrl != null && user!.avatarUrl!.isNotEmpty
+              ? NetworkImage(user!.avatarUrl!)
+              : AssetImage("assets/img/user.jpg") as ImageProvider,
+                username: user!.username,
+              ),
                       const SizedBox(height: 10),
                       const Text(
                         'Nhập email để nhận liên kết đặt lại mật khẩu',
