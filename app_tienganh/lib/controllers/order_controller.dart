@@ -8,6 +8,7 @@ class OrderController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  // Tạo đơn hàng mới
   Future<void> createOrder({
     required String receiverName,
     required String receiverEmail,
@@ -23,6 +24,7 @@ class OrderController {
 
     final actualOrderId = orderId ?? const Uuid().v4();
     final userDocRef = _firestore.collection('users').doc(user.uid);
+
     try {
       final order = OrderModel(
         orderId: actualOrderId,
@@ -37,11 +39,10 @@ class OrderController {
         createdAt: DateTime.now(),
       );
 
-      await _firestore
-          .collection('Orders')
-          .doc(actualOrderId)
-          .set(order.toMap());
+      // Ghi đơn hàng vào Firestore
+      await _firestore.collection('Orders').doc(actualOrderId).set(order.toMap());
 
+      // Cập nhật số lượng đơn hàng người dùng
       await _firestore.runTransaction((transaction) async {
         final snapshot = await transaction.get(userDocRef);
 
@@ -58,42 +59,62 @@ class OrderController {
     }
   }
 
+  // Cập nhật trạng thái đơn hàng
   Future<void> updateOrderStatus(
-  BuildContext context,
-  String orderId,
-  String newStatus,
-) async {
-  try {
-    final batch = FirebaseFirestore.instance.batch();
-    final orderRef = FirebaseFirestore.instance.collection('Orders').doc(orderId);
+    BuildContext context,
+    String orderId,
+    String newStatus,
+  ) async {
+    try {
+      final orderRef = _firestore.collection('Orders').doc(orderId);
+      final orderSnapshot = await orderRef.get();
 
-    // Cập nhật trạng thái đơn hàng
-    batch.update(orderRef, {'status': newStatus});
+      if (!orderSnapshot.exists) {
+        throw Exception('Không tìm thấy đơn hàng');
+      }
 
-    // Nếu trạng thái đơn hàng là "Đã nhận hàng", thì cập nhật thêm trạng thái thanh toán
-    if (newStatus == 'Đã nhận hàng') {
-      batch.update(orderRef, {'paymentStatus': 'Thanh toán thành công'});
+      final batch = _firestore.batch();
+      batch.update(orderRef, {'status': newStatus});
+
+      // Nếu là "Đã nhận hàng", cập nhật trạng thái thanh toán
+      if (newStatus == 'Đã nhận hàng') {
+        batch.update(orderRef, {'paymentStatus': 'Thanh toán thành công'});
+      }
+
+      // Nếu là "Đã xác nhận", cập nhật lại orderCount cho người dùng
+      if (newStatus == 'Đã xác nhận') {
+        final userId = orderSnapshot.data()?['userId'];
+        if (userId != null) {
+          final userRef = _firestore.collection('users').doc(userId);
+          final userSnap = await userRef.get();
+          if (userSnap.exists) {
+            final currentCount = userSnap.data()?['orderCount'] ?? 0;
+            batch.update(userRef, {'orderCount': currentCount + 1});
+          } else {
+            batch.set(userRef, {'orderCount': 1});
+          }
+        }
+      }
+
+      await batch.commit();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Đã cập nhật trạng thái đơn hàng thành "$newStatus"'),
+        ),
+      );
+    } catch (e) {
+      print('Lỗi cập nhật trạng thái đơn hàng: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Đã xảy ra lỗi khi cập nhật trạng thái')),
+      );
     }
-
-    // Thực hiện cập nhật
-    await batch.commit();
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Đã cập nhật trạng thái đơn hàng thành "$newStatus"'),
-      ),
-    );
-  } catch (e) {
-    print('Lỗi cập nhật trạng thái đơn hàng: $e');
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Đã xảy ra lỗi khi cập nhật trạng thái')),
-    );
   }
-}
 
+  // Cập nhật trạng thái thanh toán riêng
   Future<void> updatePaymentStatus(String orderId, String newStatus) async {
     try {
-      await FirebaseFirestore.instance.collection('Orders').doc(orderId).update(
+      await _firestore.collection('Orders').doc(orderId).update(
         {'paymentStatus': newStatus},
       );
     } catch (e) {

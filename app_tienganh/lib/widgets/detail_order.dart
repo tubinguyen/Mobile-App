@@ -66,9 +66,9 @@ class _OrderDetailState extends State<OrderDetail> {
         final String status = orderData['status'] ?? 'Chờ xác nhận'; 
         final String paymentStatus = orderData['paymentStatus'] ?? 'Chưa thanh toán';
         final double totalPrice = (orderData['totalAmount'] ?? 0).toDouble();
-        final bool canAdminConfirmOrder = status == 'Chờ xác nhận';
+        final bool canAdminConfirmOrder = status == 'Chờ xác nhận' || status == 'Chờ xác nhận';
         final bool canAdminMarkDelivered = status == 'Đã xác nhận' || status == 'Chờ giao hàng'; 
-        final bool canUserMarkReceived = status == 'Đã giao hàng';
+        final bool canUserMarkReceived = status == 'Đã giao';
 
         return SizedBox(
           height: 283,
@@ -227,7 +227,7 @@ class _OrderDetailState extends State<OrderDetail> {
                                   textColor: AppColors.background,
                                 ),
                                 const SizedBox(width: 8),
-                                PremiumButton(
+                                  PremiumButton(
                                   text: 'Đã nhận hàng',
                                   onTap: canUserMarkReceived
                                       ? () async {
@@ -236,6 +236,11 @@ class _OrderDetailState extends State<OrderDetail> {
                                               widget.orderId,
                                               'Đã nhận hàng');
                                           _refreshOrderData();
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                              content: Text('Cảm ơn bạn đã xác nhận đơn hàng!'),
+                                            ),
+                                          );
                                         }
                                       : null,
                                   state: ButtonState.success,

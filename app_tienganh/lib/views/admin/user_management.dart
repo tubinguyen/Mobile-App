@@ -21,7 +21,7 @@ class _UserManagementState extends State<UserManagement> {
   Widget build(BuildContext context) {
     return Scaffold(
        appBar: CustomAppBar(
-        title: "Trang chủ",
+        title: "Quản lý người dùng",
         onItemTapped: (int value) {
            switch (value) {
             case 1: 
